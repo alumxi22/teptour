@@ -3660,9 +3660,9 @@ function make_parse_kind(kind) {
       if (i < toks.length) {
         var objs_i = cache.dict[kind].adjs.get(toks[i].s);
         if (objs_i) {
-          objs = inter(objs, objs_i);
-          if (ok(objs)) {
-            for (var m of in_adj(i + 1, objs)) {
+          objs_i = inter(objs, objs_i);
+          if (ok(objs_i)) {
+            for (var m of in_adj(i + 1, objs_i)) {
               yield new parser_match(i, m.end, m.value, m.score + 1);
             }
           }
@@ -3674,9 +3674,9 @@ function make_parse_kind(kind) {
       if (i < toks.length) {
         var objs_i = cache.dict[kind].nouns.get(toks[i].s);
         if (objs_i) {
-          objs = inter(objs, objs_i);
-          if (ok(objs)) {
-            for (var m of in_noun(i + 1, objs)) {
+          objs_i = inter(objs, objs_i);
+          if (ok(objs_i)) {
+            for (var m of in_noun(i + 1, objs_i)) {
               yield new parser_match(i, m.end, m.value, m.score + 2);
             }
           }
@@ -4995,6 +4995,9 @@ actions.try_before.add_method({
   when: (action) => action.verb === "entering",
   handle: function (action) {
     this.next();
+    if (world.location(world.actor) === action.dobj) {
+      return;
+    }
     var o;
     var actor_chain = [];
     o = world.actor;
