@@ -82,11 +82,13 @@ thank him for such a beautiful prayer, you see he has already slipped
 away.`));
 parser.action.understand("go home", parse => making_mistake("But you already are!"));
 parser.action.understand("tep", parse => making_mistake("That's where you are."));
-/*parser.action.understand("why/how [text x]", parse => making_mistake(
-`[char 91]Sometimes while I wait for my hard drive to rev up I
+parser.action.understand("why/how [text x]", parse => making_mistake(() => {
+  out.write_text("[");
+  out.write(`Sometimes while I wait for my hard drive to rev up I
 wistfully contemplate what it would have been like to be able to
-answer a question like that.  Alack-a-day, that was not my fate.[char
-93]`));*/
+answer a question like that.  Alack-a-day, that was not my fate.`);
+  out.write_text("]");
+}));
 parser.action.understand("pickles ?", parse => making_mistake(`"I didn't make this
 tour!" [ob 'Irving Q. Tep' Irving] explains, "I just repeat what I'm told."`));
 
