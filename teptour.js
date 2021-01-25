@@ -13,14 +13,14 @@ world.global.set("game title", "The tEp Virtual House Tour");
 world.global.set("game headline", "A factual fantasy");
 world.global.set("game author", "tEp, Xi chapter");
 world.global.set("game description", `Although you're still where you
-were, you're now where you are since [the 'Irving Q. Tep'] has brought
+were, you're now where you are since [ob 'Irving Q. Tep'] has brought
 you to the Purple Palace, 253 Comm. Ave.`);
 
 ///
 /// Fun and games
 ///
 
-//// Images
+//// [img] command
 
 HTML_abstract_builder.prototype.img = function (path, align) {
   out.with_block("div", () => {
@@ -35,6 +35,60 @@ HTML_abstract_builder.prototype.img = function (path, align) {
   });
 };
 
+//// [ask] command
+
+HTML_abstract_builder.prototype.ask = function (topic, text) {
+  out.wrap_action_link("ask Irving Q. Tep about " + topic, () => {
+    if (text) {
+      out.write(text);
+    } else {
+      out.write_text(topic);
+    }
+  });
+};
+
+/* See the section "Consulting Irving Q. Tep..." for how to add things
+   that one can ask him about. */
+
+//// Other silly verbs
+
+parser.action.understand("about", parse => asking_about("Irving Q. Tep", "virtual house tour"));
+// idea: make 'quit' have you quit the game, and you end up at a computer in the house
+parser.action.understand("quit", parse => making_mistake("{Bobs} should try closing the tab instead."));
+
+parser.action.understand("oh/ok", parse => making_mistake("Exactly."));
+// spaces between periods because parser treats periods as tokens
+parser.action.understand("cd . .", parse => exiting());
+
+parser.action.understand("cd [somewhere x]", parse => going_to(parse.x));
+parser.action.understand("pwd/dir", parse => looking());
+parser.action.understand("where am i", parse => looking());
+parser.action.understand("where am i ?", parse => looking());
+parser.action.understand("cd", parse => making_mistake("But you already are home!"));
+parser.action.understand("honig", parse => making_mistake("\"Honig!\" you shout.  You can hear vigorous acclamation all around you."));
+parser.action.understand("in the name of honig", parse => making_mistake("Amen."));
+parser.action.understand("what ?", parse => making_mistake(`You just had to
+say that, didn't you.  \"What?\" \"What?\" \"What?\" you hear tEps
+everywhere yelling back and forth throughout the house.  Finally, some
+tEp figures out what's going on and silences them with \"No one is
+peldging, stop it!\"`));
+parser.action.understand("i wanna peldge", parse => making_mistake(`This is
+virtual tEp.  If you have a bid and you're wanting to peldge, then say
+the magic words where real tEp can hear you!`));
+parser.action.understand("pray/amen", parse => making_mistake(`A chorus of
+angelic voices augment that of the chaplain, who you suddenly find
+next to you.  "In the name of Honig, Amen," he ends.  As you turn to
+thank him for such a beautiful prayer, you see he has already slipped
+away.`));
+parser.action.understand("go home", parse => making_mistake("But you already are!"));
+parser.action.understand("tep", parse => making_mistake("That's where you are."));
+/*parser.action.understand("why/how [text x]", parse => making_mistake(
+`[char 91]Sometimes while I wait for my hard drive to rev up I
+wistfully contemplate what it would have been like to be able to
+answer a question like that.  Alack-a-day, that was not my fate.[char
+93]`));*/
+parser.action.understand("pickles ?", parse => making_mistake(`"I didn't make this
+tour!" [ob 'Irving Q. Tep' Irving] explains, "I just repeat what I'm told."`));
 
 ///
 /// The player
@@ -76,7 +130,7 @@ def_obj("253 Commonwealth Ave", "room", {
   in the middle of Boston's Back Bay.  Outside the building is
   [a 'purple tree'] and [a 'park bench'].
 
-  [para]To the [dir north] is [the 'front door' 'the door'] to enter tEp.
+  [para]Just to the [dir north] is [ob 'front door' 'the door'] to enter tEp.
 
   [para]You can look [look east] and [look west] along the
   street, [look up] at tEp, and [look south] toward the mall.`
@@ -93,7 +147,7 @@ def_obj("purple tree", "thing", {
   is_scenery : true,
   description : `[img 1/253/tree.JPG left]Looking both ways,
   you see that this is the only purple tree along the entire
-  avenue.  It's very purple.  Below it is the [ob 'front garden'].`
+  avenue.  It's very purple.  Below it is [the 'front garden'].`
 }, {put_in: "253 Commonwealth Ave"});
 
 def_obj("park bench", "supporter", {
