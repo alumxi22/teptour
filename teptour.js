@@ -333,13 +333,13 @@ actions.report.add_method({
   }
 });
 
-actions.before.add_method({
+actions.try_before.add_method({
   when: action => (action.verb === "going" && action.dir === "north"
                    && world.containing_room(world.actor) === "253 Commonwealth Ave"),
   handle: function (action) {
     out.write(`The door is locked.  Looking around the door, you find a
     doorbell, and you ring that instead.[para]`);
-    throw new do_instead(pushing("doorbell"), true);
+    throw new do_instead(using("doorbell"), true);
   }
 });
 
