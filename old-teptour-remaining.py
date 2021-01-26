@@ -1017,76 +1017,17 @@ def report_lookingtoword_with_stairwell(actor, x, ctxt) :
 ### Dining room
 ###
 
-quickdef(world, "The Dining Room", "room", {
-        Visited : True,
-        Description : """[img 1/dining/look.JPG left]This is the
-        dining room, where tEps eat.  On the ceiling is the [ob <fork
-        chandelier>], sitting above the fireplace is the [ob <Tepsi
-        machine>], and covering the west wall is [ob
-        <Tepilepsy>]. During rush, this room is used to hold a kiddie
-        pool full of [ask oobleck].
-
-        [newline]To the [dir south] is the center room, and to the
-        [dir east] is the upstairs kitchen.  You can look [look north]
-        and [look east]."""
-        })
-add_floor(world, "The Dining Room", "wood")
-world.activity.connect_rooms("The Dining Room", "east", "The Upstairs Kitchen")
-
-world[DirectionDescription("The Dining Room", "north")] = """
-[img 1/dining/look_n.JPG left]Through the windows to the north, you
-get a view of the back lot."""
-world[DirectionDescription("The Dining Room", "east")] = """
-[img 1/dining/look_e.JPG left]To the east, you see a big whiteboard
-covered in tEply doodles.  You can go [dir east] into the upstairs
-kitchen."""
 
 instead_of(actionsystem,
            LookingToward(actor, "west") <= PEquals("The Dining Room", ContainingRoom(actor)),
            Examining(actor, "Tepilepsy"))
 
-quickdef(world, "fork chandelier", "thing", {
-        Scenery : True,
-        Description : """[img 1/dining/chandelier.JPG left]This is a
-        chandelier made of forks.  Stuck to it are flecks of dried
-        corn starch from [ask oobleck]."""
-        }, put_in="The Dining Room")
-quickdef(world, "Tepsi machine", "thing", {
-        Scenery : True,
-        Description : """[img 1/dining/tepsi.JPG left]This is the
-        Tepsi machine which, when it works, is stocked with grape
-        soda."""
-        }, put_in="The Dining Room")
 
-reset_action_handler(before, Using(actor, "Tepsi machine"))
-@report(Using(actor, "Tepsi machine"))
-def report_using_tepsi_machine(actor, ctxt) :
-    ctxt.write("""You press the buttons repeatedly, but nothing comes
-                  out.""", actor=actor)
-
-# oobleck is a placeholder in case someone types "examine oobleck"
-quickdef(world, "oobleck", "thing", {
-        Scenery : True,
-        NoTakeMessage : """The oobleck is very dried to and now very
-        much a part of the ceiling."""
-        }, put_in="The Dining Room")
 instead_of(actionsystem,
            Examining(actor, "oobleck"),
            AskingAbout(actor, "Irving Q. Tep", "oobleck"))
 
 
-quickdef(world, "Tepilepsy", "thing", {
-        Name : "Tepilepsy wall",
-        Scenery : True,
-        Description : """[img 1/dining/tepilepsy.jpg left]With almost
-        twenty-two-hundred RGB LEDs, the Tepilepsy wall was installed
-        with the help of many tEps, both recent and drooling, and is a
-        beacon that's very visible from the backlot.  It displays
-        visualizations of various mathematical functions as well as of
-        relativistic-like distortions of a nearby webcam.  You should
-        definitely ask a brother at real-tEp&#8482; for a
-        demonstration."""
-        }, put_in="The Dining Room")
 
 #quickdef(world, "dining room table", "supporter", {
 #        Scenery : True,

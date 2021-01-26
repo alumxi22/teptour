@@ -523,7 +523,7 @@ make_known("The Center Room");
 
 //world.connect_rooms("The Center Room", "up", "The Second Landing");
 world.connect_rooms("The Center Room", "south", "The Front Room");
-//world.connect_rooms("The Center Room", "north", "The Dining Room");
+world.connect_rooms("The Center Room", "north", "The Dining Room");
 //world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
 
 world.direction_description.set("The Center Room", "north", `
@@ -821,6 +821,77 @@ actions.report.add_method({
     the passage, you strengthen the resolution with a quick ring of the bicycle bell.`);
   }
 });
+
+///
+/// Dining room
+///
+
+def_obj("The Dining Room", "room", {
+  description : `[img 1/dining/look.JPG left]This is the
+  dining room, where tEps eat.  On the ceiling is
+  [the 'fork chandelier'], sitting above the fireplace is
+  [the 'Tepsi machine'], and covering the west wall is [ob Tepilepsy].
+  During rush, this room is used to hold a kiddie pool full of [ask oobleck].
+
+  [para]To the [dir south] is the center room, and to the
+  [dir east] is the upstairs kitchen.  You can look [look north]
+  and [look east].`
+});
+make_known("The Dining Room");
+add_floor("The Dining Room", "wood");
+//connect_rooms("The Dining Room", "east", "The Upstairs Kitchen")
+
+world.direction_description.set("The Dining Room", "north", `
+[img 1/dining/look_n.JPG left]Through the windows to the north, you
+get a view of the back lot.`);
+world.direction_description.set("The Dining Room", "east", `
+[img 1/dining/look_e.JPG left]To the east, you see a big whiteboard
+covered in tEply doodles.  You can go [dir east] into the upstairs
+kitchen.`);
+
+def_obj("fork chandelier", "thing", {
+  is_scenery: true,
+  description: `[img 1/dining/chandelier.JPG left]This is a
+  chandelier made of forks.  Stuck to it are flecks of dried
+  corn starch from [ask oobleck].`
+}, {put_in: "The Dining Room"});
+def_obj("Tepsi machine", "thing", {
+  is_scenery: true,
+  description: `[img 1/dining/tepsi.JPG left]This is the
+  Tepsi machine which, when it works, is stocked with grape soda.`
+}, {put_in: "The Dining Room"});
+
+actions.before.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "Tepsi machine",
+  handle: () => {}
+});
+actions.report.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "Tepsi machine",
+  handle: function () {
+    out.write(`You press the buttons repeatedly, but nothing comes out.`);
+  }
+});
+
+// oobleck is a placeholder in case someone types "examine oobleck"
+def_obj("oobleck", "thing", {
+  is_scenery: true,
+  no_take_msg: `The oobleck is very dried to and now very
+  much a part of the ceiling.`
+}, {put_in: "The Dining Room"});
+
+// TODO instead of examining oobleck => asking about oobleck
+
+def_obj("Tepilepsy", "thing", {
+  added_words: ["Tepilepsy", "@wall"],
+  is_scenery: true,
+  description : `[img 1/dining/tepilepsy.jpg left]With almost
+  twenty-two-hundred RGB LEDs, the Tepilepsy wall was installed
+  with the help of many tEps, both recent and drooling (thanks Gruesz!),
+  and it's a beacon that's very visible from the backlot.  It displays
+  visualizations of various mathematical functions as well as of
+  relativistic-like distortions of a nearby webcam.  You should
+  definitely ask a for a demonstration at real-tEp\u2122.`
+}, {put_in: "The Dining Room"});
 
 
 /********************/
