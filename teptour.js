@@ -522,7 +522,7 @@ add_floor("The Center Room", "carpet");
 make_known("The Center Room");
 
 //world.connect_rooms("The Center Room", "up", "The Second Landing");
-//world.connect_rooms("The Center Room", "south", "The Front Room");
+world.connect_rooms("The Center Room", "south", "The Front Room");
 //world.connect_rooms("The Center Room", "north", "The Dining Room");
 //world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
 
@@ -594,7 +594,7 @@ actions.report.add_method({
   when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
   handle: function () {
     out.write(`"Click! Click!" go the volleys as the ball skids
-    across the table of the foosball table, with some non-negligible
+    across the surface of the foosball table, with some non-negligible
     interference from all the colorful paint.  It's a close match, but
     your dexterity at the table is impressive!  The game reaches
     sudden death, and your feet playing yellow narrowly beat your
@@ -692,6 +692,136 @@ world.put_in("51", "r_center_stairs");
 def_obj("center stairwell", "backdrop", {
   backdrop_locations: ["The Center Room", "r_center_stairs"]
 });
+
+///
+/// Front room
+///
+
+def_obj("The Front Room", "room", {
+  added_words: ["@fridge"],
+  description: `[img 1/front/look.JPG left]This is where
+  tEps play Super Smash Bros. after dinner every night.  The
+  room is painted a majestic purple, and it's required to remain
+  so because the Back Bay Architectual Commission, which cares
+  very much about what the Back Bay looks like from the street,
+  declared the purple paint to be "historic." There is a
+  [ob piano], some [ob boats], and a [ob 'rideable dinosaur']. You
+  can go [dir north] to the center room, and look [look south].`
+});
+make_known("The Front Room");
+add_floor("The Front Room", "carpet");
+
+world.direction_description.set("The Front Room", "south", `
+[img 1/front/look_s.JPG left]To the south, you see colorful curtains
+draping over the windows as well as a [ob 'rideable dinosaur'].`);
+
+def_obj("Super Smash Bros.", "thing", {
+  added_words: ["@bros", "bros", "@cartridge", "@smash"],
+  is_scenery : true,
+  no_take_msg: `That would be cruel to take the house's
+  cartridge for Super Smash Bros.`,
+  description: `This is a cartridge for the game Super Smash
+  Bros., which is used most nights after dinner.`
+}, {put_in: "The Front Room"});
+
+parser.action.understand("play [obj 'Super Smash Bros.']", parse => using("Super Smash Bros."));
+actions.before.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "Super Smash Bros.",
+  handle: () => {}
+});
+actions.report.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "Super Smash Bros.",
+  handle: function () {
+    out.write(`You turn on the N64 console, and a couple of tEps
+    immediately appear to join you to play Super Smash Bros.  They beat you with
+    their incredibly high-speed reflexes.  Maybe you'll do better next
+    time.`);
+  }
+});
+
+def_obj("vlca", "thing", {
+  printed_name: "The VLCA",
+  proper_named: true,
+  added_words: ["very", "large", "capacitor", "@array"],
+  description : `The Very Large Capacitor Array, commonly
+  known as the VLCA, consists of a good number of capacitors in
+  parallel with two copper pipes at the ends, such that when
+  another pipe with an empty soda can is placed
+  across them, it emits bright sparks and a popping sound as the
+  capacitors discharge.`
+}, {put_in: "The Front Room"});
+
+def_obj("rideable dinosaur", "supporter", {
+  enterable: true,
+  is_scenery: true,
+  no_take_msg: `It's too heavy to carry around.`,
+  description: `[img 1/front/dinosaur.JPG left]This is a
+  rideable dinosaur.  It has wheels on the bottom for you to
+  scoot around.`
+}, {put_in: "The Front Room"});
+
+parser.action.understand("ride/scoot [obj 'rideable dinosaur']", parse => using("rideable dinosaur"));
+parser.action.understand("ride/scoot/charge", parse => using("rideable dinosaur"));
+parser.action.understand("ride/scoot/charge !", parse => using("rideable dinosaur"));
+
+actions.try_before.add_method({
+  when: action => (action.verb === "using" && action.dobj === "rideable dinosaur"
+                   && world.location(world.actor) !== action.dobj),
+  handle: function (action) {
+    actions.do_first(entering(action.dobj), {silently: true});
+  }
+});
+actions.before.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "rideable dinosaur",
+  handle: function (action) {
+    if (world.location(world.actor) !== action.dobj) {
+      throw new abort_action("You need to be on the rideable dinosaur to ride it.");
+    }
+  }
+});
+actions.report.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "rideable dinosaur",
+  handle: function (action) {
+    out.write(`You take the rideable dinosaur out for a spin.
+    The wind blows through your hair and you feel alive.  With
+    spirits rejuvenated, you park the dinosaur back where you found it.`);
+  }
+});
+
+def_obj("boats", "thing", {
+  words: ["@kayak", "@kayaks", "@boat", "@boats", "@canoe", "@canoes"],
+  is_scenery: true,
+  no_take_msg: `The boat is attached to the ceiling.`,
+  description: `[img 1/front/kayak.JPG left]People regularly take the kayak
+  and canoe out and ride them on the Charles River.`
+}, {put_in: "The Front Room"});
+
+def_obj("piano", "thing", {
+  added_words: ["bicycle", "@bell"],
+  is_scenery: true,
+  description: `[img 1/front/piano.JPG left]It's a piano that's surprisingly in tune,
+  considering how it isn't tuned so often.  It's used
+  frequently.  Sitting on the piano is the score for
+  Beethoven's Pathetique sonata, and affixed into the wood above the high C is a
+  bicycle bell.`
+}, {put_in: "The Front Room"});
+
+parser.action.understand("play [obj piano]", parse => using("piano"));
+parser.action.understand("ring bell", parse => using("piano"));
+
+actions.before.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "piano",
+  handle: () => {}
+});
+actions.report.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "piano",
+  handle: function () {
+    out.write(`Despite its intonation, you play a
+    beautiful melody on the piano. At the big cadence at the end of
+    the passage, you strengthen the resolution with a quick ring of the bicycle bell.`);
+  }
+});
+
 
 /********************/
 /*** Second floor ***/
