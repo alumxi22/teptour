@@ -120,6 +120,65 @@ all_are_mistakes(
    "but you said [text x]"],
   "Sometimes we make mistakes.");
 
+//// Floors
+
+// Since Avril seems to really want to be able to sit on floors.
+
+def_kind("floor", "supporter");
+world.is_scenery.add_method({
+  when: x => world.is_a(x, "floor"),
+  handle: x => true
+});
+world.enterable.add_method({
+  when: x => world.is_a(x, "floor"),
+  handle: x => true
+});
+
+actions.report.add_method({
+  when: action => action.verb === "entering" && world.is_a(action.dobj, "floor"),
+  handle: function (action) {
+    out.write("{Bobs} {have} sat down on "); out.the(action.dobj); out.write(".");
+  }
+});
+
+var floor_templates = {
+  "wood": {
+    words: ["wood", "@floor"],
+    description: `It's a gorgeous old wood floor that has
+    possibly been refinished recently.`
+  },
+  "carpet": {
+    name: "carpet",
+    words: ["carpet", "@carpet", "@floor"],
+    description: `The floor is covered in a fine-knit
+    commercial carpet.  Luckily it's a dark blue color,
+    otherwise it wouldn't seem nearly as clean.`
+  },
+  "sidewalk": {
+    name: "sidewalk",
+    description: `It's a standard concrete sidewalk.  Doubtless
+    you've seen one of these before.`
+  },
+  "tile": {
+    name: "tile floor",
+    description : `It's a floor made of square tiles which are a
+    foot to the side.`
+  }
+};
+
+var FLOOR_COUNTER = 0;
+function add_floor(location, template, name=null) {
+  if (name === null) {
+    name = ":unique floor: " + (++FLOOR_COUNTER);
+  }
+  if (typeof template === "string") {
+    template = floor_templates[template];
+  }
+  def_obj(name, "floor", Object.assign({name: "floor"}, template));
+  world.put_in(name, location);
+}
+
+
 ///
 /// The player
 ///
@@ -225,6 +284,8 @@ def_obj("253 Commonwealth Ave", "room", {
   street, [look up] at tEp, and [look south] toward the mall.`
 });
 
+add_floor("253 Commonwealth Ave", "sidewalk");
+
 world.direction_description.set("253 Commonwealth Ave", "west", `
 [img 1/253/look_w.JPG left]Toward the west, you see that the
 [ob 'purple tree'] is the only purple tree along the block.`);
@@ -293,11 +354,6 @@ world.no_lock_msg.set("front door", "no_open", `It's locked. Perhaps you
 should ring [the doorbell].`);
 world.connect_rooms("253 Commonwealth Ave", "north", "The Foyer", {via: "front door"});
 
-world.step_turn.add_method({ /* Close the door behind you. */
-  when: () => world.containing_room(world.actor) === "253 Commonwealth Ave",
-  handle: function () { world.is_open.set("front door", false); this.next(); }
-});
-
 def_obj("doorbell", "thing", {
   added_words: ["door", "@bell"],
   is_scenery: true,
@@ -358,16 +414,115 @@ def_obj("front steps", "supporter", {
   They lead up to [the 'front door'] and into tEp.`
 }, {put_in: "253 Commonwealth Ave"});
 
+/*******************/
+/*** First floor ***/
+/*******************/
+
 ///
 /// The Foyer
 ///
 
 def_obj("The Foyer", "room", {
-/*  description : `[img 1/foyer/look.jpg left]This is the foyer.
+  description : `[img 1/foyer/look.jpg left]This is the foyer.
   You can keep going [dir northwest] to the center room.  You
-  can see [a subwoofer], [a desk], [a 'colorful lights'], [the mailboxes],
-  and [a 'large mirror'].`*/
+  can see [a subwoofer], [ob 'front desk' 'a desk'],
+  [ob 'foyer lights' 'colorful lights'], [the mailboxes],
+  and [ob 'foyer mirror' 'large mirror'].`
 });
+add_floor("The Foyer", "tile");
+
+world.step_turn.add_method({ /* Close the door behind you. */
+  when: () => world.containing_room(world.actor) === "253 Commonwealth Ave",
+  handle: function () {
+    if (world.is_open("front door")) {
+      out.write("On your way out, the front door closes behind you.[para]");
+      world.is_open.set("front door", false);
+    }
+    this.next();
+  }
+});
+
+def_obj("subwoofer", "thing", {
+  is_scenery: true,
+  no_take_msg: "The subwoofer is too heavy to carry with you.",
+  description: `[img 1/foyer/subwoofer.JPG left]This is the
+  combination subwoofer and frequency generator which emits the
+  32 Hz buzz for the doorbell.`
+}, {put_in: "The Foyer"});
+def_obj("front desk", "thing", {
+  is_scenery: true,
+  description: `[img 1/foyer/desk.JPG left]This is the front
+  desk, upon which is a cheap computer which people use to check
+  bus schedules or show people YouTube videos.`
+}, {put_in: "The Foyer"});
+def_obj("key box", "thing", {
+  is_scenery: true,
+  description: `[img 1/foyer/keybox.JPG left]This box of car
+  keys has a place for every parking spot out back. It helps
+  prevent people from getting boxed in.`
+}, {put_in: "The Foyer"});
+def_obj("foyer lights", "thing", {
+  words: ["colorful", "color", "changing", "color-changing", "@lights"],
+  is_scenery: true,
+  description: `[img 1/foyer/lights.jpg left]These are the
+  color-changing lights you could see from out front.`
+}, {put_in: "The Foyer"});
+def_obj("mailboxes", "container", {
+  words: ["mail", "@box", "@boxes", "@mailboxes", "@mailbox"],
+  is_scenery: true,
+  description: `[img 1/foyer/mailboxes.JPG left]These boxes
+  hold mail of current tEps, past tEps, and summer renters.
+  Some of the slots are quite stuffed.`,
+  no_take_msg: "That mail is not yours."
+}, {put_in: "The Foyer"});
+all_are_mistakes(["steal [obj mailboxes]"], `Virtual house tour or not, that is a felony.`);
+
+def_obj("foyer mirror", "thing", {
+  name: "large mirror",
+  is_scenery: true,
+  description: `[img 1/foyer/mirror.JPG left]This is one of
+  the two large mirrors in the foyer.  In it you can see the
+  other one.`
+}, {put_in: "The Foyer"});
+def_obj("Op box", "supporter", {
+  printed_name: "the Op box",
+  added_words: ["out", "@outbox"],
+  enterable: true,
+  proper_named: true,
+  description : `[img 1/foyer/outbox.jpg left]The Op box is
+  named after Charles Oppenheimer, the first Captain tEp.  It is
+  the platform upon which the captain stands to greet his
+  numerous fans.  Because it sits outside of tEp during rush, it
+  is also known as the outbox.`,
+  locale_description : `From atop the Op box, you feel a
+  powerful urge to find purple spandex tights and put them on.` // TODO have tights somewhere
+}, {put_in: "The Foyer"});
+
+
+/********************/
+/*** Second floor ***/
+/********************/
+
+/*******************/
+/*** Third floor ***/
+/*******************/
+
+/********************/
+/*** Fourth floor ***/
+/********************/
+
+/*******************/
+/*** Fifth floor ***/
+/*******************/
+
+/****************/
+/*** The Roof ***/
+/****************/
+
+
+/****************/
+/*** Basement ***/
+/****************/
 
 
 ///

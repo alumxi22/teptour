@@ -187,17 +187,6 @@ parser.understand("climb/go up/down [something x]", Climbing(actor, X))
 ### Floors
 ###
 
-# Since Avril seems to really want to be able to sit on floors
-
-world.add_relation(KindOf("floor", "supporter"))
-world[Scenery(X) <= IsA(X, "floor")] = True
-world[IsEnterable(X) <= IsA(X, "floor")] = True
-
-@report(Entering(actor, X) <= IsA(X, "floor"))
-def _report_entering_floor(actor, x, ctxt) :
-    ctxt.write(str_with_objs("{Bob|cap} {has} sat down on [the $x].", x=x))
-    raise ActionHandled()
-
 class Sitting(BasicAction) :
     verb = "sit"
     gerund = "sitting"
@@ -268,46 +257,6 @@ def before_sitting_find_floor(actor, ctxt) :
             raise DoInstead(Entering(actor, floor), suppress_message=True)
     raise AbortAction("{Bob|cap} {doesn't} want to sit down here.")
 
-FLOOR_COUNTER = 0
-
-def add_floor(world, location, template, name=None) :
-    global FLOOR_COUNTER
-    if name is None :
-        name = ":unique floor: " + str(FLOOR_COUNTER)
-        FLOOR_COUNTER += 1
-    if isinstance(template, str) :
-        template = floor_templates[template]
-    properties = {
-        Name : "floor",
-        }
-    properties.update(template)
-    quickdef(world, name, "floor", properties)
-    world.activity.put_in(name, location)
-
-floor_templates = {
-    "wood" : {
-        Words : ["wood", "@floor"],
-        Description : """It's a gorgeous old wood floor that has
-        possibly been refinished recently."""
-        }
-    , "carpet" : {
-        Name : "carpet",
-        Words : ["carpet", "@carpet", "@floor"],
-        Description : """The floor is covered in a fine-knit
-        commercial carpet.  Luckily it's a dark blue color,
-        otherwise it wouldn't seem nearly as clean."""
-        }
-    , "sidewalk" : {
-        Name : "sidewalk",
-        Description : """It's a standard concrete sidewalk.  Doubtless
-        you've seen one of these before."""
-        }
-    , "tile" : {
-        Name : "tile floor",
-        Description : """It's a floor made of square tiles which are a
-        foot to the side."""
-        }
-    }
 
 ###
 ### Finding notable objects
@@ -904,8 +853,6 @@ quickdef(world, "The Deep Cave", "room", {
 ### In front of tep (253 Commonwealth Ave)
 ###
 
-add_floor(world, "253 Commonwealth Ave", "sidewalk")
-
 instead_of(actionsystem,
            LookingToward(actor, "north") <= PEquals("253 Commonwealth Ave", ContainingRoom(actor)),
            Looking(actor))
@@ -942,14 +889,6 @@ instead_of(actionsystem,
 ### The Foyer
 ###
 
-quickdef(world, "The Foyer", "room", {
-        Visited : True,
-        Description : """[img 1/foyer/look.jpg left]This is the foyer.
-        You can keep going [dir northwest] to the center room.  You
-        can see a [ob subwoofer], a [ob desk], some [ob <colorful
-        lights>], the [ob mailboxes], and a [ob <large mirror>]."""
-        })
-add_floor(world, "The Foyer", "tile")
 world.activity.connect_rooms("The Foyer", "northwest", "The Center Room")
 
 instead_of(actionsystem,
@@ -973,68 +912,6 @@ instead_of(actionsystem,
            LookingToward(actor, "east") <= PEquals("The Foyer", ContainingRoom(actor)),
            Examining(actor, "foyer mirror"))
 
-@when(Going(actor, "south") <= PEquals("The Foyer", Location(actor)))
-def when_going_to_253_from_foyer(actor, ctxt) :
-    ctxt.world[IsOpen("front door")] = False
-    ctxt.write("As you leave, the front door closes behind you.")
-
-
-quickdef(world, "subwoofer", "thing", {
-        Scenery : True,
-        NoTakeMessage : "The subwoofer is too heavy to carry with you.",
-        Description : """[img 1/foyer/subwoofer.JPG left]This is the
-        combination subwoofer and frequency generator which emits the
-        32 Hz buzz for the doorbell."""
-        }, put_in="The Foyer")
-quickdef(world, "front desk", "thing", {
-        Scenery : True,
-        Description : """[img 1/foyer/desk.JPG left]This is the front
-        desk, upon which is a cheap computer which people use to check
-        bus schedules or show people YouTube videos."""
-        }, put_in="The Foyer")
-quickdef(world, "key box", "thing", {
-        Scenery : True,
-        Description : """[img 1/foyer/keybox.JPG left]This box of car
-        keys has a place for every parking spot out back. It helps
-        prevent people from getting boxed in."""
-        }, put_in="The Foyer")
-quickdef(world, "foyer lights", "thing", {
-        Words : ["colorful", "color", "changing", "color-changing", "@lights"],
-        Scenery : True,
-        Description : """[img 1/foyer/lights.jpg left]These are the
-        color-changing lights you could see from out front."""
-        }, put_in="The Foyer")
-quickdef(world, "mailboxes", "container", {
-        Words : ["mail", "@box", "@boxes", "@mailboxes", "@mailbox"],
-        Scenery : True,
-        Description : """[img 1/foyer/mailboxes.JPG left]These boxes
-        hold mail of current tEps, past tEps, and summer renters.
-        Some of the slots are quite stuffed.""",
-        NoTakeMessage : "That mail is not yours."
-        }, put_in="The Foyer")
-parser.understand("steal [object mailboxes]", MakingMistake(actor, """Virtual
-house tour or not, that is a felony."""))
-
-quickdef(world, "foyer mirror", "thing", {
-        Name : "large mirror",
-        Scenery : True,
-        Description : """[img 1/foyer/mirror.JPG left]This is one of
-        the two large mirrors in the foyer.  In it you can see the
-        other one."""
-        }, put_in="The Foyer")
-quickdef(world, "Op box", "supporter", {
-        PrintedName : "the Op box",
-        AddedWords : ["out", "@outbox"],
-        IsEnterable : True,
-        ProperNamed : True,
-        Description : """[img 1/foyer/outbox.jpg left]The Op box is
-        named after Charles Oppenheimer, the first Captain tEp.  It is
-        the platform upon which the captain stands to greet his
-        numerous fans.  Because it sits outside of tEp during rush, it
-        is also known as the outbox.""",
-        LocaleDescription : """From atop the Op box, you feel a
-        powerful urge to find purple spandex tights and put them on."""
-        }, put_in="The Foyer")
 
 ###
 ### Center Room
