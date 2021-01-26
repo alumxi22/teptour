@@ -426,10 +426,13 @@ def_obj("The Foyer", "room", {
   description : `[img 1/foyer/look.jpg left]This is the foyer.
   You can keep going [dir northwest] to the center room.  You
   can see [a subwoofer], [ob 'front desk' 'a desk'],
-  [ob 'foyer lights' 'colorful lights'], [the mailboxes],
+  [ob 'colorful lights'], [the mailboxes],
   and [ob 'foyer mirror' 'large mirror'].`
 });
+make_known("The Foyer");
 add_floor("The Foyer", "tile");
+
+world.connect_rooms("The Foyer", "northwest", "The Center Room");
 
 world.step_turn.add_method({ /* Close the door behind you. */
   when: () => world.containing_room(world.actor) === "253 Commonwealth Ave",
@@ -446,13 +449,13 @@ def_obj("subwoofer", "thing", {
   is_scenery: true,
   no_take_msg: "The subwoofer is too heavy to carry with you.",
   description: `[img 1/foyer/subwoofer.JPG left]This is the
-  combination subwoofer and frequency generator which emits the
+  combination subwoofer and frequency generator that emits the
   32 Hz buzz for the doorbell.`
 }, {put_in: "The Foyer"});
 def_obj("front desk", "thing", {
   is_scenery: true,
   description: `[img 1/foyer/desk.JPG left]This is the front
-  desk, upon which is a cheap computer which people use to check
+  desk, upon which is a cheap computer that people use to check
   bus schedules or show people YouTube videos.`
 }, {put_in: "The Foyer"});
 def_obj("key box", "thing", {
@@ -461,7 +464,7 @@ def_obj("key box", "thing", {
   keys has a place for every parking spot out back. It helps
   prevent people from getting boxed in.`
 }, {put_in: "The Foyer"});
-def_obj("foyer lights", "thing", {
+def_obj("colorful lights", "thing", {
   words: ["colorful", "color", "changing", "color-changing", "@lights"],
   is_scenery: true,
   description: `[img 1/foyer/lights.jpg left]These are the
@@ -498,22 +501,223 @@ def_obj("Op box", "supporter", {
   powerful urge to find purple spandex tights and put them on.` // TODO have tights somewhere
 }, {put_in: "The Foyer"});
 
+///
+/// Center Room
+///
+
+def_obj("The Center Room", "room", {
+  description: `[img 1/center/look.JPG left]This is the
+  center room, which is a common area at tEp.  Around you are
+  composite photos from the past decade, and [a chandelier]
+  that seems like it has seen better days.  Looking up, you can
+  see the [ob 'center stairwell'].
+
+  [para]You can go [dir south] to the front room, [dir north]
+  to the dining room, [dir upstairs] to the second floor, [dir
+  northeast] to the back stairwell, or [dir southeast] back to
+  the foyer, and you can look [look north], [look south],
+  [look east], [look west], and [look up].`
+});
+add_floor("The Center Room", "carpet");
+make_known("The Center Room");
+
+//world.connect_rooms("The Center Room", "up", "The Second Landing");
+//world.connect_rooms("The Center Room", "south", "The Front Room");
+//world.connect_rooms("The Center Room", "north", "The Dining Room");
+//world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
+
+world.direction_description.set("The Center Room", "north", `
+[img 1/center/look_n.JPG left]You see [the 'comfy couch'],
+[the king], [the 'foosball table'], and [the 'bulletin board'].  You
+can go [dir north] into the dining room and [dir northeast] into the
+back stairwell.`);
+world.direction_description.set("The Center Room", "east", `
+[img 1/center/look_e.JPG left]You can barely make out
+[a 'foosball table'].  You can go [dir upstairs] to the second landing and
+[dir southeast] into the foyer.`);
+world.direction_description.set("The Center Room", "south", `
+[img 1/center/look_s.JPG left]On the wall is [a 'zombie protection box'].
+You can go [dir southeast] into the foyer and [dir south] into
+the front room.`);
+world.direction_description.set("The Center Room", "west", `
+[img 1/center/look_w.JPG left]You can see [the 'comfy couch'] and
+[the mantle].`);
+world.direction_description.set("The Center Room", "up", `
+[img 1/center/stairwell.JPG left]Looking up, you see the center
+stairwell, which is three flights of stairs capped by a skylight.  The
+color-changing lights illuminate it dramatically.`);
+
+def_obj("bulletin board", "thing", {
+  is_scenery: true,
+  description : `[img 1/center/bulletin.JPG left]This is a
+  bulletin board on which tEps affix funny things they found in
+  the mail, cute things prefrosh wrote, pictures, postcards from
+  drooling alumni, and other miscellaneous artifacts.`
+  // TODO every time you look you see a description of an interesting thing on the board
+}, {put_in: "The Center Room"});
+def_obj("comfy couch", "supporter", {
+  is_scenery: true,
+  enterable: true,
+  description: `[img 1/center/couch.JPG left]This is perhaps
+  the comfiest couch in all of existence.  A neighbor came by
+  one day and said, "hey, you're a fraternity, so you probably
+  like couches.  I have a couch."  With his help, we then
+  brought it to its present location.  True couch aficionados
+  make a pilgrimage to our center room at least twice a year.`
+}, {put_in: "The Center Room"});
+
+def_obj("foosball table", "container", {
+  added_words: ["foos", "fooz"],
+  is_scenery: true,
+  openable: true,
+  suppress_content_description: (x) => !world.is_open(x),
+  description : `[img 1/center/foosball.JPG left]This is a
+  commercial-quality foosball table which is covered with flecks
+  of colorful paint that, while making it look cool under color
+  changing lights, make it hard to play foosball.  Alumni have
+  looked at it and remininsced to one another, "remember how
+  much the foosball table cost us when we got it?"`
+}, {put_in: "The Center Room"});
+def_obj("human skull", "thing", {
+  description : `This is a human skull, but it's missing its
+  jaw from when some Nokia engineers were playing with it at
+  cocoa one Monday night.  It's unknown why there is such a
+  thing in the house.`
+}, {put_in: "foosball table"});
+
+parser.action.understand("play [obj 'foosball table']", action => using("foosball table"));
+actions.before.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
+  handle: () => {}
+});
+actions.report.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
+  handle: function () {
+    out.write(`"Click! Click!" go the volleys as the ball skids
+    across the table of the foosball table, with some non-negligible
+    interference from all the colorful paint.  It's a close match, but
+    your dexterity at the table is impressive!  The game reaches
+    sudden death, and your feet playing yellow narrowly beat your
+    hands playing black.  The handshake is confusing, and your hands
+    and feet decide to make it brief.  Good show.`);
+  }
+});
+
+
+def_obj("king", "thing", {
+  printed_name : "The King",
+  proper_named : true,
+  is_scenery : true,
+  no_take_msg: `That's always been there.  You shouldn't move it.`, // TODO puzzle to move it?
+  description: `[img 1/center/king.JPG left]It's a portrait
+  of The King (that is, Elvis Presley to you younger folk on the
+  tour).  It's always been here.`
+}, {put_in: "The Center Room"});
+def_obj("mantle", "supporter", {
+  is_scenery: true,
+  description : `[img 1/center/mantle.JPG left]The mantle
+  contains random things like awards for our GPA, plaques for
+  people who won scholarships ten years ago, and a copy of the
+  MIT yearbook from the 1970s.`
+}, {put_in: "The Center Room"});
+def_obj("zombie protection box", "thing", {
+  is_scenery: true,
+  description: `[img 1/center/zombie.JPG left]This was
+  recently installed to bring tEp up to zombie code.`
+}, {put_in: "The Center Room"});
+
+def_obj("chandelier", "thing", {
+  is_scenery: true,
+  description: `[img 1/center/chandelier.JPG left]This
+  chandelier, which is affixed to the center of the ceiling, has
+  clearly been [ask eit eited] many times over the years by the
+  game of [ask stupidball].  One time, during one particularly
+  rousing game, all of the sconces exploded simultaneously in a shower of
+  glittering glass.  It was really a sight to see.`
+}, {put_in: "The Center Room"});
+
+def_obj("ex_ball", "supporter", {
+  name: "large green exercise ball",
+  words: ["big", "large", "green", "exercise", "@ball", "@stupidball"],
+  enterable: true,
+  description: `[img 1/center/stupidball.jpg]This is a large
+  green exercise ball that is used to play [ask stupidball].`
+}, {put_in: "The Center Room"});
+
+actions.report.add_method({
+  when: ({verb,dobj}) => verb === "dropping" && dobj === "ex_ball",
+  handle: function (action) {
+    out.write("It bounces a few times before it settles down.");
+  }
+});
+world.global.set("ex_ball jump", 0);
+actions.carry_out.add_method({
+  when: action => action.verb === "jumping" && world.location(world.actor) === "ex_ball",
+  handle: function (action) {
+    var i = world.global("ex_ball jump");
+    world.global.set("ex_ball jump", i + 1);
+    if (i % 2 === 0) {
+      world.put_in(world.actor, world.parent_enterable("ex_ball"));
+      action.jump_from = "ex_ball";
+    }
+  }
+});
+actions.report.add_method({
+  when: action => action.verb === "jumping",
+  handle: function (action) {
+    out.write(`You hop around on the ball awhile, and you surprise
+    yourself with your skill.`);
+  }
+});
+actions.report.add_method({
+  when: action => action.verb === "jumping" && action.jump_from === "ex_ball",
+  handle: function (action) {
+    out.write("You fly through the air with the greatest of whee's before tumbling to the ground.");
+  }
+});
+
+///
+/// Center stairwell region
+///
+
+// Region that contains the center stairwell
+def_obj("r_center_stairs", "region", {
+  name: "center stairwell region"
+});
+world.put_in("The Second Landing", "r_center_stairs");
+world.put_in("The Third Landing", "r_center_stairs");
+world.put_in("The Fourth Landing", "r_center_stairs");
+world.put_in("51", "r_center_stairs");
+
+def_obj("center stairwell", "backdrop", {
+  backdrop_locations: ["The Center Room", "r_center_stairs"]
+});
 
 /********************/
 /*** Second floor ***/
 /********************/
 
+def_obj("The Second Landing", "room");
+
 /*******************/
 /*** Third floor ***/
 /*******************/
+
+def_obj("The Third Landing", "room");
 
 /********************/
 /*** Fourth floor ***/
 /********************/
 
+def_obj("The Fourth Landing", "room");
+
 /*******************/
 /*** Fifth floor ***/
 /*******************/
+
+def_obj("The Fifth Landing", "room");
+
+def_obj("51", "room");
 
 /****************/
 /*** The Roof ***/
