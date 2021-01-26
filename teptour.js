@@ -76,7 +76,7 @@ all_are_mistakes(["i wanna peldge"], `This is
 virtual tEp.  If you have a bid and you're wanting to peldge, then say
 the magic words where real tEp can hear you!`);
 all_are_mistakes(["pray/amen"], `A chorus of
-angelic voices augment that of the chaplain, who you suddenly find
+angelic voices augment that of the chaplain, whom you find suddenly
 next to you.  "In the name of Honig, Amen," he ends.  As you turn to
 thank him for such a beautiful prayer, you see he has already slipped
 away.`);
@@ -286,9 +286,17 @@ def_obj("front door", "door", {
   lockable: true,
   description: `[img 1/253/doors.JPG left]It's a big, old
   door.  Through the glass, you can make out some blinking LED lights
-  hanging from the stairwell.`
+  hanging from the stairwell.`,
+  is_locked: () => world.containing_room(world.actor) === "253 Commonwealth Ave"
 });
+world.no_lock_msg.set("front door", "no_open", `It's locked. Perhaps you
+should ring [the doorbell].`);
 world.connect_rooms("253 Commonwealth Ave", "north", "The Foyer", {via: "front door"});
+
+world.step_turn.add_method({ /* Close the door behind you. */
+  when: () => world.containing_room(world.actor) === "253 Commonwealth Ave",
+  handle: function () { world.is_open.set("front door", false); this.next(); }
+});
 
 def_obj("doorbell", "thing", {
   added_words: ["door", "@bell"],
@@ -297,13 +305,7 @@ def_obj("doorbell", "thing", {
   black button, and you almost didn't notice it.  The FedEx guy
   has said he enjoys this doorbell.`
 }, {put_in: "253 Commonwealth Ave"});
-parser.action.understand("ring/push [obj doorbell]", parse => {
-  if (world.containing_room(world.actor) === "253 Commonwealth Ave") {
-    return using("doorbell");
-  } else {
-    return undefined;
-  }
-});
+parser.action.understand("ring/push [obj doorbell]", parse => using("doorbell"));
 parser.action.understand("knock", parse => {
   if (world.containing_room(world.actor) === "253 Commonwealth Ave") {
     return making_mistake(`You knock on the front door, but no one hears you.
@@ -361,10 +363,10 @@ def_obj("front steps", "supporter", {
 ///
 
 def_obj("The Foyer", "room", {
-  description : `[img 1/foyer/look.jpg left]This is the foyer.
+/*  description : `[img 1/foyer/look.jpg left]This is the foyer.
   You can keep going [dir northwest] to the center room.  You
   can see [a subwoofer], [a desk], [a 'colorful lights'], [the mailboxes],
-  and [a 'large mirror'].`
+  and [a 'large mirror'].`*/
 });
 
 
