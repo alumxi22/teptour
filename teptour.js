@@ -524,7 +524,7 @@ make_known("The Center Room");
 //world.connect_rooms("The Center Room", "up", "The Second Landing");
 world.connect_rooms("The Center Room", "south", "The Front Room");
 world.connect_rooms("The Center Room", "north", "The Dining Room");
-//world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
+world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
 
 world.direction_description.set("The Center Room", "north", `
 [img 1/center/look_n.JPG left]You see [the 'comfy couch'],
@@ -839,7 +839,7 @@ def_obj("The Dining Room", "room", {
 });
 make_known("The Dining Room");
 add_floor("The Dining Room", "wood");
-//connect_rooms("The Dining Room", "east", "The Upstairs Kitchen")
+world.connect_rooms("The Dining Room", "east", "The Upstairs Kitchen");
 
 world.direction_description.set("The Dining Room", "north", `
 [img 1/dining/look_n.JPG left]Through the windows to the north, you
@@ -892,6 +892,83 @@ def_obj("Tepilepsy", "thing", {
   relativistic-like distortions of a nearby webcam.  You should
   definitely ask a for a demonstration at real-tEp\u2122.`
 }, {put_in: "The Dining Room"});
+
+///
+/// First floor of back stairwell
+///
+
+def_obj("back_stairwell_1", "room", {
+  name: "First Floor of the Back Stairwell",
+  description : `[img 1/bstairs/look.jpg left]You are in the
+  back stairwell.  You can go [dir upstairs] to the second
+  floor, [dir southwest] to the center room, [dir north] to the
+  upstairs kitchen, or [dir downstairs] into the basement. You
+  can also look [look up], [look down], [look north], and [look west].`
+});
+make_known("back_stairwell_1");
+
+world.direction_description.set("back_stairwell_1", "up", `
+[img 1/bstairs/look_u.JPG left]You can see the patterns painted on the
+walls as well as the stairs that can bring you [dir upstairs].`);
+world.direction_description.set("back_stairwell_1", "down", `
+[img 1/bstairs/look_d.JPG left]You see the stairs which can bring you
+[dir downstairs].`);
+world.direction_description.set("back_stairwell_1", "north", `
+[img 1/bstairs/look_n.jpg left]To the [dir north], you see the
+upstairs kitchen.  The nearby wall has been repaired numerous times
+due to the fact that it's always in the way.`);
+world.direction_description.set("back_stairwell_1", "west", `
+[img 1/bstairs/look_w.JPG left]To the [dir west], you see part of the
+center room.`);
+
+//world.connect_rooms("back_stairwell_1", "down", "Basement")
+world.connect_rooms("back_stairwell_1", "north", "The Upstairs Kitchen");
+//world.connect_rooms("back_stairwell_1", "up", "back_stairwell_2")
+
+///
+/// The upstairs kitchen
+///
+
+def_obj("The Upstairs Kitchen", "room", {
+  description: `[img 1/kitchen/look.JPG left]This is the
+  upstairs kitchen.  It is the home of [ob Hobart].  To the
+  [dir west] is the dining room, and to the [dir south] is the back
+  stairwell, and you can look [look north] and [look west].`
+});
+make_known("The Upstairs Kitchen");
+
+world.direction_description.set("The Upstairs Kitchen", "north", `
+[img 1/kitchen/look_n.JPG left]Through the window in the kitchen, you
+can see the back lot.`);
+world.direction_description.set("The Upstairs Kitchen", "west", `
+[img 1/kitchen/look_w.JPG left]On the west wall of the kitchen are all
+of the dishes at tEp (minus the ones people steal to their rooms).
+The categorization scheme is between bouncers (such as a
+[ask Bouncer]) and breakers (such as a tea cup).`);
+
+
+def_obj("Hobart", "container", {
+  proper_named: true,
+  is_scenery: true,
+  openable: true,
+  switchable: true,
+  description: `[img 1/kitchen/hobart.jpg left]Hobart is not
+  a dishwasher, as is explained in the [ask 'rules of tep'].  It
+  is a dish sanitizer.  He does a really good job at whatever he
+  does as long as food isn't still stuck to the dishes you ask
+  him to sanitize.`
+}, {put_in: "The Upstairs Kitchen"});
+
+// TODO: using hobart => switching hobart instead
+
+actions.before.add_method({
+  when: action => action.verb === "switching on" && action.dobj === "Hobart",
+  handle: function () {
+    throw new abort_action("Ohhh baby... Now that's sanitization.");
+  }
+});
+
+// TODO have some dirty dishes in the sink to clean; elsewhere someone wants a clean bouncer?
 
 
 /********************/
