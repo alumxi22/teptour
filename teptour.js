@@ -251,7 +251,7 @@ actions.before.add_method({
 });
 
 function eiting_with(x, y) {
-  return {verb: "eiting", dobj: x, iobj: y};
+  return {verb: "eiting with", dobj: x, iobj: y};
 }
 def_verb("eiting with", "eit", "eiting", "with");
 parser.action.understand("eit [something x] with [something y]",
@@ -946,6 +946,65 @@ actions.report.add_method({
   }
 });
 
+def_obj("broken chandelier", "thing", {
+  is_scenery: true,
+  description: `This chandelier, which is affixed to the
+  center of the ceiling, has been [ask eited], and now half of
+  the lights don't work any more.  Good job.`
+});
+def_obj("broken sconce", "thing", {
+  description: `It's half a sconce that fell from the
+  [ask eit eiting] of the [ob chandelier].`
+});
+
+actions.before.add_method({
+  when: action => action.verb === "eiting" && action.dobj === "chandelier",
+  handle: function (action) {
+    throw new abort_action(`The chandelier is too high up for you to eit.
+    Maybe there's something you could eit it with.`);
+  }
+});
+actions.before.add_method({
+  when: action => ((action.verb === "eiting" || action.verb === "eiting with")
+                   && action.dobj === "broken chandelier"),
+  handle: function (action) {
+    throw new abort_action(`That's already well-eited.`);
+  }
+});
+
+actions.before.add_method({
+  when: action => action.verb === "eiting with" && action.dobj === "chandelier",
+  handle: function (action) {
+    if (action.iobj !== "ex_ball") {
+      throw new abort_action(`Experience tells me that the exercise ball
+      would be better for that.`);
+    }
+    // otherwise ok
+  }
+});
+
+actions.carry_out.add_method({
+  when: action => action.verb === "eiting with" && action.dobj === "chandelier",
+  handle: function (action) {
+    world.remove_obj("chandelier");
+    world.put_in("broken chandelier", "The Center Room");
+    world.put_in("broken sconce", "The Center Room");
+    world.put_in(action.iobj, "The Center Room");
+  }
+});
+actions.report.add_method({
+  when: action => (action.verb === "eiting with" && action.dobj === "chandelier"
+                   && action.iobj === "ex_ball"),
+  handle: function (action) {
+    out.write(`Good plan. You kick the large green exercise ball with vim and
+    vigor straight into the chandelier.  Half the sconces explode on impact
+    in a showering display of broken glass, and the other half are damaged
+    when the chain breaks the chandelier's fall.  One of the sconces
+    tumbles out onto the floor.  There didn't need to be that much light in
+    this room anyway.`);
+  }
+});
+
 ///
 /// Center stairwell region
 ///
@@ -960,6 +1019,7 @@ world.put_in("The Fourth Landing", "r_center_stairs");
 world.put_in("51", "r_center_stairs");
 
 def_obj("center stairwell", "backdrop", {
+  added_words: ["@stairs"],
   backdrop_locations: ["The Center Room", "r_center_stairs"]
 });
 
@@ -980,6 +1040,57 @@ actions.report.add_method({
   }
 });
 
+// throwing things down
+
+parser.action.understand("drop/throw [something x] down/into [obj 'center stairwell']",
+                         parse => inserting_into(parse.x, "center stairwell"));
+
+actions.try_before.add_method({
+  when: action => action.verb === "inserting into" && action.iobj === "center stairwell",
+  handle: function (action) {
+    if (world.containing_room(world.actor) === "The Center Room") {
+      throw new abort_action(`{Bobs} {need} to go to a higher floor to
+      drop anything down the center stairwell.`);
+    } else if (action.dobj === world.actor) {
+      throw new abort_action(`The RA comes out of nowhere, preventing
+      {us}. "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
+      he says, "Don't die!"`);
+    } else if (action.dobj === "RA") {
+      throw new abort_action(`Sensing trouble, the RA appears, but sensing
+      {our} intention, he runs off and yells back, "remember the zeroth
+      [ask 'rules of tep' 'rule of tep']! Don't die!`);
+    } else {
+      this.next();
+    }
+  }
+});
+actions.before.add_method({
+  when: action => action.verb === "inserting into" && action.iobj === "center stairwell",
+  handle: function (action) { }
+});
+
+actions.carry_out.add_method({
+  when: action => action.verb === "inserting into" && action.iobj === "center stairwell",
+  handle: function (action) {
+    world.put_in(action.dobj, "The Center Room");
+  }
+});
+
+actions.report.add_method({
+  when: action => action.verb === "inserting into" && action.iobj === "center stairwell",
+  handle: function (action) {
+    out.write('"'); out.write(str_util.cap(world.name(action.dobj)));
+    out.write(` drop!!!" {we} {yell} as a warning. A moment later {we} {release} `);
+    out.write(world.definite_name(action.dobj));
+    out.write(` and send `);
+    out.write(world.subject_pronoun(action.dobj));
+    out.write(` on `);
+    out.write(world.possessive_pronoun(action.dobj));
+    out.write(` short journey down to the center room, where `);
+    out.write(world.subject_pronoun(action.dobj));
+    out.write(` bounces around and makes a large ruckus before finally settling down.`);
+  }
+});
 
 ///
 /// Front room
