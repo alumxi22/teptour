@@ -1058,95 +1058,7 @@ instead_of(actionsystem,
 ##
 ## The Closet in 22
 ##
-quickdef(world, "The Closet in 22", "room", {
-        Description : """[img 2/22closet/look.jpg left]It's a closet.
-        You can go [dir southeast] into 22."""
-        })
-world[DirectionDescription("The Closet in 22", "up")] = """
-[img 2/22closet/look_u.JPG left]Looking up, you can see a [ob ladder]
-to a room above this closet."""
-world[DirectionDescription("The Closet in 22", "east")] = """
-[img 2/22closet/look_e.jpg left]Looking to the east, you can see a
-dowel from the [ob ladder] which is going upward."""
 
-world.activity.connect_rooms("22", "northwest", "The Closet in 22")
-world.activity.connect_rooms("The Closet in 22", "up", "22_closet_ladder")
-world.activity.connect_rooms("22_closet_ladder", "up", "The Batcave")
-
-world[WhenGoMessage("The Closet in 22", "up")] = """With some
-difficulty, you climb the ladder into..."""
-
-quickdef(world, "22_closet_ladder", "door", {
-        Name : "ladder",
-        IsLadder : True,
-        Openable : False,
-        Reported : False,
-        Description : """It's a ladder made of widely spaced dowels
-        that goes between the closet in 22 and the Batcave up above."""
-        })
-
-###
-### The Batcave
-###
-quickdef(world, "The Batcave", "room", {
-        Description : """[img 2/batcave/look.JPG left]This is one of
-        the secret rooms of tEp.  It's a room built into the
-        interstitial space between the second and third floors by
-        Batman, a tEp from the 80s.  People have actually lived in
-        this room before.  The only things in here are a mattress, a
-        [ob sign], and some [ob shelves][if [get IsOpen
-        batcave_shelves]], which have been opened, revealing the
-        second front interstitial space to the [dir north][endif].
-        You can go [dir down] to the closet in 22 or [dir up] to the
-        closet in 32."""
-        })
-world.activity.connect_rooms("The Batcave", "up", "The Closet in 32")
-
-world[DirectionDescription("The Batcave", "up")] = """
-[img 2/batcave/look_u.JPG left]Looking up, you can see a hole in the
-ceiling you could squeeze through."""
-world[DirectionDescription("The Batcave", "down")] = """
-[img 2/batcave/look_d.JPG left]Looking down, you can see into the
-closet in 22."""
-
-world[WhenGoMessage("The Batcave", "up")] = """You squeeze through the
-hole in the floor and make your way to..."""
-world[WhenGoMessage("The Batcave", "down")] = """You carefully climb
-down the ladder into..."""
-
-quickdef(world, "batcave sign", "thing", {
-        Scenery : True,
-        Description : """[img 2/batcave/sign.JPG left]On the wall is
-        affixed a sign warning you of the low headroom in the
-        Batcave."""
-        }, put_in="The Batcave")
-
-
-# the complexity is because I want the door to be different in each
-# room, and there's no support for this in the engine, yet.
-quickdef(world, "batcave_shelves", "door", {
-        Name : """[if [== [get Location [current_actor_is]] <The
-        Batcave>]]small shelves[else]small panel[endif]""",
-        IndefiniteName : """[if [== [get Location [current_actor_is]]
-        <The Batcave>]]some small shelves[else]a small panel[endif]""",
-        Words : ["small", "wooden", "wood", "@shelves", "@panel"],
-        Reported : False,
-        Description : """[if [== [get Location [current_actor_is]]
-        <The Batcave>]][if [get IsOpen batcave_shelves]][img
-        2/batcave/shelves_open.JPG left][else][img
-        2/batcave/shelves_closed.JPG left][endif]These are small
-        shelves next to the [ob bed], and nothing is on them.  [if
-        [get IsOpen batcave_shelves]]The shelves are swung open,
-        revealing the second front interstitial space to the [dir
-        north][else]The shelves seem to be a bit wobbly.[endif]
-
-        [else][img 2/2fint/look_s.JPG left][if
-        [get IsOpen batcave_shelves]]The panel is open, revealing the
-        Batcave to the [dir south][else]It's a wooden panel that seems
-        partly attached to the wall.[endif][endif]"""
-        })
-world.activity.connect_rooms("The Batcave", "north", "batcave_shelves")
-world.activity.connect_rooms("batcave_shelves", "north", "2f_interstitial")
 
 ###
 ### 23
@@ -1173,50 +1085,16 @@ instead_of(actionsystem,
            LookingToward(actor, "up") <= PEquals("Second Front", ContainingRoom(actor)),
            Examining(actor, "2f_ceiling_door"))
 
-quickdef(world, "2f_ceiling_door", "door", {
-        Name : "ceiling access hatch",
-        IsLadder : True,
-        Reported : False,
-        Words : ["ceiling", "access", "@hatch", "@door", "@ladder"],
-        Description : """[if [get IsOpen 2f_ceiling_door]][img
-        2/2f/hatch_open.JPG left]It's an open ceiling access hatch,
-        revealing a ladder going from second front up to the
-        interstitial space above it.[else][img 2/2f/hatch_closed.JPG
-        left]It's a ceiling access hatch, and it's closed.[endif]"""
-        })
-world.activity.connect_rooms("Second Front", "up", "2f_ceiling_door")
-world.activity.connect_rooms("2f_ceiling_door", "up", "2f_interstitial")
 
 
 ###
 ### The Second Front Interstitial Space
 ###
-quickdef(world, "2f_interstitial", "room", {
-        Name : "The Second Front Interstitial Space",
-        Description : """[img 2/2fint/look.JPG left]This is the
-        interstitial space above second front.  You can go [dir down]
-        through the [ob <access hatch>] into second front.[if [get
-        IsOpen batcave_shelves]] Through the small wooden panel (which
-        is open), you can go [dir south] to the batcave.[endif]"""
-        })
+
 instead_of(actionsystem,
            LookingToward(actor, "south") <= PEquals("2f_interstitial", ContainingRoom(actor)),
            Examining(actor, "batcave_shelves"))
-world[DirectionDescription("2f_interstitial", "down")] = """[if [get
-IsOpen 2f_ceiling_door]][img 2/2fint/look_d.JPG left]Looking down, you
-see second front.[else]You see that [the 2f_ceiling_door] is
-closed.[endif]."""
 
-quickdef(world, "safe", "container", {
-        FixedInPlace : True,
-        Openable : True,
-        IsOpen : False,
-        Lockable : True,
-        IsLocked : True,
-        Description : """[img 2/2fint/safe.JPG left]It's a safe whose
-        combination has long been forgotten.  It was used to store the
-        house chocolate chips to prevent tEps from eating them."""
-        }, put_in="2f_interstitial")
 @before(Unlocking(actor, "safe"))
 def cant_unlock_safe_even_with_key(actor, ctxt) :
     raise AbortAction("""The combination for that safe has long been
@@ -1260,11 +1138,6 @@ instead_of(actionsystem,
            LookingToward(actor, "west") <= PEquals("The Fourth Landing", ContainingRoom(actor)),
            Looking(actor))
 
-
-
-###################
-### Fifth floor ###
-###################
 
 
 ################

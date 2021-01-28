@@ -1130,6 +1130,137 @@ world.no_switch_msg.set("emergency penguin", "no_switch_on", `The
 social conditions aren't particularly Arctic, and, besides, this is
 the kind of thing you want to see in Real Life.`);
 
+/// The closet in 22
+
+def_obj("The Closet in 22", "room", {
+  description: `[img 2/22closet/look.jpg left]It's a closet.
+  You can go [dir southeast] into 22.`
+});
+world.direction_description.set("The Closet in 22", "up", `
+[img 2/22closet/look_u.JPG left]Looking up, you can see
+[a 22_closet_ladder ladder] to a room above this closet.`);
+world.direction_description.set("The Closet in 22", "east", `
+[img 2/22closet/look_e.jpg left]Looking to the east, you can see a
+dowel from the [a 22_closet_ladder ladder] which is going upward.`);
+
+world.connect_rooms("22", "northwest", "The Closet in 22");
+world.connect_rooms("The Closet in 22", "up", "The Batcave", {via: "22_closet_ladder"});
+
+world.when_go_msg.set("The Closet in 22", "up", `With some
+difficulty, you climb the ladder into...`);
+
+def_obj("22_closet_ladder", "door", {
+  name: "ladder",
+  // TODO IsLadder : True,
+  openable: false,
+  reported: false,
+  description: `It's a ladder made of widely spaced dowels
+  that goes between the closet in 22 and the Batcave up above.`
+});
+
+///
+/// The Batcave
+///
+
+def_obj("The Batcave", "room", {
+  description: function () {
+    out.write(`[img 2/batcave/look.JPG left]This is one of
+    the secret rooms of tEp.  It's a room built into the
+    interstitial space between the second and third floors by
+    Batman, a tEp from the 80s.  People have actually lived in
+    this room before.  The only things in here are a mattress, a
+    [ob 'batcave sign' sign], and some [ob batcave_shelves shelves]`);
+    if (world.is_open("batcave_shelves")) {
+      out.write(`, which have been opened, revealing the second front
+      interstitial space to the [dir north]`);
+    }
+    out.write(`. You can go [dir up] to the closet in 32 and
+    [dir down] to the closet in 22.
+
+    [para]You can also look [look up] and [look down].`);
+  }
+});
+world.connect_rooms("The Batcave", "up", "The Closet in 32");
+
+world.direction_description.set("The Batcave", "up", `
+[img 2/batcave/look_u.JPG left]Looking up, you can see a hole in the
+ceiling you could squeeze through.`);
+world.direction_description.set("The Batcave", "down", `
+[img 2/batcave/look_d.JPG left]Looking down, you can see into the
+closet in 22.`);
+
+world.when_go_msg.set("The Batcave", "up", `You squeeze through the
+hole in the floor and make your way to...`);
+world.when_go_msg.set("The Batcave", "down", `You carefully climb
+down the ladder into...`);
+
+def_obj("batcave sign", "thing", {
+  is_scenery: true,
+  description: `[img 2/batcave/sign.JPG left]On the wall is
+  affixed a sign warning you of the low headroom in the Batcave.`
+}, {put_in: "The Batcave"});
+
+// The complexity here is because I want the door to be different in each
+// room, and there's no support for this in the engine.
+def_obj("batcave_shelves", "door", {
+  name: () => {
+    if (world.containing_room(world.actor) === "The Batcave") {
+      return "small shelves";
+    } else {
+      return "small panel";
+    }
+  },
+  indefinite_name: () => {
+    if (world.containing_room(world.actor) === "The Batcave") {
+      return "some small shelves";
+    } else {
+      return "a small panel";
+    }
+  },
+  words: ["small", "wooden", "wood", "@shelves", "@panel"],
+  reported: false,
+  description: (x) => {
+    if (world.containing_room(world.actor) === "The Batcave") {
+      if (world.is_open(x)) {
+        out.write("[img 2/batcave/shelves_open.JPG left]");
+      } else {
+        out.write("[img 2/batcave/shelves_closed.JPG left]");
+      }
+      out.write(`These are small shelves next to the bed,
+      and nothing is on them.`);
+      if (world.is_open(x)) {
+        out.write(` The shelves are swung open,
+        revealing the second front interstitial space to the [dir
+        north].`);
+      } else {
+        out.write(` The shelves seem to be a bit wobbly.`);
+      }
+    } else {
+      out.write("[img 2/2fint/look_s.JPG left]");
+      if (world.is_open(x)) {
+        out.write(`The panel is open, revealing the
+        Batcave to the [dir south].`);
+      } else {
+        out.write(`It's a wooden panel that seems
+        partly attached to the wall.`);
+      }
+    }
+  }
+});
+world.connect_rooms("The Batcave", "north", "2f_interstitial", {via: "batcave_shelves"});
+
+actions.before.add_method({
+  when: action => ((action.verb === "placing on" || action.verb === "inserting into")
+                   && action.iobj === "batcave_shelves"),
+  handle: function (action) {
+    if (world.containing_room(world.actor) === "The Batcave") {
+      throw new abort_action("These small shelves are more decorative.");
+    } else {
+      this.next();
+    }
+  }
+});
+
 ///
 /// 23
 ///
@@ -1277,6 +1408,64 @@ def_obj("Second Front", "room", {
   here. You can go [dir northeast] to the second landing.`
 });
 
+def_obj("2f_ceiling_door", "door", {
+  name: "ceiling access hatch",
+  // TODO IsLadder : True,
+  reported: false,
+  words: ["ceiling", "access", "@hatch", "@door", "@ladder"],
+  description: function (x) {
+    if (world.is_open(x)) {
+      out.write(`[img 2/2f/hatch_open.JPG left]It's an open ceiling
+      access hatch, revealing a ladder going from second front up to the
+      interstitial space above it.`);
+    } else {
+      out.write(`[img 2/2f/hatch_closed.JPG left]It's a ceiling
+      access hatch, and it's closed.`);
+    }
+  }
+});
+world.connect_rooms("Second Front", "up", "2f_interstitial", {via: "2f_ceiling_door"});
+
+///
+/// The Second Front Interstitial Space
+///
+
+def_obj("2f_interstitial", "room", {
+  name: "The Second Front Interstitial Space",
+  description: function () {
+    out.write(`[img 2/2fint/look.JPG left]This is the interstitial space
+    above second front.  You can go [dir down] through the
+    [ob 2f_ceiling_door 'access hatch'] into second front.`);
+    if (world.is_open('batcave_shelves')) {
+      out.write(` Through the small wooden panel (which
+      is open), you can go [dir south] to the batcave.`);
+    }
+  }
+});
+
+world.direction_description.add_method({
+  when: (room, dir) => room === "2f_interstitial" && dir === "down",
+  handle: function (room, dir) {
+    if (world.is_open("2f_ceiling_door")) {
+      out.write(`[img 2/2fint/look_d.JPG left]Looking down, you
+      see second front.`);
+    } else {
+      out.write(`You see that [the 2f_ceiling_door] is closed.`);
+    }
+  }
+});
+
+def_obj("safe", "container", {
+  fixed_in_place: true,
+  openable: true,
+  is_open: false,
+  lockable: true,
+  is_locked: true,
+  description: `[img 2/2fint/safe.JPG left]It's a safe whose
+  combination has long been forgotten.  It was used to store the
+  house chocolate chips to prevent tEps from eating them.`
+}, {put_in: "2f_interstitial"});
+
 
 ///
 /// Second Back
@@ -1409,7 +1598,6 @@ def_obj("The Closet in 32", "room", {
 });
 
 world.connect_rooms("32", "northwest", "The Closet in 32");
-//world.connect_rooms("The Closet in 32", "down", "The Batcave");
 
 world.direction_description.set("The Closet in 32", "down", `
 [img 3/32closet_l/look_d.JPG left]Looking down, you can see a
@@ -2065,7 +2253,7 @@ computer.`);
 def_obj("xiohazard door", "door", {
   reported: false,
   description: `[img 5/study/door.JPG left]The door between
-  the study room and the poopdeck is ornamented handsomly with a
+  the study room and the poopdeck is handsomly ornamented with a
   large xiohazard, the logo for tEp Xi chapter.`
 });
 
@@ -2090,10 +2278,10 @@ world.direction_description.set("The Poop Deck", "down", `
 Ave, below.`);
 world.direction_description.set("The Poop Deck", "south", `
 [img 5/poop/look_s.JPG left]To the south, you get a view of the Boston
-skyline.`);
+skyline, and below the treeline is the mall.`);
 world.direction_description.set("The Poop Deck", "north", `
 [img 5/poop/look_n.JPG left]You see [the 'xiohazard door'] into the
-study room to the [dir north].`);
+study room to the [dir north] and the stairs leading [dir up] to the roof.`);
 
 
 /****************/
@@ -2110,10 +2298,13 @@ make_known("The Roof");
 
 world.direction_description.set("The Roof", "north", `
 [img 5/roof/look_n.JPG left]You see the Green Building and the Great
-Dome across the river at MIT.`);
+Dome across the river at MIT.  It's nice having a little distance.`);
 world.direction_description.set("The Roof", "south", `
 [img 5/roof/look_s.JPG left]To the south is a view of the Boston
 skyline.`);
+world.direction_description.set("The Roof", "down", `
+[img 5/roof/look_d.JPG left]Down below, you see the alley the backlot, which
+has six parking spots and the rear entrance.`);
 
 world.no_go_msg.set("The Roof", "east", `It is not worth the wrath
 of the neighbors to go onto their roof.`);
