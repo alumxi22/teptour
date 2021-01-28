@@ -417,25 +417,11 @@ def describe_object_defilements(actor, o, ctxt) :
         if byyou :
             ctxt.write(byyou, actor=actor)
 
-####################
-### The basement ###
-####################
 
 
 ###################
 ### First floor ###
 ###################
-
-###
-### In front of tep (253 Commonwealth Ave)
-###
-
-
-
-instead_of(actionsystem,
-           Going(actor, "in") <= PEquals(ContainingRoom(actor), "253 Commonwealth Ave"),
-           Going(actor, "north"), suppress_message=True)
-
 
 
 ###
@@ -443,27 +429,6 @@ instead_of(actionsystem,
 ###
 
 
-
-instead_of(actionsystem,
-           Going(actor, "up") <= PEquals(ContainingRoom(actor), "The Foyer"),
-           GoingTo(actor, "The Second Landing"), suppress_message=True)
-
-instead_of(actionsystem,
-           Going(actor, "out") <= PEquals(ContainingRoom(actor), "The Foyer"),
-           Going(actor, "south"), suppress_message=True)
-instead_of(actionsystem,
-           Going(actor, "north") <= PEquals(ContainingRoom(actor), "The Foyer"),
-           Going(actor, "northwest"))
-
-instead_of(actionsystem,
-           LookingToward(actor, "north") <= PEquals("The Foyer", ContainingRoom(actor)),
-           Examining(actor, "foyer lights"))
-instead_of(actionsystem,
-           LookingToward(actor, "west") <= PEquals("The Foyer", ContainingRoom(actor)),
-           Examining(actor, "foyer mirror"))
-instead_of(actionsystem,
-           LookingToward(actor, "east") <= PEquals("The Foyer", ContainingRoom(actor)),
-           Examining(actor, "foyer mirror"))
 
 
 ###

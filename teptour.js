@@ -497,6 +497,23 @@ world.step_turn.add_method({ /* Close the door behind you. */
   }
 });
 
+instead_of(({verb, dir}) => (verb === "going" && dir === "up"
+                             && world.containing_room(world.actor) === "The Foyer"),
+           action => going_to("The Second Landing"), true);
+instead_of(({verb, dir}) => (verb === "going" && dir === "out"
+                             && world.containing_room(world.actor) === "The Foyer"),
+           action => going("south"), true);
+instead_of(({verb, dir}) => (verb === "going" && dir === "north"
+                             && world.containing_room(world.actor) === "The Foyer"),
+           action => going("northwest"), true);
+
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "north"
+                             && world.containing_room(world.actor) === "The Foyer"),
+           action => examining("colorful lights"));
+instead_of(({verb, dir}) => (verb === "looking toward" && (dir === "west" || dir === "east")
+                             && world.containing_room(world.actor) === "The Foyer"),
+           action => examining("foyer mirror"));
+
 def_obj("subwoofer", "thing", {
   is_scenery: true,
   no_take_msg: "The subwoofer is too heavy to carry with you.",
@@ -744,6 +761,12 @@ world.put_in("51", "r_center_stairs");
 def_obj("center stairwell", "backdrop", {
   backdrop_locations: ["The Center Room", "r_center_stairs"]
 });
+
+instead_of(({verb, dobj}) => verb === "examining" && dobj === "center stairwell",
+           action => looking_toward("down"), true);
+instead_of(({verb, dobj}) => (verb === "examining" && dobj === "center stairwell"
+                              && world.containing_room(world.actor) === "The Center Room"),
+           action => looking_toward("up"), true);
 
 ///
 /// Front room
