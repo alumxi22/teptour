@@ -53,6 +53,19 @@ HTML_abstract_builder.prototype.ask = function (topic, text) {
 /* See the section "Consulting Irving Q. Tep..." for how to add things
    that one can ask him about. */
 
+//// Extra directions
+
+add_direction_pair("northnorthwest", "southsoutheast");
+parser.direction.understand("northnorthwest/nnw", parse => "northnorthwest");
+parser.direction.understand("southsoutheast/sse", parse => "southsoutheast");
+
+parser.direction.understand("upstairs", parse => "up");
+parser.direction.understand("up stairs", parse => "up");
+parser.direction.understand("up the stairs", parse => "up"); // fix this if stairs become a door!
+parser.direction.understand("downstairs", parse => "down");
+parser.direction.understand("down stairs", parse => "down");
+parser.direction.understand("down the stairs", parse => "down"); // ^ same ^
+
 //// Other silly verbs
 
 parser.action.understand("about", parse => asking_about("Irving Q. Tep", "virtual house tour"));
@@ -924,7 +937,7 @@ world.direction_description.set("back_stairwell_1", "west", `
 [img 1/bstairs/look_w.JPG left]To the [dir west], you see part of the
 center room.`);
 
-//world.connect_rooms("back_stairwell_1", "down", "Basement")
+world.connect_rooms("back_stairwell_1", "down", "Basement");
 world.connect_rooms("back_stairwell_1", "north", "The Upstairs Kitchen");
 world.connect_rooms("back_stairwell_1", "up", "back_stairwell_2");
 
@@ -2365,9 +2378,8 @@ actions.report.add_method({
 
 function handle_jump_off_roof(parse) {
   if (["The Roof", "The Poop Deck"].includes(world.containing_room(world.actor))) {
-    return making_mistake(`The RA comes out
-    and stops you, "remember the zeroth [ask <rules of tep>
-    <rule of tep>]! Don't die!"`);
+    return making_mistake(`The RA comes out and stops you, "remember the
+    zeroth [ask 'rules of tep' 'rule of tep']! Don't die!"`);
   } else {
     return undefined;
   }
@@ -2381,10 +2393,379 @@ parser.action.understand("jump off the roof", handle_jump_off_roof);
 /*** Basement ***/
 /****************/
 
+def_obj("Basement", "room", {
+  name: "The Basement Hallway",
+  description: `[img b/basement/look.jpg left]You have
+  reached the basement of tEp, which, from the base of the
+  stairs, appears to be a long hallway running north to south.
+
+  [para]There are a multitude of rooms along this hallway:
+  you can go [dir northwest] to the bikeroom, [dir west] to the
+  tool closet, [dir southwest] to the downstairs kitchen,
+  [dir south] into milk crate land, [dir southeast] to the poop
+  closet, [dir east] to the paint closet, [dir down] into the
+  cave, [dir north] to the backlot, and [dir northnorthwest] to
+  the Tep-o-phone closet.  You can also go back [dir upstairs].
+
+  [para]You can look [look north], [look west], [look south],
+  and [look up].`
+});
+make_known("Basement");
+world.connect_rooms("Basement", "southwest", "The Kitchen");
+world.connect_rooms("Basement", "northwest", "The Bike Room");
+world.connect_rooms("Basement", "north", "The Backlot");
+world.connect_rooms("Basement", "northnorthwest", "tepophone closet");
+world.connect_rooms("Basement", "west", "The Tool Closet");
+world.connect_rooms("Basement", "east", "The Paint Closet");
+world.connect_rooms("Basement", "southeast", "The Poop Closet");
+world.connect_rooms("Basement", "south", "Milk Crate Land", {via: "heavy metal door"});
+world.connect_rooms("Basement", "down", "The Cave");
+
+world.direction_description.set("Basement", "north", `
+[img b/basement/look_n.jpg left]To the [dir north], you see the door
+to the backlot, and to the [dir northwest] you see the entrance to the
+bikeroom.  There's also [a 'liquid nitrogen cylinder'] sitting in
+the hallway.`);
+world.direction_description.set("Basement", "west", `
+[img b/basement/look_w.JPG left]Spraypainted in large letters is a
+credo attesting the existence of magnetic monopoles.`);
+world.direction_description.set("Basement", "south", `
+[img b/basement/look_s.jpg left]At the end of the hallway to the
+[dir south] is milk crate land, and near that, but out of sight, is the
+kitchen to the [dir southwest].  You can also see the entrance to the
+tool closet to the [dir west] and the way [dir down] to the cave.`);
+world.direction_description.set("Basement", "up", `
+[img b/basement/look_u.jpg left]You see the way back [dir upstairs]
+to the first floor.`);
+
+def_obj("liquid nitrogen cylinder", "thing", {
+  added_words: ["of", "@nitrogen", "ln2", "@ln2"],
+  is_scenery: true,
+  no_take_msg: `The cylinder is very large, and therefore
+  too hard for you to take.`,
+  description: `[img b/basement/cylinder.jpg left]This is a
+  large cylinder for liquid nitrogen.  It is one of those things
+  which is good to have on hand.  Fun fact: liquid nitrogen
+  is cheaper than milk per gallon.`
+}, {put_in: "Basement"});
+
+def_obj("dewar", "thing", {
+  description: `[img b/basement/dewar.jpg left]This is a
+  portable dewar for liquid nitrogen.  It's basically a large
+  thermos for handling very cold liquids.`,
+  openable: true,
+  is_open: false
+}, {put_in: "Basement"});
+
+// TODO make a model for filling the dewar
+all_are_mistakes(["fill [obj dewar]"], `There's no more liquid nitrogen to
+fill the dewar with; the LN2 cylinder is empty.`);
 
 ///
-/// Start the game
+/// The Paint Closet
 ///
+
+def_obj("The Paint Closet", "room", {
+  description: `[img b/paintcloset/look.JPG left]There are a
+  lot of colors, and therefore a lot of paint.  Thus, this
+  closet.  You can go [dir west] back to the basement
+  hallway.`
+});
+
+///
+/// The Poop Closet
+///
+
+def_obj("The Poop Closet", "room", {
+  description: `[img b/poopcloset/look.JPG left]It's a place
+  to keep the toilet paper, paper towels, and garbage bags.  You
+  can go [dir northwest] to the basement hallway.`
+});
+
+///
+/// The Kitchen
+///
+
+def_obj("The Kitchen", "room", {
+  name: "The Downstairs Kitchen",
+  description: `[img b/kitchen/look.jpg left]This is a
+  commercial-grade kitchen.  All residents of the house may use
+  it, but it's mainly used by the haus f\u00fcd program:
+  tEps cook dinner for each other every school night.  You
+  can go [dir northeast] back to the basement, and you can look
+  [look north], [look west], [look south], and [look east].`
+});
+make_known("The Kitchen");
+
+world.direction_description.set("The Kitchen", "north", `
+[img b/kitchen/look_n.JPG left]To the north are some fridges.`);
+world.direction_description.set("The Kitchen", "west", `
+[img b/kitchen/look_w.JPG left]Along the western wall is a gas
+stovetop.`);
+world.direction_description.set("The Kitchen", "south", `
+[img b/kitchen/look_s.JPG left]You look south, getting a good view of
+the main work areas in the kitchen.`);
+world.direction_description.set("The Kitchen", "east", `
+[img b/kitchen/look_e.JPG left]The kitchen even has a sink.`);
+
+///
+/// The Bike Room
+///
+
+def_obj("The Bike Room", "room", {
+  description: `[img b/bikeroom/look.JPG left]The bikeroom is
+  where tEps keep their bikes.  You can go [dir southeast] back
+  to the basement hallway or [dir south] to the server room.`
+});
+make_known("The Bike Room");
+world.connect_rooms("The Bike Room", "south", "The Server Room");
+
+def_obj("The Server Room", "room", {
+  description: `[img b/servers/look.jpg left]Since this is
+  where the Internet comes into the house, people's server
+  machines have flocked to the area despite the lack of air
+  conditioning. Before "the cloud", this room was a fixed point of
+  this virtual house tour.  You can go [dir north] to the bike room or [dir east]
+  into the laundry room.`
+});
+make_known("The Server Room");
+world.connect_rooms("The Server Room", "east", "The Laundry Room");
+
+///
+/// The Laundry Room
+///
+
+def_obj("The Laundry Room", "room", {
+  description : `[img b/laundry/look.JPG left]This is the room
+  that makes all tEps smell the same: free laundry, including
+  detergent, is part of the deal of living at tEp.  You see
+  [ob washer 'a washing machine'], [a 'dryer'], [ob 'laundry sink' 'a sink'],
+  and [ob 'laundry shelves' 'some shelves'].  You can go [dir west].`
+});
+make_known("The Laundry Room");
+
+def_obj("washer", "container", {
+  words: ["@washer", "clothes", "washing", "@machine"],
+  is_scenery: true,
+  openable: true,
+  is_open: false,
+  switchable: true,
+  description: `[img b/laundry/washer.JPG left]This is one of
+  the two trusty washers.`
+}, {put_in: "The Laundry Room"});
+
+def_obj("dryer", "container", {
+  words: ["clothes", "@dryer"],
+  is_scenery: true,
+  openable: true,
+  is_open: false,
+  switchable: true,
+  description: `[img b/laundry/dryer.JPG left]This is one of
+  the two trusty dryers.`
+}, {put_in: "The Laundry Room"});
+
+def_obj("laundry shelves", "supporter", {
+  definite_name: "the shelves",
+  indefinite_name: "some shelves",
+  is_scenery: true,
+  description: `[img b/laundry/shelves.JPG left]When a tEp
+  comes across a dryer they want to use that has someone else's
+  clothes, they dutifully put them in a plastic bag and set them
+  on these shelves.`
+}, {put_in: "The Laundry Room"});
+
+def_obj("laundry sink", "container", {
+  printed_name: "sink",
+  is_scenery: true,
+  description: `[img b/laundry/sink.JPG left]This sink
+  contains paint stains as well as bottles of detergent.`
+}, {put_in: "The Laundry Room"});
+
+def_obj("detergent", "thing", {
+  indefinite_name: "some detergent",
+  description: `This is a bottle of detergent of the
+  clothes-cleansing variety.`
+}, {put_in: "laundry sink"});
+
+///
+/// The Tool Closet
+///
+
+def_obj("The Tool Closet", "room", {
+  description: `[img b/toolroom/look.JPG left]Since tEp is a
+  do-it-yourself kind of place, there is a room devoted to
+  keeping tools.  This is that room.  You can look [look northwest]
+  or go [dir east] back to the basement hallway.`
+});
+
+world.direction_description.set("The Tool Closet", "northwest", `
+[img b/toolroom/look_nw.JPG left]Look at all those fine tools.`);
+
+///
+/// Milk Crate Land
+///
+
+def_obj("heavy metal door", "door", {
+  is_scenery: true,
+  description: `[img b/milkcrate/door.jpg left]This is the
+  door to milk crate land.`
+});
+
+def_obj("Milk Crate Land", "room", {
+  description: `[img b/milkcrate/look.jpg left]When tEp gets
+  milk from distributors, it comes in milk crates.  However,
+  it's never been clear what one does with the milk crates after
+  they arrive.  After some time, milk crate land has become a
+  wonderous place of milk crates and wonder.`
+});
+make_known("Milk Crate Land");
+
+def_obj("milk crate", "container", {
+  added_words: ["@milkcrate"],
+  description: `[img b/milkcrate/milkcrate.JPG left]This is a
+  standard-issue milk crate.`
+}, {put_in: "Milk Crate Land"});
+
+///
+/// The Tep-o-phone Closet
+///
+
+def_obj("tepophone closet", "room", {
+  name: "The Tep-o-phone Closet",
+  added_words: ["tepophone"],
+  description: `[img b/tepophone/look.jpg left]Built from
+  relays that fell out of a Bell telephone truck by [ask 'Fred Fenning']
+  while he was failing his telephony class, Tep-o-phone was a state-of-the-art
+  telephone switching system that let the outside world dial individual rooms.
+  It also let people call the laundry room to see if there were free
+  machines.  Sadly, Tep-o-phone has since fallen into disrepair
+  with the now-widespread use of cell phones, but every once in a while it tries
+  to connect a call for old time's sake.
+
+  [para]You can go [dir southsoutheast] back to the basement hallway.`
+});
+
+///
+/// The Backlot
+///
+
+def_obj("The Backlot", "room", {
+  added_words: ["back", "@lot"],
+  description: `[img b/backlot/look.JPG left]This is where
+  people park their cars or come into the house with their
+  bikes.  It is also home of [the 'oobleck drain'].  You can
+  go [dir south] back into the house, and you can look
+  [look north], [look west], [look south], [look east], and [look up].`
+});
+
+world.direction_description.set("The Backlot", "north", `
+[img b/backlot/look_n.JPG left]To the north, you can see dumpsters and
+neighbors along the back alley.`);
+world.direction_description.set("The Backlot", "west", `
+[img b/backlot/look_w.JPG left]You look west down the back alley.`);
+world.direction_description.set("The Backlot", "south", `
+[img b/backlot/look_s.JPG left]To the [dir south], you can see the
+door to the basement of tEp.`);
+world.direction_description.set("The Backlot", "east", `
+[img b/backlot/look_e.JPG left]You look east down the back alley.`);
+world.direction_description.set("The Backlot", "up", `
+[img b/backlot/look_u.JPG left]Rising above you, the purple palace
+looks surprisingly ordinary from the backlot. Irving notes that
+there's a really good view of lights at night from here, though.`);
+
+world.no_go_msg.add_method({
+  when: (x, dir) => x === "The Backlot",
+  handle: (x, dir) => `Nah, you don't need
+to leave that way!  This is a virtual tour: just close your web
+browser if you want to quit.`
+});
+
+def_obj("oobleck drain", "supporter", {
+  enterable: true,
+  is_scenery: true,
+  description: `[img b/backlot/drain.JPG left]The oobleck
+  drain is a big square of cement with a hole, through which
+  tEps dump a kiddie pool of [ask oobleck] every year.  With the
+  oobleck drain, cleanup is a breeze!`
+}, {put_in: "The Backlot"});
+
+///
+/// The Cave
+///
+
+def_obj("The Cave", "room", {
+  added_words: ["boiler", "@room"],
+  description: `[img b/cave/look.JPG left]This is the machine
+  room of tEp, containing [the boiler] and [ob 'hot water heater' 'the water heater'].
+  You can look [look south], [look east], and [look up], and you can go
+  [dir upstairs] back to the basement hallway or [dir south] into the deep cave.`
+});
+make_known("The Cave");
+
+world.direction_description.set("The Cave", "south", `
+[img b/cave/look_s.jpg left]To the [dir south] is a dimly lit
+corridor.`);
+world.direction_description.set("The Cave", "east", `
+[img b/cave/look_e.JPG left]You see the stairs that lead
+[dir upstairs] to the basement hallway.`);
+world.direction_description.set("The Cave", "up", `
+[img b/cave/look_u.JPG left]Above you are a tangle of pipes and ducts
+going who knows where.`);
+
+world.connect_rooms("The Cave", "south", "Dark Corridor");
+world.connect_rooms("Dark Corridor", "south", "The Deep Cave");
+
+def_obj("boiler", "thing", {
+  added_words: ["old", "@ironsides"],
+  is_scenery: true,
+  description: `[img b/cave/boiler.jpg left]This is Old Ironsides, the
+  100-year-old boiler that powers the radiators on the back side of
+  the house.  It has no pump; it instead relies on the hot water
+  rising due to convection.  The boiler has been retrofitted to
+  use oil rather than coal, where there are some nozzles set
+  up to spray burning oil in the general direction of the water pipe.
+  tEp has a million dollar boiler insurance policy in the event it takes
+  out part of the block.`
+}, {put_in: "The Cave"});
+
+def_obj("hot water heater", "thing", {
+  is_scenery: true,
+  description: `[img b/cave/heater.jpg left]Unlike [the boiler],
+  this water heater is fairly new.  When some tEps were
+  working on the valve of a fifth-floor shower, the old heater
+  shot hot, black sludge at them through almost a hundred feet
+  of pipe as they wondered what they possibly could have done to
+  deserve that.  Because the water heater was grandfathered into
+  some tEp insurance policy, it was replaced at no charge,
+  though we had a full month of cold showers.`
+}, {put_in: "The Cave"});
+
+def_obj("Dark Corridor", "room", {
+  description: `[img b/cavehall/look.jpg left]You're in the
+  middle of a dimly lit corridor which continues to the [dir south].
+  You can both look [look north] and go [dir north].`
+});
+make_known("Dark Corridor");
+
+world.direction_description.set("Dark Corridor", "north", `
+[img b/cavehall/look_n.jpg left]You can see the way back [dir north]
+to the cave.`);
+
+
+///
+/// The Deep Cave
+///
+
+def_obj("The Deep Cave", "room", {
+  description: `[img b/deepcave/look.JPG left]This room lies
+  directly underneath the front garden and is the perfect place
+  to keep a big pile of junk.  You can leave to the [dir north].`
+});
+make_known("The Deep Cave");
+
+/**********************/
+/*** Start the game ***/
+/**********************/
 
 window.addEventListener("load", () => {
   init_output("output");
