@@ -321,11 +321,39 @@ world.direction_description.set("253 Commonwealth Ave", "up", `
 [img 1/253/look_up.JPG left]You look up and see a bit of the
 [ob 'purple tree'] along with a few of the five floors of tEp.`);
 
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "north"
+                             && world.containing_room(world.actor) === "253 Commonwealth Ave"),
+           action => looking());
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "down"
+                             && world.containing_room(world.actor) === "253 Commonwealth Ave"),
+           action => examining("front garden"));
+
 world.no_go_msg.add_method({
   when: (x, dir) => x === "253 Commonwealth Ave",
   handle: (x, dir) => `Nah, you don't need
 to leave that way!  This is a virtual tour: just close your web
 browser if you want to quit.`
+});
+
+def_obj("tEp", "backdrop", {
+  proper_named: "tEp",
+  added_words: ["@house"],
+  backdrop_locations: ["253 Commonwealth Ave", "The Backlot"]
+});
+instead_of(({verb, dobj}) => verb === "examining" && dobj === "tEp",
+           action => looking(), true);
+instead_of(({verb, dobj}) => (verb === "entering" && dobj === "tEp"
+                              && world.containing_room(world.actor) === "253 Commonwealth Ave"),
+           action => going("north"), true);
+instead_of(({verb, dobj}) => (verb === "entering" && dobj === "tEp"
+                              && world.containing_room(world.actor) === "The Backlot"),
+           action => going("south"), true);
+parser.action.understand("go in", parse => {
+  if (world.accessible_to("tEp", world.actor)) {
+    return entering("tEp");
+  } else {
+    return undefined;
+  }
 });
 
 def_obj("front garden", "container", {
@@ -2659,6 +2687,7 @@ def_obj("The Backlot", "room", {
   go [dir south] back into the house, and you can look
   [look north], [look west], [look south], [look east], and [look up].`
 });
+make_known("The Backlot");
 
 world.direction_description.set("The Backlot", "north", `
 [img b/backlot/look_n.JPG left]To the north, you can see dumpsters and
@@ -2673,7 +2702,7 @@ world.direction_description.set("The Backlot", "east", `
 world.direction_description.set("The Backlot", "up", `
 [img b/backlot/look_u.JPG left]Rising above you, the purple palace
 looks surprisingly ordinary from the backlot. Irving notes that
-there's a really good view of lights at night from here, though.`);
+there's a really good view of the colorful lights at night from here.`);
 
 world.no_go_msg.add_method({
   when: (x, dir) => x === "The Backlot",
@@ -2748,6 +2777,10 @@ def_obj("Dark Corridor", "room", {
   You can both look [look north] and go [dir north].`
 });
 make_known("Dark Corridor");
+
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "south"
+                             && world.containing_room(world.actor) === "Dark Corridor"),
+           action => looking());
 
 world.direction_description.set("Dark Corridor", "north", `
 [img b/cavehall/look_n.jpg left]You can see the way back [dir north]
@@ -3002,7 +3035,7 @@ def_obj("lore: grape soda", "lore", {
 
 def_obj("lore: honig", "lore", {
   name: "David Andrew Honig",
-  description: `1. [enter_inline i]exlc[leave]. A greeting, often as an
+  description: `1. [enter_inline i]excl[leave]. A greeting, often as an
   identifier in a large crowd. 2. [enter_inline i]prop. n.[leave] A former
   brother and famous Objectivist, David Andrew Honig, although
   looked upon as antisocial, has become the mascot of TEP.`

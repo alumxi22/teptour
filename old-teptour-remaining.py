@@ -439,23 +439,6 @@ def describe_object_defilements(actor, o, ctxt) :
 ####################
 
 
-
-
-###
-### The Backlot
-###
-
-
-
-###
-### Dark Corridor
-###
-
-
-instead_of(actionsystem, 
-           LookingToward(actor, "south") <= PEquals("Dark Corridor", ContainingRoom(actor)),
-           Looking(actor))
-
 ###################
 ### First floor ###
 ###################
@@ -463,26 +446,6 @@ instead_of(actionsystem,
 ###
 ### In front of tep (253 Commonwealth Ave)
 ###
-
-instead_of(actionsystem,
-           LookingToward(actor, "north") <= PEquals("253 Commonwealth Ave", ContainingRoom(actor)),
-           Looking(actor))
-instead_of(actionsystem,
-           LookingToward(actor, "down") <= PEquals("253 Commonwealth Ave", ContainingRoom(actor)),
-           Examining(actor, "front garden"))
-
-
-quickdef(world, "tEp", "backdrop", {
-        ProperNamed : "tEp",
-        AddedWords : ["@house"],
-        BackdropLocations : ["253 Commonwealth Ave", "The Backlot"],
-        })
-instead_of(actionsystem, Examining(actor, "tEp"), Looking(actor))
-instead_of(actionsystem, Entering(actor, "tEp") <= PEquals("253 Commonwealth Ave", ContainingRoom(actor)),
-           Going(actor, "north"), suppress_message=True)
-instead_of(actionsystem, Entering(actor, "tEp") <= PEquals("The Backlot", ContainingRoom(actor)),
-           Going(actor, "south"), suppress_message=True)
-parser.understand("go in", Entering(actor, "tEp") <= AccessibleTo("tEp", actor))
 
 
 @before(Climbing(actor, "purple tree"))
