@@ -107,7 +107,7 @@ answer a question like that.  Alack-a-day, that was not my fate.`);
 all_are_mistakes(["pickles ?"], `"I didn't make this tour!"
 [ob 'Irving Q. Tep' Irving] explains, "I just repeat what I'm told."`);
 
-all_are_mistakes(["eit"], "Eit indeed!");
+all_are_mistakes(["eit", "eit!"], "Eit indeed!");
 
 var faces = [":)", ":-)", ":(", ":-(", ";-)", ":P", ":-P", ":-D"];
 faces.forEach(face => { // warning: :-/ will cause an error with 'understand'
@@ -377,7 +377,7 @@ def_obj("doorbell", "thing", {
   black button, and you almost didn't notice it.  The FedEx guy
   has said he enjoys this doorbell.`
 }, {put_in: "253 Commonwealth Ave"});
-parser.action.understand("ring/push [obj doorbell]", parse => using("doorbell"));
+parser.action.understand("ring/push/press [obj doorbell]", parse => using("doorbell"));
 parser.action.understand("knock", parse => {
   if (world.containing_room(world.actor) === "253 Commonwealth Ave") {
     return making_mistake(`You knock on the front door, but no one hears you.

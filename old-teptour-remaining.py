@@ -27,8 +27,6 @@ class Eiting(BasicAction) :
     gerund = "eiting"
     numargs = 2
 parser.understand("eit [something x]", Eiting(actor, X))
-parser.understand("eit/eit.", MakingMistake(actor, "Indeed."))
-parser.understand("eit !", MakingMistake(actor, "It happens to the best of us."))
 
 require_xobj_accessible(actionsystem, Eiting(actor, X))
 
