@@ -8,74 +8,6 @@
 
 
 ###
-### Eiting
-###
-
-class Eiting(BasicAction) :
-    """Eiting(actor, x) for the actor eiting x."""
-    verb = "eit"
-    gerund = "eiting"
-    numargs = 2
-parser.understand("eit [something x]", Eiting(actor, X))
-
-require_xobj_accessible(actionsystem, Eiting(actor, X))
-
-@before(Eiting(actor, X))
-def before_eiting_default(actor, x, ctxt) :
-    raise AbortAction("{Bob} {doesn't} think it would be wise to eit that.", actor=actor)
-
-
-class EitingWith(BasicAction) :
-    """EitingWith(actor, x, y) for the actor eiting x with y."""
-    verb = ("eit", "with")
-    gerund = ("eiting", "with")
-    numargs = 3
-parser.understand("eit [something x] with [something y]", EitingWith(actor, X, Y))
-
-require_xobj_accessible(actionsystem, EitingWith(actor, X, Y))
-require_xobj_held(actionsystem, EitingWith(actor, Z, X))
-
-@before(EitingWith(actor, X, Y))
-def before_eiting_default(actor, x, y, ctxt) :
-    raise AbortAction(str_with_objs("{Bob} {doesn't} think it would be wise to eit [the $x] with that.", x=x),
-                      actor=actor)
-
-###
-### Playing stupidball
-###
-
-class PlayingStupidball(BasicAction) :
-    verb = "play stupidball"
-    gerund = "playing stupidball"
-    numargs = 1
-parser.understand("play stupidball", PlayingStupidball(actor))
-parser.understand("play stupid ball", PlayingStupidball(actor))
-parser.understand("kick/throw/bounce [object ex_ball]", PlayingStupidball(actor))
-
-all_are_mistakes(parser, ["kick/throw/bounce"],
-                 """{Bob} {needs} to be doing that to something in particular.""")
-all_are_mistakes(parser, ["play"],
-                 """{Bob} {needs} to be playing something in particular.""")
-
-@before(PlayingStupidball(actor))
-def before_stupidball_take_ex_ball(actor, ctxt) :
-    if not (actor == ctxt.world[Owner("ex_ball")] and ctxt.world[AccessibleTo("ex_ball", actor)]) :
-        ctxt.actionsystem.do_first(Taking(actor, "ex_ball"), ctxt, silently=True)
-@before(PlayingStupidball(actor) <= PNot(AccessibleTo(actor, "ex_ball")))
-def before_stupidball_need_ball_accessible(actor, ctxt) :
-    raise AbortAction("{Bob} {doesn't} see anything around {him} with which {he} can play stupidball.", actor=actor)
-@when(PlayingStupidball(actor))
-def when_playing_stupidball(actor, ctxt) :
-    ctxt.world.activity.put_in("ex_ball", ctxt.world[Location(actor)])
-@report(PlayingStupidball(actor))
-def report_playing_stupidball(actor, ctxt) :
-    ctxt.write("""A couple of teps come out to join you as you kick
-    [the ex_ball] around the room, and you nearly break a couple of
-    things as the ball whizzes through the air at high velocities.
-    After much merriment, you all get bored of the game, and put the
-    ball down.""")
-
-###
 ### Playing ridiculoball
 ###
 
@@ -88,12 +20,6 @@ Irving Irving's] eyes get nostalgic but a little sad.  "I don't quite
 remember the rules of that game.  Please [action <tell irving about
 ridiculoball> <tell me about ridiculoball>] to remind me for a future
 version of the house tour." """))
-
-###
-### Extra directions
-###
-
-
 
 
 ###
@@ -144,13 +70,6 @@ def report_saying(actor, x, ctxt) :
 ### Floors
 ###
 
-class Sitting(BasicAction) :
-    verb = "sit"
-    gerund = "sitting"
-    numargs = 1
-
-parser.understand("sit", Sitting(actor))
-parser.understand("sit down", Sitting(actor))
 
 world[Global("are we ok with sitting")] = False
 world[Global("are we ok with sitting affirmations")] = 0
@@ -311,86 +230,12 @@ def before_insertinginto_person(actor, x, y, ctxt) :
 def before_insertinginto_person(actor, x, y, ctxt) :
     raise AbortAction(str_with_objs("Please, not right now...", y=y), actor=actor)
 
-##
-# Defilements
-##
-
-# note that this is set up so that you can ask other people to defile things!
-
-@world.define_property
-class Defilements(Property) :
-    """A list of (string,actor) representing the ways the object has
-    been defiled and how."""
-    numargs = 1
-world[Defilements(X) <= IsA(X, "thing")] = []
-
-class Defiling(BasicAction) :
-    """Defiling(actor, X, method)"""
-    numargs = 3
-    def gerund_form(self, ctxt) :
-        return "defiling " + str_with_objs("[the $x]", x=self.args[1])
-    def infinitive_form(self, ctxt) :
-        return "defile " + str_with_objs("[the $x]", x=self.args[1])
-
-parser.understand("felch [something x]", Defiling(actor, X, "felched"))
-parser.understand("pee on [something x]", Defiling(actor, X, "peed on"))
-parser.understand("pee in [something x]", Defiling(actor, X, "peed in"))
-parser.understand("poop on [something x]", Defiling(actor, X, "pooped on"))
-parser.understand("poop in [something x]", Defiling(actor, X, "pooped in"))
-parser.understand("poop down [object center stairwell]", Defiling(actor, "center stairwell", "pooped down"))
-
-require_xobj_accessible(actionsystem, Defiling(actor, X, Y))
-
-@before(Defiling(actor, X, Y))
-def before_defiling(actor, x, y, ctxt) :
-    if (y, actor) in ctxt.world[Defilements(x)] :
-        raise AbortAction(str_with_objs("{Bob} {has} already %s [the $x]." % y, x=x), actor=actor)
-@before(Defiling(actor, X, Y))
-def before_defiling_container(actor, x, y, ctxt) :
-    if not y.endswith(" in") :
-        return # we assume anything ending with "in" needs to be done to a container.
-    if not ctxt.world[IsA(x, "container")] :
-        raise AbortAction("That can only be done to containers.")
-    if ctxt.world[Openable(x)] and not ctxt.world[IsOpen(x)] :
-        raise AbortAction(str_with_objs("That can only be done when [the $x] is open.", x=x), actor=actor)
-@when(Defiling(actor, X, Y))
-def when_defiling(actor, x, y, ctxt) :
-    ctxt.world[Defilements(x)] = ctxt.world[Defilements(x)] + [(y, actor)]
-@report(Defiling(actor, X, Y))
-def report_defiling(actor, x, y, ctxt) :
-    ctxt.write("The deed has been done.", actor=actor)
-
-@actoractivities.to("describe_object")
-def describe_object_defilements(actor, o, ctxt) :
-    ds = ctxt.world[Defilements(o)]
-    if ds :
-        if ctxt.world[Global("describe_object_described")] : # print a newline if needed.
-            ctxt.write("[newline]")
-        ctxt.world[Global("describe_object_described")] = True
-        
-        culprits = set(a for (m,a) in ds)
-        byyou = None
-
-        for culprit in culprits :
-            defs = serial_comma([m for (m,a) in ds if a==culprit])
-            if culprit != actor :
-                ctxt.write(str_with_objs("[The $c] has %s [the $o]." % defs, c=culprit, o=o),
-                           actor=actor)
-            else :
-                byyou = str_with_objs("{Bob} {has} %s [the $o]." % defs, o=o)
-        if byyou :
-            ctxt.write(byyou, actor=actor)
 
 
 
 ###################
 ### First floor ###
 ###################
-
-
-###
-### The Foyer
-###
 
 
 
@@ -473,16 +318,6 @@ def report_dropping_down_stairwell(actor, x, ctxt) :
     bounces and makes a large ruckus before finally settling down.", x=x), actor=actor)
     raise ActionHandled()
 
-###
-### Center stairwell region
-###
-
-
-@report(LookingToward(actor, X) <= AccessibleTo("center stairwell", actor))
-def report_lookingtoword_with_stairwell(actor, x, ctxt) :
-    if x in ["up", "down"] :
-        ctxt.world[Global("describe_object_described")] = True
-        describe_object_defilements(actor, "center stairwell", ctxt)
 
 
 

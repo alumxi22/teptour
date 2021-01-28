@@ -204,6 +204,8 @@ function add_floor(location, template, name=null) {
   world.put_in(name, location);
 }
 
+//// Sitting
+
 function sitting() {
   return {verb: "sitting"};
 }
@@ -227,6 +229,145 @@ actions.before.add_method({
       }
     }
     throw new abort_action("{We} {don't} want to sit down here.");
+  }
+});
+
+//// Eiting
+
+function eiting(x) {
+  return {verb: "eiting", dobj: x};
+}
+def_verb("eiting", "eit", "eiting");
+parser.action.understand("eit [something x]", parse => eiting(parse.x));
+
+require_dobj_accessible("eiting");
+
+actions.before.add_method({
+  name: "eiting default",
+  when: action => action.verb === "eiting",
+  handle: function (action) {
+    throw new abort_action("{Bobs} {don't} think it would be wise to eit that.");
+  }
+});
+
+function eiting_with(x, y) {
+  return {verb: "eiting", dobj: x, iobj: y};
+}
+def_verb("eiting with", "eit", "eiting", "with");
+parser.action.understand("eit [something x] with [something y]",
+                         parse => eiting_with(parse.x, parse.y));
+
+require_dobj_accessible("eiting with");
+require_iobj_held("eiting with");
+
+actions.before.add_method({
+  name: "eiting with default",
+  when: action => action.verb === "eiting with",
+  handle: function (action) {
+    throw new abort_action("{Bobs} {don't} think it would be wise to eit that.");
+  }
+});
+
+//// Defilements
+
+// This is carefully set up so that you can ask other people to defile things
+// (once textadv supports asking_to).
+
+def_property("defilements", 1, {
+  doc: "A list of {actor, method} pairs."
+});
+world.defilements.add_method({
+  name: "default no defilements",
+  handle: (x) => []
+});
+
+function defiling(x, method) {
+  return {verb: "defiling", dobj: x, method: method};
+}
+def_verb("defiling", "defile", "defiling");
+
+parser.action.understand("felch [something x]", parse => defiling(parse.x, "felched"));
+parser.action.understand("pee on [something x]", parse => defiling(parse.x, "peed on"));
+parser.action.understand("pee in [something x]", parse => defiling(parse.x, "peed in"));
+parser.action.understand("poop on [something x]", parse => defiling(parse.x, "pooped on"));
+parser.action.understand("poop in [something x]", parse => defiling(parse.x, "pooped in"));
+parser.action.understand("poop down [obj 'center stairwell']",
+                         parse => defiling("center stairwell", "pooped down"));
+
+require_dobj_accessible("defiling");
+
+actions.before.add_method({
+  name: "defile undefiled",
+  when: action => action.verb === "defiling",
+  handle: function (action) {
+    this.next();
+    for (let {actor, method} of world.defilements(action.dobj)) {
+      if (actor === world.actor && method === action.method) {
+        out.write("{Bobs} {have} already ");
+        out.write_text(method); out.write(" ");
+        out.the(action.dobj); out.write(".");
+        throw new abort_action();
+      }
+    }
+  }
+});
+actions.before.add_method({
+  name: "defiling in containers",
+  when: action => action.verb === "defiling" && action.method.endsWith(" in"),
+  handle: function (action) {
+    this.next();
+    if (!world.is_a(action.dobj, "container")) {
+      throw new abort_action("That can only be done to containers.");
+    }
+    if (world.openable(action.dobj) && !world.is_open(action.dobj)) {
+      out.write("That can only be done when "); out.the(action.dobj);
+      out.write(" is open.");
+      throw new abort_action();
+    }
+  }
+});
+actions.carry_out.add_method({
+  name: "defiling",
+  when: action => action.verb === "defiling",
+  handle: function (action) {
+    world.defilements.set(action.dobj,
+                          world.defilements(action.dobj).concat([{actor: world.actor,
+                                                                  method: action.method}]));
+  }
+});
+actions.report.add_method({
+  name: "defiling",
+  when: action => action.verb === "defiling",
+  handle: function (action) {
+    out.write("The deed has been done.");
+  }
+});
+
+function describe_object_defilements(o) {
+  out.para();
+  world.describe_object.described = true;
+
+  let ds = world.defilements(o);
+  for (let culprit of new Set(ds.map(d => d.actor))) {
+    let methods = ds.filter(d => d.actor === culprit);
+    if (culprit !== world.actor) {
+      out.The(culprit); out.write(" has ");
+      out.serial_comma(methods.map(d => () => out.write_text(d.method)));
+      out.write(" "); out.the(o); out.write(".");
+    } else {
+      out.write("{Bobs} {have} ");
+      out.serial_comma(methods.map(d => () => out.write_text(d.method)));
+      out.write(" "); out.the(o); out.write(".");
+    }
+  }
+}
+
+world.describe_object.add_method({
+  name: "describe defiled",
+  when: o => world.defilements(o).length > 0,
+  handle: function (o) {
+    this.next();
+    describe_object_defilements(o);
   }
 });
 
@@ -749,11 +890,29 @@ def_obj("chandelier", "thing", {
 
 def_obj("ex_ball", "supporter", {
   name: "large green exercise ball",
-  words: ["big", "large", "green", "exercise", "@ball", "@stupidball"],
+  words: ["big", "large", "green", "exercise", "stupid", "@ball", "@stupidball"],
   enterable: true,
   description: `[img 1/center/stupidball.jpg]This is a large
   green exercise ball that is used to play [ask stupidball].`
 }, {put_in: "The Center Room"});
+
+parser.action.understand("play/kick/throw/bounce [obj ex_ball]",
+                         parse => using("ex_ball"));
+actions.before.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "ex_ball",
+  handle: () => {}
+});
+actions.report.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "ex_ball",
+  handle: function () {
+    out.write(`A couple of teps come out to join playing [ask stupidball]
+    you as you kick [the ex_ball] around the room, and you nearly break a
+    couple of things as the ball whizzes through the air at high velocities.
+    After much merriment, you all get bored of the game, and put the
+    ball down.`);
+  }
+});
+
 
 actions.report.add_method({
   when: ({verb,dobj}) => verb === "dropping" && dobj === "ex_ball",
@@ -812,6 +971,15 @@ instead_of(({verb, dobj}) => (verb === "examining" && dobj === "center stairwell
 
 parser.action.understand("look up [obj 'center stairwell']", action => looking_toward("up"));
 parser.action.understand("look down [obj 'center stairwell']", action => looking_toward("down"));
+
+actions.report.add_method({
+  when: ({verb, dir}) => (verb === "looking toward" && (dir === "up" || dir === "down")
+                          && world.accessible_to("center stairwell", world.actor)),
+  handle: function (action) {
+    describe_object_defilements("center stairwell");
+  }
+});
+
 
 ///
 /// Front room
