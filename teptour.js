@@ -768,6 +768,9 @@ instead_of(({verb, dobj}) => (verb === "examining" && dobj === "center stairwell
                               && world.containing_room(world.actor) === "The Center Room"),
            action => looking_toward("up"), true);
 
+parser.action.understand("look up [obj 'center stairwell']", action => looking_toward("up"));
+parser.action.understand("look down [obj 'center stairwell']", action => looking_toward("down"));
+
 ///
 /// Front room
 ///
@@ -924,6 +927,10 @@ world.direction_description.set("The Dining Room", "east", `
 covered in tEply doodles.  You can go [dir east] into the upstairs
 kitchen.`);
 
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "west"
+                             && world.containing_room(world.actor) === "The Dining Room"),
+           action => examining("Tepilepsy"));
+
 def_obj("fork chandelier", "thing", {
   is_scenery: true,
   description: `[img 1/dining/chandelier.JPG left]This is a
@@ -947,6 +954,16 @@ actions.report.add_method({
   }
 });
 
+def_obj("dining room table", "supporter", {
+  added_words: ["@tables"],
+  enterable: true,
+  is_scenery: true,
+  description: `These anodized aluminum tables are durable enough to withstand
+  everything they're put through`
+}, {put_in: "The Dining Room"});
+
+// TODO food fight after throwing three items of food, and you can't leave the room until you clean it up
+
 // oobleck is a placeholder in case someone types "examine oobleck"
 def_obj("oobleck", "thing", {
   is_scenery: true,
@@ -954,7 +971,8 @@ def_obj("oobleck", "thing", {
   much a part of the ceiling.`
 }, {put_in: "The Dining Room"});
 
-// TODO instead of examining oobleck => asking about oobleck
+instead_of(({verb, dobj}) => verb === "examining" && dobj === "oobleck",
+           action => asking_about("Irving Q. Tep", "oobleck"));
 
 def_obj("Tepilepsy", "thing", {
   added_words: ["Tepilepsy", "@wall"],
@@ -1087,6 +1105,10 @@ world.direction_description.set("The Second Landing", "south", `
 [img 2/landing/look_s.JPG left]Looking south, you see the entrance to
 21 to the [dir southeast], and the entance to 22 to the [dir south].`);
 
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "west"
+                             && world.containing_room(world.actor) === "The Second Landing"),
+           action => looking());
+
 ///
 /// 21
 ///
@@ -1124,6 +1146,10 @@ world.direction_description.set("22", "south", `
 [img 2/22/look_s.JPG left]To the south you see the bay windows and a
 window from the Liberty Caf\u00e9, the first Internet caf\u00e9 in
 the northeast.`);
+
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "east"
+                             && world.containing_room(world.actor) === "22"),
+           action => examining("eit mural"));
 
 def_obj("22_lights", "thing", {
   name: "color-changing lights",
@@ -1345,6 +1371,22 @@ def_obj("23", "room", {
 make_known("23");
 add_floor("23", "wood");
 
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "up"
+                             && world.containing_room(world.actor) === "23"),
+           action => examining("leitshow"));
+// needs to be try_before because there are methods to get off enterables there
+actions.try_before.add_method({
+  when: ({verb, dir}) => (verb === "going" && dir === "down"
+                          && world.parent_enterable(world.actor) === "hanging couch"),
+  handle: function (action) {
+    throw new do_instead(climbing("23_ladder"));
+  }
+});
+instead_of(({verb, dir}) => (verb === "going" && dir === "up"
+                             && world.location(world.actor) === "23"),
+           action => climbing("23_ladder"));
+
+
 def_obj("hanging couch", "supporter", {
   is_scenery: true,
   enterable: true,
@@ -1379,7 +1421,7 @@ def_obj("23_ladder", "thing", {
   is_scenery: true,
   is_ladder: true,
   description : `It's a ladder going up to [the 'hanging couch']
-  that swings back and forth.  The advice is to think
+  that swings back and forth, with hinges at the base.  The advice is to think
   forward thoughts to climb it.`
 }, {put_in: "23"});
 
@@ -1499,6 +1541,11 @@ def_obj("2f_ceiling_door", "door", {
 });
 world.connect_rooms("Second Front", "up", "2f_interstitial", {via: "2f_ceiling_door"});
 
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "up"
+                             && world.containing_room(world.actor) === "Second Front"),
+           action => examining("2f_ceiling_door"), true);
+
+
 ///
 /// The Second Front Interstitial Space
 ///
@@ -1528,6 +1575,10 @@ world.direction_description.add_method({
   }
 });
 
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "south"
+                             && world.containing_room(world.actor) === "2f_interstitial"),
+           action => examining("batcave_shelves"), true);
+
 def_obj("safe", "container", {
   fixed_in_place: true,
   openable: true,
@@ -1539,6 +1590,19 @@ def_obj("safe", "container", {
   house chocolate chips to prevent tEps from eating them.`
 }, {put_in: "2f_interstitial"});
 
+// TODO open safe by dropping it down the center stairwell
+
+actions.before.add_method({
+  when: ({verb, dobj}) => verb === "unlocking" && dobj === "safe",
+  handle: function (action) {
+    throw new abort_action(`The combination for that safe has long been
+    forgotten. You can't unlock it.`);
+  }
+});
+
+all_are_mistakes(["pick [obj safe]"],
+                 `Brilliant.  And into what part of the safe do you plan
+                 to stick the picks?`);
 
 ///
 /// Second Back
@@ -1694,6 +1758,8 @@ make_known("33");
 add_floor("33", "wood");
 world.connect_rooms("33", "southwest", "The Cockpit");
 
+// TODO make "enter cockpit" work (possibly by adding this command to textadv)
+
 def_obj("Free Willy net", "container", {
   added_words: ["large", "red", "purple", "authentic", "fishing"],
   enterable: true,
@@ -1756,6 +1822,11 @@ def_obj("The Cockpit", "room", {
 
   [para]You can leave to the [dir northeast].`
 });
+make_known("The Cockpit");
+
+instead_of(({verb, dir}) => (verb === "going" && dir === "out"
+                             && world.containing_room(world.actor) === "The Cockpit"),
+           action => going("northeast"));
 
 ///
 /// Third front
@@ -1948,6 +2019,11 @@ world.direction_description.set("The Fourth Landing", "south", `
 [img 4/landing/look_s.JPG left]Looking south, you see the entrance to
 the mac closet to the [dir east], the entrance to 41 to the
 [dir southeast], and the entance to 42 to the [dir south].`);
+
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "west"
+                             && world.containing_room(world.actor) === "The Fourth Landing"),
+           action => looking());
+
 
 ///
 /// 41
@@ -2421,6 +2497,9 @@ def_obj("bathtub", "container", {
 
 // for "draw a bath"
 parser.action.understand("draw [obj bathtub]", using("bathtub"));
+
+instead_of(({verb, dobj}) => verb === "taking" && dobj === "bathtub",
+           action => using("bathtub"), true);
 
 actions.before.add_method({
   when: ({verb,dobj}) => verb === "using" && dobj === "bathtub",

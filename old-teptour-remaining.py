@@ -6,16 +6,6 @@
 ### Fun and games ###
 #####################
 
-###
-### make DoInstead easier
-###
-
-def instead_of(actionsystem, action, do_instead, suppress_message=False) :
-    @docstring("Does the action "+repr(do_instead)+" instead. Added by is_mistake")
-    @actionsystem.before(action)
-    def do_instead_since_mistake(**kwargs) :
-        raise DoInstead(do_instead.expand_pattern(kwargs), suppress_message=suppress_message)
-
 
 ###
 ### Eiting
@@ -513,16 +503,6 @@ def report_dropping_down_stairwell(actor, x, ctxt) :
 ### Center stairwell region
 ###
 
-instead_of(actionsystem,
-           Examining(actor, "center stairwell"),
-           LookingToward(actor, "down"))
-instead_of(actionsystem,
-           Examining(actor, "center stairwell") <= PEquals("The Center Room", ContainingRoom(actor)),
-           LookingToward(actor, "up"))
-
-parser.understand("look up [object center stairwell]", LookingToward(actor, "up") <= PEquals("The Center Room", ContainingRoom(actor)))
-parser.understand("look up [object center stairwell]", LookingToward(actor, "up") <= Contains("r_center_stairs", ContainingRoom(actor)))
-parser.understand("look down [object center stairwell]", LookingToward(actor, "down") <= Contains("r_center_stairs", ContainingRoom(actor)))
 
 @report(LookingToward(actor, X) <= AccessibleTo("center stairwell", actor))
 def report_lookingtoword_with_stairwell(actor, x, ctxt) :
@@ -531,140 +511,6 @@ def report_lookingtoword_with_stairwell(actor, x, ctxt) :
         describe_object_defilements(actor, "center stairwell", ctxt)
 
 
-###
-### Dining room
-###
-
-
-instead_of(actionsystem,
-           LookingToward(actor, "west") <= PEquals("The Dining Room", ContainingRoom(actor)),
-           Examining(actor, "Tepilepsy"))
-
-
-instead_of(actionsystem,
-           Examining(actor, "oobleck"),
-           AskingAbout(actor, "Irving Q. Tep", "oobleck"))
-
-
-
-#quickdef(world, "dining room table", "supporter", {
-#        Scenery : True,
-#        Description : """These are 
-
-
-####################
-### Second floor ###
-####################
-
-
-instead_of(actionsystem,
-           LookingToward(actor, "west") <= PEquals("The Second Landing", ContainingRoom(actor)),
-           Looking(actor))
-
-
-
-###
-### 22
-###
-
-instead_of(actionsystem,
-           LookingToward(actor, "east") <= PEquals("22", ContainingRoom(actor)),
-           Examining(actor, "eit mural"))
-
-
-
-##
-## The Closet in 22
-##
-
-
-###
-### 23
-###
-
-instead_of(actionsystem,
-           LookingToward(actor, "up") <= PEquals("23", ContainingRoom(actor)),
-           Examining(actor, "leitshow"))
-
-
-
-instead_of(actionsystem,
-           Going(actor, "down") <= PEquals("hanging couch", ParentEnterable(actor)),
-           GettingOff(actor), suppress_message=True)
-
-
-
-
-###
-### Second front
-###
-
-instead_of(actionsystem,
-           LookingToward(actor, "up") <= PEquals("Second Front", ContainingRoom(actor)),
-           Examining(actor, "2f_ceiling_door"))
-
-
-
-###
-### The Second Front Interstitial Space
-###
-
-instead_of(actionsystem,
-           LookingToward(actor, "south") <= PEquals("2f_interstitial", ContainingRoom(actor)),
-           Examining(actor, "batcave_shelves"))
-
-@before(Unlocking(actor, "safe"))
-def cant_unlock_safe_even_with_key(actor, ctxt) :
-    raise AbortAction("""The combination for that safe has long been
-    forgotten.  You can't unlock it.""")
-
-parser.understand("pick [object safe]",
-                  MakingMistake(actor, """Brilliant. And into what
-                  part of the safe do you plan to stick the picks?""") <= AccessibleTo("safe", actor))
-
-
-###################
-### Third floor ###
-###################
-
-
-
-
-
-###
-### The cockpit
-###
-
-instead_of(actionsystem,
-           Going(actor, "out") <= PEquals("The Cockpit", ContainingRoom(actor)),
-           Going(actor, "northeast"), suppress_message=True)
-
-
-
-
-
-
-
-####################
-### Fourth floor ###
-####################
-
-
-
-
-instead_of(actionsystem,
-           LookingToward(actor, "west") <= PEquals("The Fourth Landing", ContainingRoom(actor)),
-           Looking(actor))
-
-
-
-################
-### The roof ###
-################
-
-
-instead_of(actionsystem, Taking(actor, "bathtub"),
-           Using(actor, "bathtub"), suppress_message=True)
 
 ###################################
 ### Consulting Irving Q. Tep... ###
