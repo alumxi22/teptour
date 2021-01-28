@@ -5015,7 +5015,9 @@ parser.action.understand("get on top of [something x]", (parse) => entering(pars
 parser.action.understand("sit down on [something x]", (parse) => entering(parse.x));
 parser.action.understand("sit [something x]", (parse) => entering(parse.x));
 
-all_are_mistakes(["enter", "get/go/stand/sit in/into/on/through", "get on top", "get on top of"],
+all_are_mistakes(["enter",
+                  "get/go/stand/sit into/on/through", "get/stand/sit in",
+                  "get on top", "get on top of"],
                  "{Bobs} {need} to be entering something in particular.");
 
 require_dobj_visible("entering");
@@ -5102,7 +5104,7 @@ actions.try_before.add_method({
   handle: function (action) {
     for (var e of world.exits(world.containing_room(world.actor))) {
       if (e.obj === action.dobj) {
-        throw new do_instead(going(e.tag));
+        throw new do_instead(going(e.tag), true);
       }
     }
     throw new abort_action("{Bobs} {can't} get to that.");
