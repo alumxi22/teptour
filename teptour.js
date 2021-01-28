@@ -117,6 +117,21 @@ parser.action.understand("gruesz [something x]", parse => taking(parse.x));
 
 parser.action.understand("die", parse => attacking(world.actor));
 
+actions.before.add_method({
+  when: action => action.verb === "attacking",
+  handle: function (action) {
+    if (action.dobj === "RA") {
+      throw new abort_action(`The RA wisely stays away from {us}.
+      "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
+      {we} hear him say from a safe distance, "Don't die!"`);
+    } else {
+      throw new abort_action(`The RA comes out of nowhere, preventing
+      {us}. "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
+      he says, "Don't die!"`);
+    }
+  }
+});
+
 all_are_mistakes(["burn down tep"], `The RA
 comes out of nowhere, preventing {us}. "Remember the zeroth
 [ask 'rules of tep' 'rule of tep']!" he says, "Don't die!"`);
@@ -188,6 +203,32 @@ function add_floor(location, template, name=null) {
   def_obj(name, "floor", Object.assign({name: "floor"}, template));
   world.put_in(name, location);
 }
+
+function sitting() {
+  return {verb: "sitting"};
+}
+def_verb("sitting", "sit", "sitting");
+parser.action.understand(["sit", "sit down"], parse => sitting());
+
+actions.before.add_method({
+  name: "sitting find floor or other enterable",
+  when: action => action.verb === "sitting",
+  handle: function (action) {
+    // First try sitting on the floor.
+    for (var floor of world.all_of_kind("floor")) {
+      if (world.accessible_to(floor, world.actor)) {
+        throw new do_instead(entering(floor), true);
+      }
+    }
+    // Next try getting on a supporter.
+    for (var thing of world.all_of_king("supporter")) {
+      if (world.enterable(thing) && world.accessible_to(thing, world.actor)) {
+        throw new do_instead(entering(thing), true);
+      }
+    }
+    throw new abort_action("{We} {don't} want to sit down here.");
+  }
+});
 
 //// Ladders
 
@@ -625,6 +666,7 @@ def_obj("bulletin board", "thing", {
   // TODO every time you look you see a description of an interesting thing on the board
 }, {put_in: "The Center Room"});
 def_obj("comfy couch", "supporter", {
+  added_words: ["@sofa"],
   is_scenery: true,
   enterable: true,
   description: `[img 1/center/couch.JPG left]This is perhaps
@@ -1510,7 +1552,7 @@ def_obj("24", "room", {
   stairwell.`
 });
 make_known("24");
-add_floor(world, "24", "tile");
+add_floor("24", "tile");
 
 ///
 /// Second Front

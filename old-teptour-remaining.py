@@ -204,16 +204,6 @@ def before_entering_floor_just_plain_sit_to_print_messages(actor, x, ctxt) :
         ctxt.write("Who {is} {he}? Avril?")
 
 
-@before(Sitting(actor))
-def before_sitting_find_floor(actor, ctxt) :
-    """Look for a floor to sit on, and enter the
-    CheckOkWithSittingContext when it's "appropriate" to check whether
-    it's ok to sit."""
-    for floor in ctxt.world.activity.objects_of_kind("floor") :
-        if ctxt.world[AccessibleTo(floor, actor)] :
-            raise DoInstead(Entering(actor, floor), suppress_message=True)
-    raise AbortAction("{Bob|cap} {doesn't} want to sit down here.")
-
 
 ###
 ### Finding notable objects
@@ -275,22 +265,6 @@ instead_of(actionsystem,
            Examining(actor, X) <= PNot(VisibleTo(X, actor)),
            Finding(actor, X), suppress_message=True)
 
-###
-### Other silly verbs
-###
-
-
-@before(Attacking(actor, X))
-def before_attacking_anyone(actor, x, ctxt) :
-    raise AbortAction("""The RA comes out of nowhere, preventing
-                         {him}. "Remember the zeroth [ask <rules of
-                         tep> <rule of tep>]!" he says, "Don't die!" """, actor=actor)
-@before(Attacking(actor, "RA"))
-def before_attacking_anyone(actor, ctxt) :
-    raise AbortAction("""The RA wisely stays away from
-                         {him}. "Remember the zeroth [ask <rules of
-                         tep> <rule of tep>]!" {he} {hears} from a
-                         distance, "Don't die!" """, actor=actor)
 
 
 ###
