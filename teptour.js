@@ -7,7 +7,10 @@
 //
 // Adapted from a version in Python from 2011.
 
-world.global.set("release number", "0.22 (January 2021)");
+"use strict";
+
+// version numbers should only ever be of form 2.222...
+world.global.set("release number", "2.2 (January 2021)");
 
 world.global.set("game title", "The tEp Virtual House Tour");
 world.global.set("game headline", "A factual fantasy");
@@ -521,7 +524,7 @@ def_obj("The Center Room", "room", {
 add_floor("The Center Room", "carpet");
 make_known("The Center Room");
 
-//world.connect_rooms("The Center Room", "up", "The Second Landing");
+world.connect_rooms("The Center Room", "up", "The Second Landing");
 world.connect_rooms("The Center Room", "south", "The Front Room");
 world.connect_rooms("The Center Room", "north", "The Dining Room");
 world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
@@ -923,7 +926,7 @@ center room.`);
 
 //world.connect_rooms("back_stairwell_1", "down", "Basement")
 world.connect_rooms("back_stairwell_1", "north", "The Upstairs Kitchen");
-//world.connect_rooms("back_stairwell_1", "up", "back_stairwell_2")
+world.connect_rooms("back_stairwell_1", "up", "back_stairwell_2");
 
 ///
 /// The upstairs kitchen
@@ -975,32 +978,1213 @@ actions.before.add_method({
 /*** Second floor ***/
 /********************/
 
-def_obj("The Second Landing", "room");
+def_obj("The Second Landing", "room", {
+  added_words: ["2nd", "floor"],
+  description: `[img 2/landing/look.JPG left]This is the
+  second landing.  You can go [dir southeast] to 21, [dir south]
+  to 22, [dir north] to 23, [dir northeast] to the back
+  stairwell, [dir upstairs], and [dir downstairs].  The
+  bathrooms are to the [dir southwest] and [dir west].
+
+  [para]You can also look [look up], [look down], [look north],
+  [look east], and [look south].`
+});
+make_known("The Second Landing");
+add_floor("The Second Landing", "carpet");
+world.connect_rooms("The Second Landing", "southeast", "21");
+world.connect_rooms("The Second Landing", "south", "22");
+world.connect_rooms("The Second Landing", "north", "23");
+world.connect_rooms("The Second Landing", "northeast", "back_stairwell_2");
+world.connect_rooms("The Second Landing", "southwest", "Second Front");
+world.connect_rooms("The Second Landing", "west", "Second Back");
+world.connect_rooms("The Second Landing", "up", "The Third Landing");
+
+world.direction_description.set("The Second Landing", "up", `
+[img 2/landing/look_u.JPG left]Looking up the center stairwell from
+the second landing, you see the parabolas traced out by purple rope
+clearer.`);
+world.direction_description.set("The Second Landing", "down", `
+[img 2/landing/look_d.JPG left]You can see part of the center room
+from here.`);
+world.direction_description.set("The Second Landing", "north", `
+[img 2/landing/look_n.JPG left]To the [dir north] is 23, and to the
+[dir northeast] is the back stairwell.`);
+world.direction_description.set("The Second Landing", "east", `
+[img 2/landing/look_e.JPG left]To the east you see a way [dir upstairs].`);
+world.direction_description.set("The Second Landing", "south", `
+[img 2/landing/look_s.JPG left]Looking south, you see the entrance to
+21 to the [dir southeast], and the entance to 22 to the [dir south].`);
+
+///
+/// 21
+///
+
+def_obj("21", "room", {
+  description: `In your mind's eye, imagine the following:
+  this room is a double, and it has a fish tank.  You can go
+  [dir northwest] to the second landing.`
+});
+make_known("21");
+
+///
+/// 22
+///
+
+def_obj("22", "room", {
+  description: `[img 2/22/look.JPG left]This is 22, which
+  houses [a 'purple geodesic ball'], [the 'eit mural'],
+  and [the 'liberty sign'].  Above the bay windows are
+  [the 22_lights].  You can go [dir north] back to
+  the second landing, and you look [look south], [look west],
+  and [look north].`
+});
+make_known("22");
+add_floor("22", "wood");
+
+world.direction_description.set("22", "north", `
+[img 2/22/look_n.JPG left]You see the exit [dir north] to the second
+landing, as well as a closet to the [dir northwest].`);
+world.direction_description.set("22", "west", `
+[img 2/22/look_w.JPG left]On the wall to the west is [a 'picture of Buro's feet'],
+as well as the musical ladder, which makes different
+out-of-tune pitches when you knock on each rung.`);
+world.direction_description.set("22", "south", `
+[img 2/22/look_s.JPG left]To the south you see the bay windows and a
+window from the Liberty Caf\u00e9, the first Internet caf\u00e9 in
+the northeast.`);
+
+def_obj("22_lights", "thing", {
+  name: "color-changing lights",
+  uncountable: true,
+  added_words: ["color", "changing", "@candyland"],
+  is_scenery: true,
+  description: `[img 2/22/lights.JPG left]Known as
+  "candyland," these are ethernet-controlled lights which can
+  cycle through colors or follow music for a lightshow.`
+}, {put_in: "22"});
+
+def_obj("picture of Buro's feet", "thing", {
+  added_words: ["portrait"],
+  is_scenery: true,
+  no_take_msg: `You shouldn't take that picture.  It's
+  always been there.`,
+  description: `[img 2/22/feet.JPG left]This is a portrait of
+  the feet of Buro, a tEp of years past, who used to live in
+  this room.  Along with the feet, he left a rather large 10W
+  laser under a desk which made a good foot rest.`
+}, {put_in: "22"});
+
+def_obj("purple geodesic ball", "thing", {
+  is_scenery: true,
+  description: `[img 2/22/geodesic.JPG left]This ball was
+  used to be twice its size, hanging in the center stairwell.
+  It was our dreaded nemesis, the fire inspector, who made us
+  take it down: he imagined the ball rolling down the center
+  stairwell on fire Indiana Jones style, overrunning tEps as
+  they were futilely trying to run to safety.  Since it was so
+  large that you could get inside and use it like a hamster ball,
+  the ball was cut down to fit where it hangs now.`
+}, {put_in: "22"});
+
+def_obj("eit mural", "thing", {
+  is_scenery: true,
+  description: `[img 2/22/mural.JPG left]This is a mural
+  commemorating the sacrament of [ask eit].  It is modeled after
+  the cover of the classic text, the Structure and
+  Interpretation of Computer Programs (SICP for short), which
+  any good knight of the lambda calculus has read.  The
+  assistant demonstrates eit by eiting a metacircular evaluator
+  from the wizard's hand.
+
+  [para]Above the mural, you see a [ob 'liberty sign' sign] from the Liberty
+  Caf\u00e9.`
+}, {put_in: "22"});
+
+def_obj("liberty sign", "thing", {
+  printed_name: "Liberty Caf\u00e9 sign",
+  added_words: ["cafe", "caf\u00e9"],
+  is_scenery: true,
+  description: `[img 2/22/sign.JPG left]This is the sign from
+  the Liberty Caf\u00e9, the first Internet caf\u00e9 in the
+  northeast.  The caf\u00e9 did well, at least until Americans started
+  to prefer buying their own personal Internet.`
+}, {put_in: "22"});
+
+world.no_switch_msg.set("liberty sign", "no_switch_on", `{Bobs}
+{try} switching the sign on, but but it's currently out of order so
+{we} turn it off again.`);
+
+def_obj("emergency penguin", "thing", {
+  added_words: ["@button"],
+  is_scenery: true,
+  description: `The emergency penguin is deployable during
+  particularly Arctic social conditions or house tours,
+  whichever comes first.  Yellow yield signs blink around the
+  room, a refrigerator opens pneumatically, and a large,
+  inflatable penguin enters the vicinity when an industrial
+  button next to [the 'eit mural'] is pressed.  Both spectacular and a possible fire
+  hazard.`
+}, {put_in: "22"});
+
+world.no_switch_msg.set("emergency penguin", "no_switch_on", `The
+social conditions aren't particularly Arctic, and, besides, this is
+the kind of thing you want to see in Real Life.`);
+
+///
+/// 23
+///
+
+def_obj("23", "room", {
+  description: `[img 2/23/look.JPG left]This room is home of
+  [the 'hanging couch'] and the computer-controlled [ob leitshow
+  'light show'].  You can leave to the [dir south].`
+});
+make_known("23");
+add_floor("23", "wood");
+
+def_obj("hanging couch", "supporter", {
+  is_scenery: true,
+  enterable: true,
+  no_take_msg: `What do you want to do that for? That's
+  already been [ask grueszing grueszed]!`,
+  description: `[img 2/23/couch.jpg left]The Hanging Couch
+  was [ask grueszed] from a Back Bay alley some years ago. It
+  was a great couch, with one small problem: it had no legs. The
+  natural solution, of course, was to hang the couch from the
+  ceiling with several sturdy chains. Install a ladder,
+  [enter_inline i]et voil\u00e0[leave]: a comfortable place to park your
+  caboose and a great conversation piece.
+
+  [para]Many visitors to tEp are often apprehensive about sitting
+  on the hanging couch. But fear not.  One only needs to think
+  forward thoughts to get up the ladder.`,
+  locale_description: `[img 2/23/look_couch.JPG left]You get a
+  more elevated view of 23 (or maybe of life in general) from the
+  couch.`
+}, {put_in: "23"});
+
+parser.action.understand("think forward thoughts", parse => {
+  if (world.containing_room(world.actor) === "23") {
+    return entering("hanging couch");
+  } else {
+    return undefined;
+  }
+});
+
+def_obj("23_ladder", "thing", {
+  name: "swinging ladder",
+  is_scenery: true,
+  description : `It's a ladder going up to [the 'hanging couch']
+  that swings back and forth.  The advice is to think
+  forward thoughts to climb it.`
+}, {put_in: "23"});
+
+actions.before.add_method({
+  when: action => ((action.verb === "entering" || action.verb === "climbing")
+                   && action.dobj === "23_ladder"),
+  handle: function (action) {
+    if (world.parent_enterable(world.actor) === "hanging couch") {
+      // a slight bug: what if someone brings the exercise ball and gets on it from here?
+      throw new do_instead(getting_off(), true);
+    } else {
+      throw new do_instead(entering("hanging couch"), true);
+    }
+  }
+});
+
+def_obj("leitshow", "thing", {
+  is_scenery: true,
+  words: ["@leitshow", "leit", "@show", "@lightshow", "light", "layzor"],
+  description: `[img 2/23/lightshow.jpg left]The tEp Lazor
+  Leit Show began in the early 1990s when an entire peldge class
+  attended the IAP glassblowing course, fashioned their own neon
+  tubes and attached them to the ceiling of 23.  Since then, it
+  has accumulated dozens more neon lights, LEDs and lasers.
+  Custom tEp software and hardware, continuously refined, takes
+  input from recorded music, microphones and live MIDI
+  instruments and creates, on the fly, a mind-blowing visual
+  experience to accompany them.
+
+  [para]Irving stresses that it's impossible to truly appreciate
+  the light show without visiting it in person.`
+}, {put_in: "23"});
+
+///
+/// Second floor of the back stairwell
+///
+
+def_obj("back_stairwell_2", "room", {
+  name: "Second Floor of the Back Stairwell",
+  added_words: ["2nd"],
+  description: `[img 2/bstairs/look.jpg left]You are in the
+  back stairwell.  You can go [dir up] the [ob 'piano staircase']
+  to the third floor, [dir southwest] to second
+  landing, [dir north] to 24, or [dir downstairs] to the first
+  floor.  You can also look [look up], [look down], and to the
+  [look north].`
+});
+make_known("back_stairwell_2");
+
+world.direction_description.set("back_stairwell_2", "up", `
+[img 2/bstairs/look_u.jpg left]You can see the patterns painted on the
+walls along with the [ob 'piano staircase'] that can bring you
+[dir upstairs].`);
+world.direction_description.set("back_stairwell_2", "down", `
+[img 2/bstairs/look_d.jpg left]You see the stairs which can bring you
+[dir down] to the first floor.`);
+world.direction_description.set("back_stairwell_2", "north", `
+[img 2/bstairs/look_n.jpg left]To the [dir north], you see 24.`);
+
+world.connect_rooms("back_stairwell_2", "north", "24");
+world.connect_rooms("back_stairwell_2", "up", "back_stairwell_3", {via: "piano staircase"});
+
+def_obj("piano staircase", "door", {
+  words: ["piano", "@staircase", "@stairs", "@stairwell"],
+  openable: false,
+  reported: false,
+  description: `[img 2/bstairs/stairs.jpg left]This is the
+  piano staircase. Each step has a beam break sensor which is
+  connected to an old mini FM synthesizer.  Talented individuals
+  with long legs can produce wonderful melodies.`
+});
+
+world.when_go_msg.set("back_stairwell_2", "up", `As you skip your way
+up [the 'piano staircase'], you trace out, more or less, a whole tone scale.`);
+
+world.when_go_msg.set("back_stairwell_3", "down", `You try for a major scale
+on your way down [the 'piano staircase'].`);
+
+///
+/// 24
+///
+
+def_obj("24", "room", {
+  description: `[img 2/24/look.JPG left]This is a single, and
+  it has a lofted bed.  You can go [dir south] to the back
+  stairwell.`
+});
+make_known("24");
+add_floor(world, "24", "tile");
+
+///
+/// Second Front
+///
+def_obj("Second Front", "room", {
+  added_words: ["2nd"],
+  description: `[img 2/2f/look.jpg left]This is second front,
+  a bathroom named for its presence on the second floor and its
+  being closer to the front of the house.  Nothing to see
+  here. You can go [dir northeast] to the second landing.`
+});
+
+
+///
+/// Second Back
+///
+def_obj("Second Back", "room", {
+  words: ["2nd", "Second", "@Back"],
+  description: `[img 2/2b/look.JPG left]This is second back.
+  It's a bathroom with a disco ball, an icosahedron, and a
+  strobe light.`
+});
+
 
 /*******************/
 /*** Third floor ***/
 /*******************/
 
-def_obj("The Third Landing", "room");
+def_obj("The Third Landing", "room", {
+  added_words: ["3rd", "floor"],
+  description: `[img 3/landing/look.JPG left]This is the
+  third landing.  You can go [dir southeast] to 31, [dir south]
+  to 32, [dir north] to 33, [dir northeast] to the back
+  stairwell, [dir upstairs], and [dir downstairs]. The bathrooms
+  are to the [dir southwest] and [dir west].
+
+  [para]You can also look [look up], [look down], [look north],
+  [look east], [look south], and [look west].`
+});
+make_known("The Third Landing");
+add_floor("The Third Landing", "carpet");
+world.connect_rooms("The Third Landing", "southeast", "31", {via: "door to 31"});
+world.connect_rooms("The Third Landing", "south", "32");
+world.connect_rooms("The Third Landing", "north", "33");
+world.connect_rooms("The Third Landing", "northeast", "back_stairwell_3");
+world.connect_rooms("The Third Landing", "up", "The Fourth Landing");
+world.connect_rooms("The Third Landing", "southwest", "Third Front");
+world.connect_rooms("The Third Landing", "west", "Third Back");
+
+world.direction_description.set("The Third Landing", "north", `
+[img 3/landing/look_n.JPG left]To the [dir north] is the entrance to
+33, and to the [dir northeast] is the back stairwell.`);
+world.direction_description.set("The Third Landing", "south", `
+[img 3/landing/look_s.JPG left]To the [dir south] is 32, and to the
+[dir southwest] is 31 (which is the RA's room and locked).`);
+world.direction_description.set("The Third Landing", "east", `
+[img 3/landing/look_e.JPG left]To the east you see the stairwell that
+goes [dir upstairs].`);
+world.direction_description.set("The Third Landing", "west", `
+[img 3/landing/look_w.JPG left]To the west, you see a bulletin board
+with writings of the "third back writing club."  You can go into third
+front and third back to the [dir southwest] and [dir west],
+respectively.`);
+world.direction_description.set("The Third Landing", "up", `
+[img 3/landing/look_u.JPG left]Looking up, you see you're getting much
+closer to the top of the center stairwell.`);
+world.direction_description.set("The Third Landing", "down", `
+[img 3/landing/look_d.JPG left]Below you, you see some ropes whose
+envelope traces out some parabolas.  The center room is getting very
+small from here.`);
+
+///
+/// 31
+///
+
+def_obj("door to 31", "door", {
+  lockable: true,
+  is_locked: true,
+  reported: false,
+  description: `The door to 31 is locked.  Who knows what
+  mysteries might lie within the RA's room?`
+});
+
+world.no_lock_msg.set("door to 31", "no_open", `You shouldn't go
+in since it's the [ob RA]'s room.  You try anyway, but the door to 31 is
+locked, so you can't get in.`);
+
+def_obj("31", "room", {
+});
+make_known("31");
+
+///
+/// 32
+///
+
+def_obj("32", "room", {
+  description: `[img 3/32/look.JPG left]This is the hanging
+  room, named for its many hanging things such as [the hammock],
+  [the 'hanging desk'], and a yellow sign that says
+  "caution, wet ceiling."  To the [dir northwest] is a closet,
+  and you can go [dir north] to the third landing.  You can look
+  [look south].`
+});
+make_known("32");
+add_floor("32", "wood");
+
+world.direction_description.set("32", "south", `
+[img 3/32/look_s.JPG left]To the south, you see through the bay
+windows [a flagpole].`);
+
+def_obj("hanging desk", "supporter", {
+  added_words: ["@chair"],
+  is_scenery: true,
+  enterable: true,
+  description: `[img 3/32/desk.JPG left]Some problems need a
+  new point of view to be able to finally solve.  If the point
+  of view needed is one of greater elevation, then the hanging
+  desk is perfect.  The cousin to the hanging desk is the
+  hanging couch in [action 'go to 23' 23].`
+}, {put_in: "32"});
+
+def_obj("hammock", "container", {
+  is_scenery: true,
+  enterable: true,
+  description: `[img 3/32/hammock.JPG left]The hammock, which
+  is the younger sibling of the Free Willy net in
+  [action 'go to 33' 33], is a comfortable place to lounge
+  when in the hanging room.`
+}, {put_in: "32"});
+
+def_obj("flagpole", "thing", {
+  is_scenery: true,
+  description: `[img 3/32/flagpole.JPG left]This flagpole has
+  held numerous flags, such as the current, tattered pirate
+  flag, a birthday flag, and a giant [ask 22] flag.`
+}, {put_in: "32"});
+
+def_obj("The Closet in 32", "room", {
+  description: `[img 3/32closet_l/look.JPG left]It's a
+  closet, in which is a bed, on which someone sleeps.  You can
+  go [dir southeast] into 32.`
+});
+
+world.connect_rooms("32", "northwest", "The Closet in 32");
+//world.connect_rooms("The Closet in 32", "down", "The Batcave");
+
+world.direction_description.set("The Closet in 32", "down", `
+[img 3/32closet_l/look_d.JPG left]Looking down, you can see a
+passageway into a room below this closet.`);
+
+world.when_go_msg.set("The Closet in 32", "down", `You squeeze
+through a small opening in the floor to get into...`); // goes to batcave
+
+///
+/// 33
+///
+
+def_obj("33", "room", {
+  description: `[img 3/33/look.JPG left]This room is home of
+  [the 'Free Willy net'] as well as a collection of
+  [ob 'bad tie collection' 'bad ties'].
+  To the [dir southwest] is the cockpit, and to the
+  [dir south] is the third landing.`
+});
+make_known("33");
+add_floor("33", "wood");
+world.connect_rooms("33", "southwest", "The Cockpit");
+
+def_obj("Free Willy net", "container", {
+  added_words: ["large", "red", "purple", "authentic", "fishing"],
+  enterable: true,
+  is_scenery: true,
+  description: `[img 3/33/net.JPG left]This large fishing net
+  is from the movie Free Willy.  It was purchased on eBay with a
+  bid of exactly two-hundred twenty-two dollars and forty-seven
+  cents some time ago from a stagehand who took the net home as
+  a collectable (likely overestimating its eventual value).
+  There was a failed attempt to dye the net purple, and it ended
+  up being a reddish color instead.
+
+  [para]The net has been proven through robust scientifical
+  testing to be limited by volume and not weight; it has held
+  over thirty people simultaneously!  It's been said that once you enter the net,
+  you never want to leave, so be careful.`,
+  locale_description: `[img 3/33/look_net.JPG left]Hanging
+  near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'].
+  Although you really don't want to, since you're quite
+  comfortable where you are, you can [action 'get out'] of the
+  net.`
+}, {put_in: "33"});
+
+// middle paragraph
+//         [newline]While this net was from the production of Free Willy,
+//         it never actually touched the whale; rather, it was the
+//         spare. When the idea of buying the net came up at a house
+//         meeting, the house vegans were outraged at the idea of
+//         installing a net that had imprisoned an animal, shouting
+//         "Immanentize the eschaton!" (we're still not sure what they
+//         meant). That and the fact that the spare net was much cheaper
+//         than the primary net led to the net now hanging in 33.
+
+
+// alternative middle paragraph:
+//  While this net was from the production of Free Willy,
+//        it never actually touched the whale; rather, it was the spare.
+//        When the idea of buying a net that touched a whale came up at
+//        a house meeting, the house vegans were outraged.  That, and
+//        the fact that the spare net was much cheaper than the primary
+//        net led to this net hanging in 33.
+
+def_obj("bad tie collection", "thing", {
+  added_words: ["ties"],
+  is_scenery: true,
+  description: `[img 3/33/ties.JPG left]This is a collection
+  of many remarkably bad ties.  They've been successfully used by a
+  few tEps to land jobs at Google.`
+}, {put_in: "33"});
+
+///
+/// The cockpit
+///
+
+def_obj("The Cockpit", "room", {
+  description: `[img 3/cockpit/look.JPG left]This is the
+  cockpit, which is a small closet, a bed, and a really cool
+  mural.  Usually there are color-changing lights in this room,
+  making the mural even cooler.
+
+  [para]You can leave to the [dir northeast].`
+});
+
+///
+/// Third front
+///
+
+def_obj("Third Front", "room", {
+  added_words: ["3rd"],
+  description: `[img 3/3f/look.JPG left]This is a bathroom,
+  in which is [the 'Royal Throne'] and [ob diplomas 'some diplomas'].
+  You can go [dir northeast] to the third landing, and you can
+  look [look up] at the ceiling.`
+});
+
+world.direction_description.set("Third Front", "up", `
+[img 3/3f/look_u.JPG left]Looking up, you see an Escherian tesselation
+of lizards on the ceiling tiles.`);
+
+def_obj("Royal Throne", "supporter", {
+  added_words: ["@toilet"],
+  enterable: true,
+  is_scenery: true,
+  description: `[img 3/3f/throne.JPG left]On the toilet, it
+  says "The Royal Throne."`
+}, {put_in: "Third Front"});
+
+def_obj("diplomas", "thing", {
+  added_words: ["@diploma", "toilet", "paper", "@roll"],
+  indefinite_name: "some diplomas",
+  is_scenery: true,
+  no_take_msg: `You can get one of those from your own house.`,
+  description: `[img 3/3f/diplomas.JPG left]On the toilet
+  paper roll dispenser are the words "Harvard Diplomas."`
+}, {put_in: "Third Front"});
+
+///
+/// Third back
+///
+
+def_obj("Third Back", "room", {
+  added_words: ["3rd"],
+  description: `[img 3/3b/look.JPG left]This is a bathroom
+  with color-changing lights.  You can leave to the [dir east].`
+});
+
+
+///
+/// Third floor of the back stairwell
+///
+
+def_obj("back_stairwell_3", "room", {
+  name: "Third Floor of the Back Stairwell",
+  added_words: ["3rd"],
+  description: `[img 3/bstairs/look.jpg left]You are in the
+  back stairwell.  You can go [dir upstairs] to the fourth
+  floor, [dir southwest] to third landing, [dir north] to 34, or
+  [dir downstairs] to the second floor.  You can also look
+  [look up], [look down], [look north], and [look west].`
+});
+make_known("back_stairwell_3");
+
+world.connect_rooms("back_stairwell_3", "north", "34");
+world.connect_rooms("back_stairwell_3", "up", "back_stairwell_4");
+
+world.direction_description.set("back_stairwell_3", "up", `
+[img 3/bstairs/look_u.jpg left]You can see the patterns painted on the
+walls and a passage [dir upstairs].`);
+world.direction_description.set("back_stairwell_3", "down", `
+[img 3/bstairs/look_d.jpg left]You see [the 'piano staircase'],
+which can bring you [dir down] to the second floor.`);
+world.direction_description.set("back_stairwell_3", "north", `
+[img 3/bstairs/look_n.jpg left]To the [dir north], you see 34.`);
+world.direction_description.set("back_stairwell_3", "west", `
+[img 3/bstairs/look_w.jpg left]To the [dir southwest], you see the
+third landing.`);
+world.direction_description.set("back_stairwell_3", "east", `Looking
+[dir east], you see the [ob 'closet door' door] of a closet.`);
+
+///
+/// 34
+///
+
+def_obj("34", "room", {
+  description: `In your minds eye, imagine this: you're in a
+  single, and the bed is lofted. You can go [dir south] to the
+  back stairwell.`
+});
+make_known("34");
+add_floor("34", "wood");
+
+///
+/// Porn closet
+///
+
+def_obj("porn_closet_door", "door", {
+  name: "closet door",
+  reported: false,
+  description : () => {
+    out.write(`[img 3/porn/door.jpg left]It's a wooden door,
+    around which are dinosaur figures possibly depicting various
+    sexual positions.  It is currently `, world.is_open_msg("porn_closet_door"), ".");
+  }
+});
+world.connect_rooms("back_stairwell_3", "east", "The Porn Closet", {via: "porn_closet_door"});
+
+def_obj("The Porn Closet", "room", {
+  description: `[img 3/porn/look.jpg left]This is a closet
+  full of study materials for introductory classes at MIT.
+  There is surprisingly little porn in this closet.`
+});
+world.direction_description.set("The Porn Closet", "up", `
+[img 3/porn/look_u.JPG left]There's a [ob porn_closet_ladder ladder] going up.`);
+world.direction_description.set("The Porn Closet", "north", `
+[img 3/porn/look_n.jpg left]You see a [ob porn_closet_ladder ladder] here going up.`);
+
+def_obj("porn_closet_ladder", "door", {
+  name: "wood ladder",
+// TODO  IsLadder : True,
+  reported: false,
+  openable: false,
+  description: `[img 3/porn/ladder.JPG left]This is a ladder
+  going from the porn closet [dir up] into the reading room.`
+});
+
+def_obj("imagination capturer", "container", {
+  description: `[img 3/porn/catcher.JPG left]It's an
+  imagination capturer.  It captures your imagination.`
+}, {put_in: "The Porn Closet"});
+
+///
+/// The Reading Room
+///
+def_obj("The Reading Room", "room", {
+  description: `[img 3/reading/look.JPG left]This is the
+  reading room, a secret room of tEp.  You can go back [dir down]
+  [ob porn_closet_ladder 'the ladder'] to the porn closet.  You can also look
+  [look up] and [look down].`
+});
+world.connect_rooms("The Porn Closet", "up", "The Reading Room", {via: "porn_closet_ladder"});
+
+world.direction_description.set("The Reading Room", "up", `
+[img 3/reading/look_u.JPG left]Looking up, you see a lamp.`);
+world.direction_description.set("The Reading Room", "down", `
+[img 3/reading/look_d.JPG left]Below you, you see [ob porn_closet_ladder 'the ladder']
+which can bring you back to the porn closet.`);
+
+
 
 /********************/
 /*** Fourth floor ***/
 /********************/
 
-def_obj("The Fourth Landing", "room");
+def_obj("The Fourth Landing", "room", {
+  added_words: ["4th", "floor"],
+  description: `[img 4/landing/look.JPG left]This is the
+  fourth landing.  You can go [dir southeast] to 41, [dir south]
+  to 42, [dir north] to 43, [dir northeast] to the back
+  stairwell, [dir east] to the mac closet, [dir northwest] to
+  the network closet, and [dir downstairs].  The bathrooms are
+  to the [dir southwest] and [dir west].
+
+  [para]You can also look [look up], [look down], [look north],
+  [look east], and [look south].`});
+make_known("The Fourth Landing");
+add_floor("The Fourth Landing", "carpet");
+world.connect_rooms("The Fourth Landing", "southeast", "41");
+world.connect_rooms("The Fourth Landing", "south", "42");
+world.connect_rooms("The Fourth Landing", "north", "43");
+world.connect_rooms("The Fourth Landing", "northeast", "back_stairwell_4");
+world.connect_rooms("The Fourth Landing", "southwest", "Fourth Front");
+world.connect_rooms("The Fourth Landing", "west", "Fourth Back");
+world.connect_rooms("The Fourth Landing", "east", "The Mac Closet");
+world.connect_rooms("The Fourth Landing", "northwest", "The Network Closet");
+world.no_go_msg.set("The Fourth Landing", "up", `There aren't any
+more stairs up from here.  You'll have to first go [dir northeast] to
+the back stairwell.`);
+
+world.direction_description.set("The Fourth Landing", "up", `
+[img 4/landing/look_u.JPG left]Looking up, you see the skylight and
+the traveling salesman door, through which tEps lead traveling
+salesmen.`);
+world.direction_description.set("The Fourth Landing", "down", `
+[img 4/landing/look_d.JPG left]This looks like the perfect spot from
+which to drop something down the center stairwell.`);
+world.direction_description.set("The Fourth Landing", "north", `
+[img 4/landing/look_n.JPG left]To the [dir north] is 43, and to the
+[dir northeast] is the back stairwell.`);
+world.direction_description.set("The Fourth Landing", "east", `
+[img 4/landing/look_e.JPG left]To the east you see a way [dir downstairs].`);
+world.direction_description.set("The Fourth Landing", "south", `
+[img 4/landing/look_s.JPG left]Looking south, you see the entrance to
+the mac closet to the [dir east], the entrance to 41 to the
+[dir southeast], and the entance to 42 to the [dir south].`);
+
+///
+/// 41
+///
+
+def_obj("41", "room", {
+  description: `[img 4/41/look.JPG left]This is a double with
+  a lofted and a non-lofted bed. You note that the room is very
+  yellow. You can go [dir northwest] back to the fourth landing.`
+});
+make_known("41");
+
+///
+/// 42
+///
+def_obj("42", "room", {
+  description: `[img 4/42/look.JPG left]This is a triple
+  containing [the 'Eye of Gorlack'] and [the 'Eyebrow of Gorlack'].
+  You can go [dir north] back to the fourth landing.
+  You can also look [look south].`
+});
+make_known("42");
+add_floor("42", "wood");
+
+world.direction_description.set("42", "south", `
+[img 4/42/look_s.JPG left]To the south, you can see part of the Boston
+skyline, including the Prudential Center.`);
+
+def_obj("Eye of Gorlack", "thing", {
+  is_scenery: true,
+  description: `[img 4/42/eye.JPG left]The Eye of Gorlack
+  is over a thousand three-color LEDs mounted on a hemisphere.
+  It was built by David Greenberg in 2009.`
+}, {put_in: "42"});
+
+def_obj("Eyebrow of Gorlack", "thing", {
+  is_scenery: true,
+  description: `[img 4/42/brow.JPG left]The Eyebrow of
+  Gorlack is lighting that was left over after a project that
+  was part of the MIT 150th Anniversary arts festival, which was
+  LED lighting spanning most of the length of the Harvard
+  Bridge.`
+}, {put_in: "42"});
+
+///
+/// 43
+///
+
+def_obj("43", "room", {
+  description: `[img 4/43/look.JPG left]This is a room with a
+  [ob 'mural chalkboard' mural] on a chalkboard.  On the wall
+  you see [the Roscoe].  To the [dir south] is the
+  fourth landing, and you can look [look east].`
+});
+make_known("43");
+add_floor("43", "wood");
+
+world.direction_description.set("43", "east", `
+[img 4/43/look_e.JPG left]On the east wall, you see a blackboard with
+the words "Taylor Swift--Genius" and [the Roscoe].`);
+
+def_obj("mural chalkboard", "thing", {
+  is_scenery: true,
+  description: `[img 4/43/chalkboard.JPG left]This is a
+  chalkboard with a large portrait of someone who one lived here
+  a few years ago.`
+}, {put_in: "43"});
+
+all_are_mistakes(["erase/wash [obj 'mural chalkboard']"],
+                 `Considering that the mural has been there for years,
+                  you wisely decide not to erase it.`);
+
+def_obj("Roscoe", "thing", {
+  proper_named: true,
+  is_scenery: true,
+  description: `[img 4/43/roscoe.JPG left]This is a picture
+  of Roscoe taking a ride around the block.`
+}, {put_in: "43"});
+
+def_obj("banned words list", "thing", {
+  indefinite_name: "the banned words list",
+  description: () => {
+    out.write(`[img 4/43/banned.jpg left]This is a list of
+    words that are banned in this room.  The list includes`);
+    // assume it has at least three words
+    let words = world.global("banned words");
+    for (let i = 0; i < words.length; i++) {
+      if (i + 1 === words.length) {
+        out.write(` and "${words[i]}."`);
+      } else {
+        out.write(` "${words[i]},"`);
+      }
+    }
+  }
+}, {put_in: "43"});
+
+world.global.set("banned words", ["isomorphic", "supposedly", "epistemology"]);
+
+function handle_banned_word(parse) {
+  if (!world.global("banned words").includes(parse.x.toLowerCase())) {
+    return undefined;
+  }
+  if (world.containing_room(world.actor) === world.containing_room("banned words list")) {
+    return making_mistake("Watch your tongue! That word is on the banned words list.");
+  } else {
+    return making_mistake(`You say the word and furtively look around the room.  Good,
+    it's not banned here.`);
+  }
+}
+
+parser.action.understand("[text x]", handle_banned_word);
+parser.action.understand("say [text x]", handle_banned_word);
+parser.action.understand('say "[text x]"', handle_banned_word);
+
+function adding_to(word, iobj) {
+  return {verb: "adding to", text: word, iobj: iobj};
+}
+actions.write_gerund_form.add_method({
+  when: (action) => action.verb === "adding to",
+  handle: function (action) {
+    out.write(`adding "`); out.write_text(action.text);
+    out.write(`" to `, world.definite_name(action.iobj));
+  }
+});
+actions.write_infinitive_form.add_method({
+  when: (action) => action.verb === "adding to",
+  handle: function (action) {
+    out.write(`add "`); out.write_text(action.text);
+    out.write(`" to `, world.definite_name(action.iobj));
+  }
+});
+
+parser.action.understand("add [text x] to [something y]", parse => adding_to(parse.x, parse.y));
+
+require_iobj_accessible("adding to");
+
+actions.before.add_method({
+  name: "adding to default",
+  when: action => action.verb === "adding to",
+  handle: function (action) {
+    throw new abort_action("You can't add anything to that.");
+  }
+});
+actions.before.add_method({
+  name: "adding to banned words list",
+  when: action => action.verb === "adding to" && action.iobj === "banned words list",
+  handle: function (action) {
+    if (action.text.includes(" ")) {
+      throw new abort_action("It's the banned [enter_inline i]words[leave] list.");
+    } else if (world.global("banned words").includes(action.text.toLowerCase())) {
+      throw new abort_action("That's already on the list.");
+    }
+  }
+});
+actions.carry_out.add_method({
+  name: "adding to banned words list",
+  when: action => action.verb === "adding to" && action.iobj === "banned words list",
+  handle: function (action) {
+    var words = world.global("banned words");
+    words.push(action.text.toLowerCase());
+  }
+});
+actions.report.add_method({
+  name: "adding to banned words list",
+  when: action => action.verb === "adding to" && action.iobj === "banned words list",
+  handle: function (action) {
+    out.write("Added.");
+  }
+});
+
+///
+/// Fourth front
+///
+
+def_obj("Fourth Front", "room", {
+  description: `[img 4/4f/look.JPG left]This is another fine
+  tEp bathroom. You can go [dir northeast] back to the fourth
+  landing or look [look up].`
+});
+
+world.direction_description.set("Fourth Front", "up", `
+[img 4/4f/look_u.JPG left]Above you, the tiles have been painted in a
+checkerboard pattern.`);
+
+///
+/// Fourth back
+///
+
+def_obj("Fourth Back", "room", {
+  description: `[img 4/4b/look.jpg left]This bathroom doesn't
+  have any special properties.  You can go [dir east] back to
+  the fourth landing.`
+});
+
+world.direction_description.set("Fourth Back", "up", `
+[img 4/4b/look_u.JPG left]The're a hole in the ceiling, exposing the
+plumbing for the floor above.`);
+
+///
+/// The Mac Closet
+///
+
+def_obj("The Mac Closet", "room", {
+  description: `[img 4/mac/look.jpg left]This is the mac
+  closet, named for the Macintosh computer that used to be set
+  up in here.  The fourth landing is back to the [dir west].`
+});
+
+///
+/// The Network Closet
+///
+
+def_obj("The Network Closet", "room", {
+  description: `[img 4/network/look.jpg left]This is the
+  network closet, in which is the Internet and a fridge.
+  Interestingly, the use of the microwave disrupts network
+  traffic. The fourth landing is back to the [dir southeast].`
+});
+
+///
+/// Fourth floor of the back stairwell
+///
+
+def_obj("back_stairwell_4", "room", {
+  name: "Fourth Floor of the Back Stairwell",
+  added_words: ["4th"],
+  description: `[img 4/bstairs/look.jpg left]You are in the
+  back stairwell.  You can go [dir up] the black light stairwell
+  to the fifth floor, [dir southwest] to fourth landing, [dir north]
+  to 44, or [dir downstairs] to the third floor.
+
+  [para]You can look [look upstairs], [look downstairs],
+  [look north], [look west], [look south], and [look east].`
+});
+make_known("back_stairwell_4");
+
+world.connect_rooms("back_stairwell_4", "north", "44");
+world.connect_rooms("back_stairwell_4", "up", "The Fifth Landing");
+
+world.direction_description.set("back_stairwell_4", "up", `
+[img 4/bstairs/look_u.jpg left]You can see more fluorescent paintings
+and a passage [dir upstairs].`);
+world.direction_description.set("back_stairwell_4", "down", `
+[img 4/bstairs/look_d.jpg left]You see a way [dir downstairs] to the
+third floor.`);
+world.direction_description.set("back_stairwell_4", "north", `
+[img 4/bstairs/look_n.jpg left]To the [dir north], you see 44.`);
+world.direction_description.set("back_stairwell_4", "west", `
+[img 4/bstairs/look_w.jpg left]To the [dir southwest], you see the
+fourth landing.`);
+world.direction_description.set("back_stairwell_4", "east", `
+[img 4/bstairs/look_e.JPG left]Looking east, you see the beginning of
+the black light stairwell, which you can look [look up].`);
+world.direction_description.set("back_stairwell_4", "south", `
+[img 4/bstairs/look_s.JPG left]You see fluorescent paintings on the
+south wall.`);
+
+///
+/// 44
+///
+
+def_obj("44", "room", {
+  description: `This single is very messy.  You can go [dir south]
+  to the back stairwell.`
+});
+make_known("44");
 
 /*******************/
 /*** Fifth floor ***/
 /*******************/
 
-def_obj("The Fifth Landing", "room");
+def_obj("The Fifth Landing", "room", {
+  added_words: ["5th", "floor"],
+  description: `[img 5/landing/look.jpg left]This is the
+  fifth landing.  You can go [dir southeast] to 51, [dir south]
+  to the study room, [dir northwest] to 53, [dir north] to 54,
+  [dir northeast] to 55, and [dir downstairs].
 
-def_obj("51", "room");
+  [para]You can also look [look north], [look southwest], and
+  [look southeast].`
+});
+make_known("The Fifth Landing");
+add_floor("The Fifth Landing", "carpet");
+world.connect_rooms("The Fifth Landing", "southeast", "51");
+world.connect_rooms("The Fifth Landing", "south", "The Study Room");
+world.connect_rooms("The Fifth Landing", "northwest", "53");
+world.connect_rooms("The Fifth Landing", "north", "54");
+world.connect_rooms("The Fifth Landing", "northeast", "55");
+
+world.direction_description.set("The Fifth Landing", "north", `
+[img 5/landing/look_n.JPG left]On the north wall, you see a mural and
+the door into 54.`);
+world.direction_description.set("The Fifth Landing", "southwest", `
+[img 5/landing/look_sw.JPG left]To the southwest, you see a wall with
+a mural.`);
+world.direction_description.set("The Fifth Landing", "southeast", `
+[img 5/landing/look_se.JPG left]To the southeast, you see a wall with
+a mural and the entrance into 51.`);
+
+///
+/// 51
+///
+
+def_obj("51", "room", {
+  description: `This is a single.  It has the traveling
+  salesman door and a window to the center stairwell, which you
+  can look [look down]. You can go [dir northwest] to the
+  landing.`
+});
+make_known("51");
+
+world.direction_description.set("51", "down", `
+[img 5/51/look_d.JPG left]You're looking out the window into the space
+between the stairs.`);
+
+///
+/// 53
+///
+
+def_obj("53", "room", {
+  description : `This is a skinny single.  You can go [dir southeast]
+  to the fifth landing.`
+});
+make_known("53");
+
+///
+/// 54
+///
+
+def_obj("54", "room", {
+  description: `This is a skinny single.  You can go [dir south]
+  to the fifth landing.`
+});
+make_known("54");
+
+///
+/// 55
+///
+
+def_obj("55", "room", {
+  description: `This is the smallest single in the house, and
+  it's painted a very happy orange.  You can go [dir southwest]
+  to the fifth landing.`
+});
+make_known("55");
+
+///
+/// The Study Room
+///
+
+def_obj("The Study Room", "room", {
+  added_words: ["chapter", "@52"],
+  description: `[img 5/study/look.JPG left]This is the study
+  room (also known as 52, keeping up with the
+  clockwise-enumeration convention), which was painted by a tEp
+  who once stared at the sun and could only see green for a
+  month.  You can go [dir north] to the rest of the fifth floor,
+  or [dir south] through [the 'xiohazard door'] to the poop
+  deck.
+
+  [para]You can also look [look east], [look north], and [look west].`
+});
+make_known("The Study Room");
+add_floor("The Study Room", "wood");
+world.connect_rooms("The Study Room", "south", "The Poop Deck", {via: "xiohazard door"});
+
+world.direction_description.set("The Study Room", "east", `
+[img 5/study/look_e.JPG left]To the east, you see a chalkboard and a
+tiny mural which was inadvertently painted with MIT colors.`);
+world.direction_description.set("The Study Room", "north", `
+[img 5/study/look_n.JPG left]To the north, you see a bookshelf.`);
+world.direction_description.set("The Study Room", "west", `
+[img 5/study/look_w.JPG left]To the west, you see the study room
+computer.`);
+
+def_obj("xiohazard door", "door", {
+  reported: false,
+  description: `[img 5/study/door.JPG left]The door between
+  the study room and the poopdeck is ornamented handsomly with a
+  large xiohazard, the logo for tEp Xi chapter.`
+});
+
+///
+/// The Poop Deck
+///
+
+def_obj("The Poop Deck", "room", {
+  description: `[img 5/poop/look.JPG left]This is the roof
+  deck immediately outside the study room of [ask 'the U.S.S. Birthday Ship'].
+  From here you can see a nice view of
+  the mall to the [look south] (which is the grassy area along
+  Commonwealth Ave).  You can go [dir north] back into the study
+  room, or [dir up] to the roof.  You can also look [look north]
+  and [look down].`
+});
+make_known("The Poop Deck");
+world.connect_rooms("The Poop Deck", "up", "The Roof");
+
+world.direction_description.set("The Poop Deck", "down", `
+[img 5/poop/look_d.JPG left]You peer over the handrail at Commonwealth
+Ave, below.`);
+world.direction_description.set("The Poop Deck", "south", `
+[img 5/poop/look_s.JPG left]To the south, you get a view of the Boston
+skyline.`);
+world.direction_description.set("The Poop Deck", "north", `
+[img 5/poop/look_n.JPG left]You see [the 'xiohazard door'] into the
+study room to the [dir north].`);
+
 
 /****************/
 /*** The Roof ***/
 /****************/
 
+def_obj("The Roof", "room", {
+  description: `[img 5/roof/look.JPG left]This is the roof of
+  tEp.  To the [look north] is a view of the MIT campus, and to
+  the [look south] is the Boston skyline.  You can go back
+  [dir down] to the poopdeck. You can also [look down].`
+});
+make_known("The Roof");
+
+world.direction_description.set("The Roof", "north", `
+[img 5/roof/look_n.JPG left]You see the Green Building and the Great
+Dome across the river at MIT.`);
+world.direction_description.set("The Roof", "south", `
+[img 5/roof/look_s.JPG left]To the south is a view of the Boston
+skyline.`);
+
+world.no_go_msg.set("The Roof", "east", `It is not worth the wrath
+of the neighbors to go onto their roof.`);
+world.no_go_msg.set("The Roof", "west", `It is not worth the wrath
+of the neighbors to go onto their roof.`);
+
+def_obj("hot tub", "container", {
+  printed_name: "the hot tub",
+  added_words: ["kiddie", "@pool", "@hottub"],
+  enterable: true,
+  proper_named: true,
+  description: `An inflatable hot tub is kept on the roof for
+  relaxing on quiet nights, especially during IAP and the
+  summer.  The maximum size supportable by the roof has been
+  carefully calculated by Course 2 tEps.`
+}, {put_in: "The Roof"});
+
+def_obj("The Etruscan Bathhouse", "container", {
+  proper_named: true,
+  enterable: true,
+  description: `[img 5/roof/bathhouse.JPG left]This is the
+  Etruscan bathhouse.  Many years ago it was the machine room
+  for the elevator shaft in the back stairwell, but now it has a
+  tub.  You can [action 'enter Etruscan Bathhouse' enter] it.`,
+  locale_description: `[img 5/roof/look_bath.JPG left]You are
+  in the Etruscan bathhouse, complete with an authentic
+  reproduction of Etruscan art, courtesy of a postcard from a
+  tEp alumnus.  You can [action leave] when you're ready.`
+}, {put_in: "The Roof"});
+
+def_obj("bathtub", "container", {
+  added_words: ["bath", "@tub"],
+  enterable: true,
+  is_scenery: true,
+  description: `[img 5/roof/bathtub.JPG left]This bathtub
+  used to be on the poop deck before its present location in the
+  Etruscan bathhouse.  However, observers from the Prudential
+  Center noticed naked bathers and, for whatever reason,
+  complained.`
+}, {put_in: "The Etruscan Bathhouse"});
+
+// for "draw a bath"
+parser.action.understand("draw [obj bathtub]", using("bathtub"));
+
+actions.before.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "bathtub",
+  handle: () => {}
+});
+actions.report.add_method({
+  when: ({verb,dobj}) => verb === "using" && dobj === "bathtub",
+  handle: function () {
+    out.write(`You fill the tub with hot water from the garden hose
+    plumbing before getting in.  It's just you, the water, the
+    bathtub, and the large Etruscan mural.  Once satisfied, you then
+    drain the bath.`);
+  }
+});
+
+function handle_jump_off_roof(parse) {
+  if (["The Roof", "The Poop Deck"].includes(world.containing_room(world.actor))) {
+    return making_mistake(`The RA comes out
+    and stops you, "remember the zeroth [ask <rules of tep>
+    <rule of tep>]! Don't die!"`);
+  } else {
+    return undefined;
+  }
+}
+
+parser.action.understand("jump off", handle_jump_off_roof);
+parser.action.understand("jump off roof", handle_jump_off_roof);
+parser.action.understand("jump off the roof", handle_jump_off_roof);
 
 /****************/
 /*** Basement ***/
