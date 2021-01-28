@@ -2,6 +2,8 @@
 // A simple engine for interactive fiction.
 // (c) 2021 Kyle Miller
 
+"use strict";
+
 /*** Generic functions ***/
 
 /*
@@ -3357,8 +3359,8 @@ function tokenize(s) {
       continue; // skip whitespace
     }
     var j = i;
-    while (j < s.length && s[j].match(/[a-z0-9']/i)) {
-      // a word is a combination of letters, numbers, and apostrophes (for contractions)
+    while (j < s.length && s[j].match(/[a-z0-9'\-]/i)) {
+      // a word is a combination of letters, numbers, hyphens, and apostrophes (for contractions)
       j++;
     }
     if (j === i) {
@@ -4718,7 +4720,7 @@ actions.write_gerund_form.add_method({
       out.write(" to ", world.definite_name(action.to));
     }
     if (action.via && action.via !== action.to) {
-      out.write(" via "); out.the(action.to);
+      out.write(" via "); out.the(action.via);
     }
   }
 });
@@ -4730,7 +4732,7 @@ actions.write_infinitive_form.add_method({
       out.write(" to ", world.definite_name(action.to));
     }
     if (action.via && action.via !== action.to) {
-      out.write(" via "); out.the(action.to);
+      out.write(" via "); out.the(action.via);
     }
   }
 });
