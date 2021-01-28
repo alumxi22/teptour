@@ -33,6 +33,10 @@ HTML_abstract_builder.prototype.img = function (path, align) {
       out.add_class("desc_img");
     }
     out.with_block("img", () => {
+      let img = out.root;
+      img.addEventListener("load", function (e) {
+        document.getElementById("command").scrollIntoView(true);
+      });
       out.attr("src", "images/" + path);
     });
   });
