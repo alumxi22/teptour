@@ -151,23 +151,6 @@ def report_saying(actor, x, ctxt) :
 
 
 ###
-### Ladders
-###
-
-@world.define_property
-class IsLadder(Property) :
-    """Represents whether a door is a ladder (and thus climbable)."""
-    numargs = 1
-
-world[IsLadder(X) <= IsA(X, "door")] = False
-
-instead_of(actionsystem,
-           Climbing(actor, X) <= IsLadder(X),
-           Entering(actor, X), suppress_message=True)
-
-parser.understand("climb/go up/down [something x]", Climbing(actor, X))
-
-###
 ### Floors
 ###
 
@@ -448,10 +431,6 @@ def describe_object_defilements(actor, o, ctxt) :
 ###
 
 
-@before(Climbing(actor, "purple tree"))
-def climbing_purple_tree(actor, ctxt) :
-    raise AbortAction("""You have a merry time climbing the tree.
-    Then you remember you have a house to tour, and you stop.""")
 
 instead_of(actionsystem,
            Going(actor, "in") <= PEquals(ContainingRoom(actor), "253 Commonwealth Ave"),

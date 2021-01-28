@@ -59,17 +59,13 @@ add_direction_pair("northnorthwest", "southsoutheast");
 parser.direction.understand("northnorthwest/nnw", parse => "northnorthwest");
 parser.direction.understand("southsoutheast/sse", parse => "southsoutheast");
 
-parser.direction.understand("upstairs", parse => "up");
-parser.direction.understand("up stairs", parse => "up");
-parser.direction.understand("up the stairs", parse => "up"); // fix this if stairs become a door!
-parser.direction.understand("downstairs", parse => "down");
-parser.direction.understand("down stairs", parse => "down");
-parser.direction.understand("down the stairs", parse => "down"); // ^ same ^
+parser.direction.understand(["upstairs", "up stairs", "up the stairs"], parse => "up");
+parser.direction.understand(["downstairs", "down stairs", "down the stairs"], parse => "down");
 
 //// Other silly verbs
 
 parser.action.understand("about", parse => asking_about("Irving Q. Tep", "virtual house tour"));
-// idea: make 'quit' have you quit the game, and you end up at a computer in the house
+// TODO: make 'quit' have you quit the game, and you end up at a computer in the house
 parser.action.understand("quit", parse => making_mistake("{Bobs} should try closing the tab instead."));
 
 all_are_mistakes(["oh/ok"], "Exactly.");
@@ -78,8 +74,7 @@ parser.action.understand("cd ..", parse => exiting());
 parser.action.understand("cd [somewhere x]", parse => going_to(parse.x));
 parser.action.understand("pwd/dir", parse => looking());
 all_are_mistakes(["rm/su/sudo [text x]"], `Nice try, buster.`);
-parser.action.understand("where am i", parse => looking());
-parser.action.understand("where am i ?", parse => looking());
+parser.action.understand(["where am i", "where am i ?"], parse => looking());
 all_are_mistakes(["cd", "go home"], "But you already are home!");
 all_are_mistakes(["honig"], `"Honig!" you shout.  You can hear vigorous acclamation all around you.`);
 all_are_mistakes(["in the name of honig"], "Amen.");
@@ -194,6 +189,19 @@ function add_floor(location, template, name=null) {
   world.put_in(name, location);
 }
 
+//// Ladders
+
+def_property("is_ladder", 1, {
+  doc: "Represents whether something is a ladder.  This means climbing is understood as entering."
+});
+world.is_ladder.add_method({
+  name: "default not ladder",
+  handle: (x) => false
+});
+instead_of(({verb, dobj}) => verb === "climbing" && world.is_ladder(dobj),
+           action => entering(action.dobj), true);
+
+parser.action.understand("climb/go up/down [something x]", parse => climbing(parse.x));
 
 ///
 /// The player
@@ -348,13 +356,10 @@ instead_of(({verb, dobj}) => (verb === "entering" && dobj === "tEp"
 instead_of(({verb, dobj}) => (verb === "entering" && dobj === "tEp"
                               && world.containing_room(world.actor) === "The Backlot"),
            action => going("south"), true);
-parser.action.understand("go in", parse => {
-  if (world.accessible_to("tEp", world.actor)) {
-    return entering("tEp");
-  } else {
-    return undefined;
-  }
-});
+instead_of(({verb, dir}) => (verb === "going" && dir === "in"
+                               && world.accessible_to("tEp", world.actor)),
+           action => entering("tEp"), true);
+
 
 def_obj("front garden", "container", {
   is_scenery: true,
@@ -365,6 +370,7 @@ def_obj("front garden", "container", {
 
 def_obj("purple tree", "thing", {
   is_scenery: true,
+  is_ladder: true,
   description: `[img 1/253/tree.JPG left]Looking both ways,
   you see that this is the only purple tree along the entire
   avenue.  It's very purple.  Below it is [the 'front garden'].`,
@@ -1194,7 +1200,7 @@ difficulty, you climb the ladder into...`);
 
 def_obj("22_closet_ladder", "door", {
   name: "ladder",
-  // TODO IsLadder : True,
+  is_ladder: true,
   openable: false,
   reported: false,
   description: `It's a ladder made of widely spaced dowels
@@ -1348,6 +1354,7 @@ parser.action.understand("think forward thoughts", parse => {
 def_obj("23_ladder", "thing", {
   name: "swinging ladder",
   is_scenery: true,
+  is_ladder: true,
   description : `It's a ladder going up to [the 'hanging couch']
   that swings back and forth.  The advice is to think
   forward thoughts to climb it.`
@@ -1453,7 +1460,7 @@ def_obj("Second Front", "room", {
 
 def_obj("2f_ceiling_door", "door", {
   name: "ceiling access hatch",
-  // TODO IsLadder : True,
+  is_ladder: true,
   reported: false,
   words: ["ceiling", "access", "@hatch", "@door", "@ladder"],
   description: function (x) {
@@ -1842,7 +1849,7 @@ world.direction_description.set("The Porn Closet", "north", `
 
 def_obj("porn_closet_ladder", "door", {
   name: "wood ladder",
-// TODO  IsLadder : True,
+  is_ladder: true,
   reported: false,
   openable: false,
   description: `[img 3/porn/ladder.JPG left]This is a ladder
