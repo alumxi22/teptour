@@ -218,11 +218,13 @@ def_obj("Irving Q. Tep", "person", {
 
   [para]You can ask Irving Q. Tep about various concepts. For
   instance "[action 'ask about stupidball']" (which is shorthand
-  for "[action 'ask Irving about stupidball']").  You can also
-  [action 'tell Irving'] about things he doesn't already know
-  about.`
+  for "[action 'ask Irving about stupidball']").  If you know something
+  that Irving doesn't yet know about but should, please let us know!`
   // developers: see [ask ...] for links
 }, {make_part_of: "player"});
+
+// Dealing with how there's a period:
+parser.anything.understand("irving q. tep", parse => "Irving Q. Tep");
 
 ///
 /// Objects that are everywhere
@@ -2762,6 +2764,285 @@ def_obj("The Deep Cave", "room", {
   to keep a big pile of junk.  You can leave to the [dir north].`
 });
 make_known("The Deep Cave");
+
+/***********************************/
+/*** Consulting Irving Q. Tep... ***/
+/***********************************/
+
+/*
+We define a new kind called "lore" that represents stories that Irving Q. Tep can
+talk about.  Lore acts just like things in that they have a name, words, and a
+description.  We also add a lore parser.
+*/
+
+def_kind("lore", null);
+
+def_parser("lore", {
+  doc: "Parse lore"
+});
+parser.lore.add_method({
+  name: "main parser",
+  handle: function* (cache, s, toks, i) {
+    yield* this.next();
+    for (var m of make_parse_kind("lore")(cache, s, toks, i)) {
+      if (m.end === toks.length) {
+        yield m;
+      }
+    }
+  }
+});
+
+// A bunch of synonyms for asking Irving about something
+
+parser.action.understand("ask about [text y]", parse => asking_about("Irving Q. Tep", parse.y));
+parser.action.understand("tell me about [text y]", parse => asking_about("Irving Q. Tep", parse.y));
+parser.action.understand("what's/who's/whois [text y]", parse => asking_about("Irving Q. Tep", parse.y));
+parser.action.understand("what/who is/are [text y]", parse => asking_about("Irving Q. Tep", parse.y));
+parser.action.understand("what does [text y] mean ?", parse => asking_about("Irving Q. Tep", parse.y));
+parser.action.understand("what does [text y] mean", parse => asking_about("Irving Q. Tep", parse.y));
+parser.action.understand("ask [something x] what/who [text y] is",
+                         parse => asking_about(parse.x, parse.y));
+
+actions.report.add_method({
+  name: "ask irving",
+  when: action => action.verb === "asking about" && action.dobj === "Irving Q. Tep",
+  handle: function (action) {
+    let s = action.text;
+    if (s[s.length - 1] === "?") {
+      s = s.slice(0, s.length - 1);
+    }
+    var matches = Array.from(parser.lore({}, s, tokenize(s), 0));
+    // sort by decreasing order
+    matches.sort((m1, m2) => m2.score - m1.score);
+    if (matches.length > 0) {
+      let best_score = matches[0].score;
+      matches = matches.filter(m => m.score === best_score);
+      if (matches.length === 1) {
+        // success!
+        out.write(world.description(matches[0].value));
+        return;
+      } else {
+        out.write(`Irving Q. Tep says "There are a few things that come to mind.
+        Did you want to hear about `);
+        out.serial_comma(matches.map(m => () => out.ask(world.name(m.value))), {conj: "or"});
+        out.write(`?"`);
+      }
+    } else {
+      out.write(`Irving Q. Tep isn't sure what to say about that.  It's
+      possible you mean to `);
+
+      out.wrap_action_link("examine " + s, () => {
+        out.write_text("examine " + s);
+      });
+      out.write(".");
+    }
+  }
+});
+
+///
+/// Lore
+///
+
+/*
+These are basically short entries for a wiki-like system of things about the
+house and tEp that you couldn't learn just by looking at objects.
+
+Links are created by [ask x] for a link to x, or [ask x text] for a link to
+x with specific link text.
+
+The naming scheme is to have the object id be "lore: unique name" (it doesn't
+really matter), and then putting the actual link name in the name field. This
+way if there actually is a sawzall lying around (which there shouldn't), the
+description of the sawzall lore won't eit it.
+*/
+
+def_obj("lore: stupidball", "lore", {
+  name: "stupidball",
+  description: `Stupidball is a fine game in which
+  contestants take a large exercise ball and throw it around the
+  center room at high energy.  This game has [ask eit eited]
+  many things, such as the chandelier in the center room.`
+});
+
+def_obj("lore: eit", "lore", {
+  name: "eit",
+  words: ["@eit", "@eited"],
+  description: `'Eit,' in short, means never having to say
+  you're sorry.  For instance, let's say you're holding a cup of
+  water.  I can then come up to you and knock the cup out of
+  your hand whilst saying "eit!" (of course, I should help clean
+  up).  The word can also be used when someone recognizes
+  something eitful.  For instance, if you told me you didn't do
+  well on an exam, I could say "eit, man."  However, what's not
+  acceptible is to say 'eit' to the following: "My family just
+  got eaten by a pack of wolves."  Remember, this is not an eit!
+
+  [para]There is a mural in [action 'go to 22' 22]
+  commemorating the sacrament of eit.`
+});
+
+def_obj("lore: rules of tep", "lore", {
+  name: "rules of tEp",
+  words: ["rule", "rules", "of", "tep", "@rules"],
+  description: `The rules of tEp are threefold:
+  [enter_block ol][attr start 0]
+  [enter_block li]Don't die;[leave]
+  [enter_block li]Hobart is not a dishwasher;[leave]
+  [enter_block li]Don't date Pikans;[leave]
+  [enter_block li]All explosions must be videotaped;[leave]
+  [leave]
+  Amendment 1. No [ask Sawzalls] without the express permission of
+  the [ask 'house mangler']; and
+  [para]Amendment 2. The house mangler must not permit the use of Sawzalls.`
+});
+
+def_obj("lore: sawzall", "lore", {
+  name: "sawzall",
+  words: ["@sawzall", "@sawzalls"],
+  description: `A Sawzall is a hand-held reciprocating saw
+  that can basically cut through anything.  Their prohibition
+  was made into one of the [ask 'rules of tep'] after one
+  brother repeatedly cut down the wall between 51 and 52 during
+  the summer months to make a mega room, where it was the duty
+  of the [ask 'house mangler'] to mend the wall at the end of
+  each summer for [ask 'work week'].`
+});
+
+def_obj("lore: work week", "lore", {
+  name: "work week",
+  description: `Work week occurs once at the end of the
+  summer and once during winter break, and it's a time where
+  tEps try to repair the house.`
+});
+
+def_obj("lore: house mangler", "lore", {
+  name: "house mangler",
+  words: ["house", "@mangler", "@manager"],
+  description: `The house mangler has one of the most important
+  jobs in the house: to make sure the house doesn't fall down.
+  The house mangler accomplishes this by getting tEps
+  to do their work assignments and to schedule [ask 'work week'].`
+});
+
+def_obj("lore: 22", "lore", {
+  name: "22",
+  words: ["@22", "@twenty-two", "twenty", "@two"],
+  description: `[enter_inline i]myst. num.[leave] Twenty-two is a number of
+  cosmic significance.  Showing up everywhere, signifying everything.`
+});
+
+def_obj("lore: oobleck", "lore", {
+  name: "oobleck",
+  description: `Oobleck is a non-newtonion fluid consisting
+  of corn starch and water.  The interesting property of oobleck
+  is that, while it normally a liquid, it solidifies as soon as
+  you put any pressure on it.  During rush every year, 600
+  lbs. of corn starch are acquired for the purpose of filling a
+  kiddie pool in the dining room with oobleck.`
+});
+
+def_obj("lore: bouncers", "lore", {
+  name: "Bouncers",
+  words: ["@bouncer", "@bouncers"],
+  description: `A Bouncer\u2122 is a now-discontinued durable
+  plastic cup by Rubbermaid.  It's like a tall mug (useful for
+  cocoa), and could be dropped from the Green Building without
+  sustaining any damage.  Living up to their name, bouncers
+  really can bounce.`
+});
+
+def_obj("lore: gruesz", "lore", {
+  name: "Gruesz",
+  words: ["@gruesz", "@grueszer", "@grueszed", "@grueszing"],
+  description: `1. [enter_inline i]name[leave]. Carl Gruesz, an alumnus of Xi
+  Chapter. 2. [enter_inline i]v[leave]. To scavange useful stuff that others
+  have thrown away from the alleys of the Back Bay or corridors
+  of MIT. Named after Carl, the Master Grueszer. Homeophony
+  between "Gruesz" and "re-use" is apparently coincidental.`
+});
+
+def_obj("lore: U.S.S. Birthday Ship", "lore", {
+  name: "U.S.S. Birthday Ship",
+  added_words: ["uss"],
+  description: `This is one of the one-hundred names of tEp,
+  referring to how, at tEp, it's always your birthday.`
+});
+
+def_obj("lore: squids", "lore", {
+  name: "squids",
+  added_words: ["@squidz"],
+  description: `A social gathering in memory of the Squids
+  peldge class, who enjoyed being antisocial by listening to
+  Philip Glass, wearing black turtlenecks, and sipping on
+  G&Ts.`
+});
+
+def_obj("lore: grape soda", "lore", {
+  name: "grape soda",
+  added_words: ["@soder"],
+  description: `1. [enter_inline i]n[leave]. The official beverage product of
+  Tau Epsilon Phi. Servered in a frosty [ask Bouncer] or
+  straight from the can. Grape S\u00f6der has been used in the
+  ancient [enter_inline i]velkomin' d\u00fclr froshinperzons[leave] ritual since
+  time immemorial:
+
+  [para]Welcome to TEP, where we like to schlep Grape S\u00f6der! //
+  Welcome to TEP, it's frosty and wet, and it's caffeine free!
+
+  [para]Other uses of Grape S\u00f6der include:
+  [enter_block ul]
+  [enter_block li]Replacement for sulfuric acid in car batteries.[leave]
+  [enter_block li]Antimicrobial solution for open sores and wounds.[leave]
+  [enter_block li]Head and body delousing shampoo.[leave]
+  [enter_block li]All-purpose oven cleaner.[leave]
+  [enter_block li]Pressurized nuclear reactor cooling fluid.[leave]
+  [enter_block li]Alumni.[leave]
+  [leave]`
+});
+
+def_obj("lore: honig", "lore", {
+  name: "David Andrew Honig",
+  description: `1. [enter_inline i]exlc[leave]. A greeting, often as an
+  identifier in a large crowd. 2. [enter_inline i]prop. n.[leave] A former
+  brother and famous Objectivist, David Andrew Honig, although
+  looked upon as antisocial, has become the mascot of TEP.`
+});
+
+def_obj("lore: fenning", "lore", {
+  name: "Fred Fenning",
+  description: `The renowned and illustrious Fred Fenning was
+  the founding member of the present incarnation of Xi chapter,
+  which was [ask recolonization recolonized] in 1971.`
+});
+
+def_obj("lore: recolonization", "lore", {
+  name: "recolonization",
+  description: `While Xi chapter was founded in 1918, its
+  existence ceased in the late 60s when the brothers decided to
+  stop doing things like paying dues and taxes.  A couple of
+  years later, [ask 'Fred Fenning'] effected a recolonization.`
+});
+
+def_obj("lore: batcave", "lore", {
+  name: "batcave",
+  added_words: ["bat", "@cave"],
+  description: `Maybe you should go find it for yourself!`
+});
+
+def_obj("lore: virtual house tour", "lore", {
+  name: "virtual house tour",
+  added_words: ["@teptour"],
+  description: `The virtual house tour in its interactive fiction form
+  was originally written by Kyle Miller at the end of Summer
+  2011 and then rewritten in 2021.`
+});
+
+def_obj("lore: foosball", "lore", {
+  name: "foosball",
+  description: `Foosball condenses human obsession with
+  balls, lines, and goals to a cosmic game for 2-4 entities
+  capable of turning and translating arbitrary handles.`
+});
 
 /**********************/
 /*** Start the game ***/
