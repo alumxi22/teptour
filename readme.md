@@ -6,6 +6,8 @@ simulation of the house.
 It uses the [textadv-js](https://github.com/kmill/textadv-js) engine, which was more-or-less
 written for teptour.
 
+[Visit it!](https://alumxi22.github.io/teptour/)
+
 ## Vision
 
 Interactive fiction is unconstrained by geometry, space, and time.
