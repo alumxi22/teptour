@@ -1952,7 +1952,7 @@ parser.action.understand("enter 22 22 22", parse => {
     it at '22'.  Trembling, you reach forward to pull open the door, then meet resistance.
     It doesn't budge.
 
-    [para]Oh well. The combination really must be forgotten.`);
+    [para]The combination really must be forgotten.`);
   } else {
     return undefined;
   }
