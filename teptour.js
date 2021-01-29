@@ -141,11 +141,11 @@ actions.before.add_method({
     if (action.dobj === "RA") {
       throw new abort_action(`The RA wisely stays away from {us}.
       "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
-      {we} hear him say from a safe distance, "Don't die!"`);
+      {we} hear [us_ RA] say from a safe distance, "Don't die!"`);
     } else {
       throw new abort_action(`The RA comes out of nowhere, preventing
       {us}. "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
-      he says, "Don't die!"`);
+      [we_ RA] says, "Don't die!"`);
     }
   }
 });
@@ -475,14 +475,15 @@ actions.before.add_method({
 
 def_obj("RA", "person", {
   added_words: ["resident", "@advisor"],
+  gender: "neutral",
   is_scenery: true,
   description: `Like Spiderman, the RA can feel when there's trouble,
-and he appears when he's needed.  And that time is not now.`
+and [we_ RA] appears when they're needed.  And that time is not now.`
 });
 actions.before.add_method({
   when: action => action.verb === "taking" && action.dobj === "RA",
   handle: function (action) {
-    throw new abort_action(`Assuming you saw him, the RA wouldn't appreciate that, but you don't so you can't.`);
+    throw new abort_action(`Assuming you saw [us_ RA], the RA wouldn't appreciate that, but you don't so you can't.`);
   }
 });
 
@@ -640,8 +641,8 @@ actions.report.add_method({
     out.write(`You hear a loud subwoofer buzzing at 32 Hz, and,
     after a few moments, footsteps down the stairs.  A young tEp opens
     the door for you and leads you in.  "Ah, I see you're getting the
-    virtual house tour from [ob 'Irving Q. Tep']," he says.  "Those
-    are really good!"  Before running off, he brings you to...`);
+    virtual house tour from [ob 'Irving Q. Tep']," they say.  "Those
+    are really good!"  Before running off, they bring you to...`);
   }
 });
 
@@ -1074,11 +1075,11 @@ actions.try_before.add_method({
     } else if (action.dobj === world.actor) {
       throw new abort_action(`The RA comes out of nowhere, preventing
       {us}. "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
-      he says, "Don't die!"`);
+      [we_ RA] says, "Don't die!"`);
     } else if (action.dobj === "RA") {
       throw new abort_action(`Sensing trouble, the RA appears, but sensing
-      {our} intention, he runs off and yells back, "remember the zeroth
-      [ask 'rules of tep' 'rule of tep']! Don't die!`);
+      {our} intention, [we_ RA] runs off and yells back, "remember the zeroth
+      [ask 'rules of tep' 'rule of tep']! Don't die!"`);
     } else {
       this.next();
     }
