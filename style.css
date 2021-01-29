@@ -99,13 +99,13 @@ a.contact-us {
     right: 2em;
     bottom: 4em;
     background: #222;
-    color: #8e8;
-    border: 1px solid #8e8;
+    color: #B366FF;
+    border: 1px solid #B366FF;
     padding: 3px 5px;
     border-radius: 3px;
 }
 a.contact-us:hover {
-    background: #8e8;
+    background: #B366FF;
     color: #222;
 }
 
