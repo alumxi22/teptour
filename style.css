@@ -1,8 +1,13 @@
+html {
+    height: 100%;
+}
+
 body {
     background-color: #222;
     padding: 0;
     margin: 0;
     color: #8e8;
+    display: flex; height: 100%; flex-direction: column;
 }
 a.action {
     color: #5BF;
@@ -21,19 +26,50 @@ div.location_heading {
   font-family: monospace;
 }
 
-#main {
-    width: 680px;
+#main-window {
+    /*    width: 680px;*/
+    position: relative;
     margin: 0;
     font-family: monospace;
     font-size: 12pt;
     line-height: 15pt;
-    padding-top: 5px;
-    padding-left: 1em;
+    padding-left: 1em; padding-right: 1em;
+    flex: 1; overflow-y: scroll;
 }
 #main p {
     margin-block-start: 1.5em;
     margin-block-end: 1.5em;
 }
+
+#output {
+    max-width: 700px;
+    display: inline-block; /* a hack to make it so that clear:both doesn't interact with sticky float */
+    position: absolute;
+    top: 0;
+    padding-top: 5px;
+}
+
+#output-end {
+    height: 0.5em;
+}
+
+#user_response {
+    white-space: nowrap;
+    padding-left: 1em;
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+}
+#teptour-input {
+    font-family: monospace;
+    font-size: 12pt;
+
+    background-color: #222;
+/*    position: fixed;
+    left: 0; right: 0; bottom: 0;*/
+    border-top: 1px solid #8e8;
+    position: relative;
+}
+
 .desc_img {
     display: block;
     padding: 0 1em 0.25em 0px;
@@ -41,11 +77,120 @@ div.location_heading {
 .desc_img_left {
     display: inline-block;
     float: left;
-    padding: 5px 1em 0.25em 0px;
+    padding: 4px 1em 4px 0;
 }
 #command {
     font-family: monospace;
     font-size: 12pt;
     background-color: #222;
     color: #8e8;
+}
+#menu {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding-bottom: 0.8em;
+    padding-right: 1em;
+}
+#menu-items {
+
+}
+
+#navigation {
+    position: sticky;
+    top: 0;
+    float: right;
+}
+
+#map {
+    background-color: #222;
+    color: #B366FF;
+    font-family: monospace;
+    font-size: 12pt;
+    font-weight: bold;
+}
+#map tr td.room {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #222;
+  text-align: center;
+  font-size: 80%;
+/*  font-family: sans-serif;*/
+  padding: 0;
+}
+#map tr td {
+  vertical-align: middle;
+}
+#map td {
+    color: #B366FF;
+    border-color: #B366FF;
+}
+#map td.maphead {
+  color: #B366FF;
+}
+#map tr.mapspacer {
+  height: 1em;
+}
+#map a, #map a:visited {
+  display: block;
+  margin: 0;
+  padding: 4px 4px 4px 4px;
+  color: #B366FF;
+  text-decoration: none;
+}
+#map a:hover, #map td.visiting a {
+  color: #C4F;
+  background-color: #B366FF;
+  color: #000;
+}
+
+#irving {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+#irving-content-holder {
+    max-width: 500px;
+    background-color: #222;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 1em;
+    margin-left: auto;
+    margin-right: auto;
+}
+#irving-content {
+    font-family: monospace;
+    font-size: 12pt;
+    color: #8e8;
+    padding: 1em;
+    border: 1px solid #8e8;
+    border-radius: 3px;
+}
+#irving-list {
+    max-height: 400px;
+    overflow: auto;
+    margin-bottom: 0.5em;
+}
+
+#irving-content h2 {
+    margin-top: 0;
+    font-size: 130%;
+}
+
+#irving-content ul {
+    margin-bottom: 0.3em;
+}
+
+button {
+    background-color: #8e8;
+    font-family: monospace;
+    font-size: 12pt;
+    color: #222;
+    border: none;
+    padding: 5px 8px;
+    text-decoration: none;
 }

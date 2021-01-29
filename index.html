@@ -4,25 +4,110 @@
     <link rel="stylesheet" href="textadv-js/style.css">
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="textadv-js/textadv.js"></script>
-    <script type="text/javascript" src="textadv-js/textadv-ui.js"></script>
+    <script type="text/javascript" src="teptour-ui.js"></script>
     <script type="text/javascript" src="teptour.js"></script>
   </head>
   <body>
-    <div id="main">
+
+    <div id="irving">
+      <div id="irving-content-holder">
+        <div id="irving-content">
+          <h2>Ask Irving Q. Tep about...</h2>
+          <div id="irving-list">
+            <ul>
+            </ul>
+          </div>
+          <div style="text-align: right">
+            <button id="irving-cancel">Never mind...</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div id="main-window">
+
+      <div id="navigation">
+        <div id="map">
+          <p><b>Rough map of tEp</b></p>
+          <table>
+            <tr><td colspan=3 class="maphead">Roof area:</td></tr>
+            <tr><td class="room" room="The Poop Deck"><a href="" onclick="return run_action('go to poop deck');">Poop deck</a></td>
+              <td class="room" room="The Roof"><a href="" onclick="return run_action('go to roof');">Roof</a></td></tr>
+            <tr class="mapspacer"></tr>
+            <tr><td colspan=2 class="maphead">5th floor:</td>
+              <td class="room" room="53"><a href="" onclick="return run_action('go to 53');">53</a></td></tr>
+            <tr><td class="room" room="The Study Room"><a href="" onclick="return run_action('go to study room');">Study room</a></td>
+              <td class="room" room="The Fifth Landing"><a href="" onclick="return run_action('go to fifth landing');">5th Landing</a></td>
+              <td class="room" room="54"><a href="" onclick="return run_action('go to 54');">54</a></td></tr>
+            <tr><td class="room" room="51"><a href="" onclick="return run_action('go to 51');">51</a></td>
+              <td></td>
+              <td class="room" room="55"><a href="" onclick="return run_action('go to 55');">55</a></td></tr>
+            <tr class="mapspacer"></tr>
+            <tr><td colspan=3 class="maphead">4th floor:</td></tr>
+            <tr><td class="room" room="42"><a href="" onclick="return run_action('go to 42');">42</a></td>
+              <td class="room" room="The Fourth Landing"><a href="" onclick="return run_action('go to fourth landing');">4th Landing</a></td>
+	            <td class="room" room="43"><a href="" onclick="return run_action('go to 43');">43</a></td></tr>
+            <tr><td class="room" room="41"><a href="" onclick="return run_action('go to 41');">41</a></td>
+              <td></td>
+	            <td class="room" room="44"><a href="" onclick="return run_action('go to 44');">44</a></td></tr>
+            <tr class="mapspacer"></tr>
+            <tr><td colspan=3 class="maphead">3rd floor:</td></tr>
+            <tr><td class="room" room="32"><a href="" onclick="return run_action('go to 32');">32</a></td>
+              <td class="room" room="The Third Landing"><a href="" onclick="return run_action('go to third landing');">3rd Landing</a></td>
+	            <td class="room" room="33"><a href="" onclick="return run_action('go to 33');">33</a></td></tr>
+            <tr><td class="room" room="31"><a href="" onclick="return run_action('go to 31');">31</a></td>
+              <td></td>
+	            <td class="room" room="34"><a href="" onclick="return run_action('go to 34');">34</a></td></tr>
+            <tr class="mapspacer"></tr>	
+            <tr><td colspan=3 class="maphead">2nd floor:</td></tr>
+            <tr><td class="room" room="22"><a href="" onclick="return run_action('go to 22');">22</a></td>
+              <td class="room" room="The Second Landing"><a href="" onclick="return run_action('go to second landing');">2nd Landing</a></td>
+	            <td class="room" room="23"><a href="" onclick="return run_action('go to 23');">23</a></td></tr>
+            <tr><td class="room" room="21"><a href="" onclick="return run_action('go to 21');">21</a></td>
+              <td></td>
+	            <td class="room" room="24"><a href="" onclick="return run_action('go to 24');">24</a></td></tr>
+            <tr class="mapspacer"></tr>	
+            <tr><td colspan=3 class="maphead">1st floor:</td></tr>
+            <tr><td class="room" room="The Front Room"><a href="" onclick="return run_action('go to front room');">Front room</a></td>
+              <td class="room" room="The Center Room"><a href="" onclick="return run_action('go to center room');">Center Room</a></td>
+	            <td class="room" room="The Dining Room"><a href="" onclick="return run_action('go to dining room');">Dining Room</a></td></tr>
+            <tr><td class="room" room="The Foyer"><a href="" onclick="return run_action('go to foyer');">Foyer</a></td>
+              <td></td>
+              <td class="room" room="The Upstairs Kitchen"><a href="" onclick="return run_action('go to upstairs kitchen');">Kitchen</a></td></tr>
+            <tr class="mapspacer"></tr>	
+            <tr><td colspan=3 class="maphead">Basement:</td></tr>
+            <tr><td class="room" room="The Downstairs Kitchen"><a href="" onclick="return run_action('go to downstairs kitchen');">Kitchen</a></td>
+              <td class="room" room="The Cave"><a href="" onclick="return run_action('go to the cave');">The Cave</a></td>
+	            <td class="room" room="The Laundry Room"><a href="" onclick="return run_action('go to laundry room');">Laundry</a></td></tr>
+            <tr><td></td>
+              <td colspan="2" class="room" room="The Basement Hallway"><a href="" onclick="return run_action('go to basement hallway');">Basement Hallway</a></td></tr>
+          </table>
+        </div>
+        
+      </div>
+
+
       <div id="output"></div>
       <div class="block_floats"></div>
-      <div class="user_response">
+      <div id="output-end"></div>
+    </div>
+    <div id="teptour-input">
+      <div id="user_response">
         &gt;
         <form id="commandform" action="javascript:enter_command()" method="" autocomplete="off">
           <input type="text" id="command" name="command" size="100" />
         </form>
       </div>
 
-      <div id="examples">
-        Example actions:
-              <a class="action" href="" onclick="return run_action('look');">look</a>
-              <a class="action" href="" onclick="return run_action('inventory');">inventory</a>
-              <a class="action" href="" onclick="return run_action('help');">help</a>
+      <div id="menu">
+        <div id="menu-items">
+          <a class="action" href="" onclick="return build_ask_irving();">ask irving</a>
+          <a class="action" href="" onclick="return run_action('look');">look</a>
+          <a class="action" href="" onclick="return run_action('inventory');">inventory</a>
+          <a class="action" href="" onclick="return run_action('help');">help</a>
+        </div>
       </div>
     </div>
   </body>

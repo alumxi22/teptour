@@ -35,7 +35,7 @@ HTML_abstract_builder.prototype.img = function (path, align) {
     out.with_block("img", () => {
       let img = out.root;
       img.addEventListener("load", function (e) {
-        document.getElementById("command").scrollIntoView(true);
+        scroll_output_to_end();
       });
       out.attr("src", "images/" + path);
     });
@@ -412,8 +412,10 @@ def_obj("Irving Q. Tep", "person", {
 
   [para]You can ask Irving Q. Tep about various concepts. For
   instance "[action 'ask about stupidball']" (which is shorthand
-  for "[action 'ask Irving about stupidball']").  If you know something
-  that Irving doesn't yet know about but should, please let us know!`
+  for "[action 'ask Irving about stupidball']"), and for your convenience
+  you can click "ask irving" in the lower right corner to get a list of
+  everything you can ask about.  If you know something
+  that Irving doesn't yet know but should, please let us know!`
   // developers: see [ask ...] for links
 }, {make_part_of: "player"});
 
@@ -2047,6 +2049,7 @@ def_obj("hammock", "container", {
 }, {put_in: "32"});
 
 def_obj("flagpole", "thing", {
+  added_words: ["@flag"],
   is_scenery: true,
   description: `[img 3/32/flagpole.JPG left]This flagpole has
   held numerous flags, such as the current, tattered pirate
@@ -3487,7 +3490,8 @@ def_obj("lore: recolonization", "lore", {
   description: `While Xi chapter was founded in 1918, its
   existence ceased in the late 60s when the brothers decided to
   stop doing things like paying dues and taxes.  A couple of
-  years later, [ask 'Fred Fenning'] effected a recolonization.`
+  years later, [ask 'Fred Fenning'] hung out at The Coffeehouse and
+  got a new group together to recolonize.`
 });
 
 def_obj("lore: batcave", "lore", {
