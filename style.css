@@ -82,6 +82,7 @@ div.location_heading {
     font-size: 12pt;
     background-color: #222;
     color: #8e8;
+    max-width: 700px;
 }
 #menu {
     position: absolute;

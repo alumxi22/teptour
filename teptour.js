@@ -853,7 +853,7 @@ def_obj("foosball table", "container", {
 def_obj("human skull", "thing", {
   description : `This is a human skull, but it's missing its
   jaw from when some Nokia engineers were playing with it at
-  cocoa one Monday night.  It's unknown why there is such a
+  [ask 'hot cocoa' cocoa] one Monday night.  It's unknown why there is such a
   thing in the house.`
 }, {put_in: "foosball table"});
 
@@ -1783,7 +1783,7 @@ def_obj("leitshow", "thing", {
   is_scenery: true,
   words: ["@leitshow", "leit", "@show", "@lightshow", "light", "layzor"],
   description: `[img 2/23/lightshow.jpg left]The tEp Lazor
-  Leit Show began in the early 1990s when an entire peldge class
+  Leit Show began in the early 1990s when an entire [ask peldge] class
   attended the IAP glassblowing course, fashioned their own neon
   tubes and attached them to the ceiling of 23.  Since then, it
   has accumulated dozens more neon lights, LEDs and lasers.
@@ -2536,6 +2536,47 @@ actions.report.add_method({
   }
 });
 
+//// Shakespeare's spleen usage
+
+var spleen_uses = [
+  `Henry VIII Act: 2 Scene: 4. "I have no spleen against you; nor injustice"`,
+  `Henry VIII Act: 2 Scene: 4. "Is cramm'd with arrogancy, spleen, and pride"`,
+  `Timon of Athens Act: 3 Scene: 5. "It is a cause worthy my spleen and fury"`,
+  `As You Like It Act: 4 Scene: 1. "of thought, conceived of spleen and born of madness"`,
+  `Love's Labours Lost Act: 5 Scene: 2. "That in this spleen ridiculous appears"`,
+  `Henry VI, part 1 Act: 4 Scene: 6. "Quicken'd with youthful spleen and warlike rage"`,
+  `Henry VIII Act: 1 Scene: 2. "You charge not in your spleen a noble person"`,
+  `Richard III Act: 5 Scene: 3. "Inspire us with the spleen of fiery dragons!"`,
+  `King John Act: 2 Scene: 1. "With swifter spleen than powder can enforce"`,
+  `King John Act: 4 Scene: 3. "Or teach thy hasty spleen to do me shame"`,
+  `King John Act: 5 Scene: 7. "And spleen of speed to see your majesty!"`,
+  `The Tragedy of King Lear Act: 1 Scene: 4. "Create her child of spleen; that it may live"`,
+  `Romeo and Juliet Act: 3 Scene: 1. "Could not take truce with the unruly spleen"`,
+  `Coriolanus Act: 4 Scene: 5. "Against my canker'd country with the spleen"`,
+  `Othello Act: 4 Scene: 1. "Or I shall say you are all in all in spleen"`,
+  `Julius Caesar Act: 4 Scene: 3. "You shall digest the venom of your spleen"`,
+  `A Midsummer Night's Dream Act: 1 Scene: 1. "That, in a spleen, unfolds both heaven and earth"`,
+  `Love's Labours Lost Act: 3 Scene: 1. "thought my spleen; the heaving of my lungs provokes"`,
+  `Taming of the Shrew Act: 3 Scene: 2. "Unto a mad-brain rudesby full of spleen"`,
+  `Troilus and Cressida Act: 1 Scene: 3. "In pleasure of my spleen.' And in this fashion"`,
+  `Troilus and Cressida Act: 2 Scene: 2. "Such things as might offend the weakest spleen"`,
+  `Twelfth Night Act: 3 Scene: 2. "If you desire the spleen, and will laugh yourself"`,
+  `Henry VI, part 3 Act: 2 Scene: 1. "That robb'd my soldiers of their heated spleen"`,
+  `Henry IV, part 1 Act: 2 Scene: 3. "A weasel hath not such a deal of spleen"`,
+  `Henry IV, part 1 Act: 3 Scene: 2. "Base inclination and the start of spleen"`,
+  `Henry IV, part 1 Act: 5 Scene: 2. "A hair-brain'd Hotspur, govern'd by a spleen"`,
+  `Richard III Act: 2 Scene: 4. "And frantic outrage, end thy damned spleen"`
+];
+
+def_obj("spleen usage book", "thing", {
+  name: "book on the spleen and Shakespeare",
+  description: function (x) {
+    out.write(`This is Irving Q. Tep's scholarly study on Shakespeare's use
+    of the spleen.  You open it up to a random passage:[para]`);
+    out.write_text(spleen_uses[Math.floor(Math.random() * spleen_uses.length)]);
+  }
+}, {put_in: "43"});
+
 ///
 /// Fourth front
 ///
@@ -3117,14 +3158,15 @@ def_obj("tepophone closet", "room", {
   description: `[img b/tepophone/look.jpg left]Built from
   relays that fell out of a Bell telephone truck by [ask 'Fred Fenning']
   while he was failing his telephony class, Tep-o-phone was a state-of-the-art
-  telephone switching system that let the outside world dial individual rooms.
-  It also let people call the laundry room to see if there were free
+  telephone switching system that let the outside world dial individual rooms, switching tEp's six external lines.
+  It also let people call the laundry room (Mr. Washer and Ms. Dryers) to see if there were free
   machines.  Sadly, Tep-o-phone has since fallen into disrepair
   with the now-widespread use of cell phones, but every once in a while it tries
   to connect a call for old time's sake.
 
   [para]You can go [dir southsoutheast] back to the basement hallway.`
 });
+make_known("tepophone closet");
 
 ///
 /// The Backlot
@@ -3351,15 +3393,19 @@ def_obj("lore: stupidball", "lore", {
 def_obj("lore: eit", "lore", {
   name: "eit",
   words: ["@eit", "@eited"],
-  description: `'Eit,' in short, means never having to say
-  you're sorry.  For instance, let's say you're holding a cup of
-  water.  I can then come up to you and knock the cup out of
-  your hand whilst saying "eit!" (of course, I should help clean
-  up).  The word can also be used when someone recognizes
-  something eitful.  For instance, if you told me you didn't do
-  well on an exam, I could say "eit, man."  However, what's not
-  acceptible is to say 'eit' to the following: "My family just
-  got eaten by a pack of wolves."  Remember, this is not an eit!
+  description: `Rhymes with 'fight,' eit is an exclamation of
+  a Bad Thing.  As a verb, it means to knock an object out of
+  a person's hands, to cause a Bad Thing to happen, often followed
+  by the exclamation "eit!"
+
+  [para]Proper eitiquette is subtle.  Eit means never having to say you're sorry:
+  discretion is necessary when eiting, but do not needlessly detract from a
+  beautiful eit with platitudes such as "Hubert, I am sorry I eited your toast,
+  jelly side down, onto tEp's unswept kitchen floor." Savor the moment.
+
+  [para]It is proper to recognize eitful misfortune.  If you told me you didn't
+  do well on an exam, I might say "eit, man!" But if your family just
+  got eaten by a pack of wolves? Not an eit!
 
   [para]There is a mural in [action 'go to 22' 22]
   commemorating the sacrament of eit.`
@@ -3430,7 +3476,7 @@ def_obj("lore: bouncers", "lore", {
   words: ["@bouncer", "@bouncers"],
   description: `A Bouncer\u2122 is a now-discontinued durable
   plastic cup by Rubbermaid.  It's like a tall mug (useful for
-  cocoa), and it is a sky diver's beverage container of choice since it
+  [ask 'hot cocoa' cocoa]), and it is a sky diver's beverage container of choice since it
   can be dropped from the Green Building without
   sustaining any damage.  Bouncers bounce.
 
@@ -3453,23 +3499,24 @@ def_obj("lore: U.S.S. Birthday Ship", "lore", {
   description: `This is one of the one-hundred names of tEp,
   referring to how, at tEp, it's always your birthday.`
 });
+parser.lore.understand("U.S.S. Birthday Ship", parse => "lore: U.S.S. Birthday Ship");
 
 def_obj("lore: squids", "lore", {
   name: "squids",
   added_words: ["@squidz"],
   description: `A social gathering in memory of the Squids
-  peldge class, who enjoyed being antisocial by listening to
+  [ask peldge] class, who enjoyed being antisocial by listening to
   Philip Glass, wearing black turtlenecks, and sipping on
   G&Ts.`
 });
 
 def_obj("lore: grape soda", "lore", {
   name: "grape soda",
-  added_words: ["@soder"],
+  added_words: ["@soder", "@s\u00f6der"],
   description: `1. [enter_inline i]n[leave]. The official beverage product of
   Tau Epsilon Phi. Servered in a frosty [ask Bouncer] or
   straight from the can. Grape S\u00f6der has been used in the
-  ancient [enter_inline i]velkomin' d\u00fclr froshinperzons[leave] ritual since
+  ancient [enter_inline i]velkomin' d\u00fcr froshinperzons[leave] ritual since
   time immemorial:
 
   [para]Welcome to TEP, where we like to schlep Grape S\u00f6der! //
@@ -3488,7 +3535,7 @@ def_obj("lore: grape soda", "lore", {
 
 def_obj("lore: honig", "lore", {
   name: "David Andrew Honig",
-  description: `1. [enter_inline i]excl[leave]. A greeting, often as an
+  description: `Honig. 1. [enter_inline i]excl[leave]. A greeting, often as an
   identifier in a large crowd. 2. [enter_inline i]prop. n.[leave] A former
   brother and famous Objectivist, David Andrew Honig, although
   looked upon as antisocial, has become the mascot of TEP.`
@@ -3537,7 +3584,7 @@ def_obj("lore: angst", "lore", {
   life and that of everyone else sucks and that you can't do anything about
   it. Commonly found at TEP under trash cans, behind doors, and often out in the open.
 
-  [para]The SI unit of Angst is the [em Stovall].`
+  [para]The SI unit of Angst is the [ask Stovall].`
 });
 
 def_obj("lore: angst wall", "lore", {
@@ -3587,6 +3634,170 @@ def_obj("lore: druler", "lore", {
   added_words: ["@drool", "drooling"],
   description: `An old, decrepit, drooling TEP. Usually graduated.
   Likes to say things like "when I was a freshman" and "did you say...tuition?"`
+});
+
+def_obj("lore: felch", "lore", {
+  name: "felch",
+  description: `1. [em v]. An act of love. (Don't look it up.)`
+});
+
+def_obj("lore: fire extinguisher pudding", "lore", {
+  name: "fire extinguisher pudding",
+  description: `Place instant pudding and water in a fire extinguisher.  Shake. Spray. Run away fast.`
+});
+
+def_obj("lore: foam room", "lore", {
+  name: "foam room",
+  description: `1. A great place to escape to. 2. A great place to use the phone. 3. A great place to be
+  buried alive in foam chunks.`
+});
+
+def_obj("lore: fust", "lore", {
+  name: "fust",
+  description: `The nasty stuff you find in your belly button, under the bed, in the corners
+  of showers, etc.`
+});
+
+def_obj("lore: gleet", "lore", {
+  name: "gleet",
+  description: `1. [em n]. The food of gods.`
+});
+
+def_obj("lore: hanging couch", "lore", {
+  name: "hanging couch",
+  description: `It's what it sounds like! Go see it in [action 'go to 23' 23].`
+});
+
+def_obj("lore: hot cocoa", "lore", {
+  name: "hot cocoa",
+  description: `1. [em n]. A soothing beverage made from hot, fresh milk, real chocolate
+  cocoa powder, and a buttload of sugar. 2. [em n]. One of tEp's oldest social
+  institutions; at midnight on the first Tooling day of the week (nominally a Monday),
+  tEp hosts Hot Cocoa. Many of our friends from Cambridge perambulate across the Charles
+  (or take SafeRide) to eat sugary stuff, imbibe the chocolate nectar, and hang out.
+  A good time to play [ask Ridiculo-Ball] and other silly games.`
+});
+
+def_obj("lore: musical stairwell", "lore", {
+  name: "musical stairwell",
+  description: `1. [em n]. Found between the second and third floors of tEp on the
+  back stairwell, the musical stairwell uses infrared triggers to sense footfall
+  and plays a cheesy synthesizer. Songs can be played on the stairwell by those with
+  skill and long legs.
+
+  [para]Go see it in [action 'go to second floor of back stairwell' 'the back stairwell'].`
+});
+
+def_obj("lore: peldge", "lore", {
+  name: "peldge",
+  added_words: ["@pledge"],
+  description: `Peldge is a replacement for the word "pledge."`
+});
+
+def_obj("lore: pickles", "lore", {
+  name: "pickles",
+  description: `Pickles is an indication of veracity added after any sentence.
+  Its use began when TEP Alum Chris "Swifty" Hohmann so frequently imparted
+  the world with his creative reinterpretations of reality that his brothers
+  began to doubt that at any time he was telling the truth. Andrea Born Benco
+  evetually found out from Swifty that a Swifty-statement could be tested with
+  the one-word question--"Pickles?" the reply to which would also be pickles
+  if he was indeed telling the truth.
+
+  [para]The use of this word has caught on with other Teps. However, its usability
+  depends on a continued respect for the eternal sanctity of the word pickles.`
+});
+
+def_obj("lore: powerball", "lore", {
+  name: "PowerBall",
+  description: `Similar to [ask Ridiculo-Ball] but more violent and difficult.  It
+  uses the same cheap Star Market type ball as Ridiculo-Ball.
+
+  [para]The rules are as follows:
+  [enter_block ul]
+  [enter_block li]The Server takes the ball and hits it up with his or her knee.
+    A valid serve is one which hits the ceiling of the Front Room.[leave]
+  [enter_block li]The Receiver allows the ball to bounce off of the floor, and
+    then whacks the stuffing out of it down into the carpet. A valid return goes
+    down into the carpet, then up and touches the ceiling, then back down to the
+    floor (this part is not hard) where the other player must continue the volley.[leave]
+  [enter_block li]If the Reciever ever fails to return a volley, the Server
+    gains a point. If the Server fails to return a volley, the serve passes to
+    the other player.[leave]
+  [enter_block li]There are no out of bounds. Play off of walls, windows, pianos,
+    and furniture is encouraged.[leave]
+  [enter_block li]Play continues until one player acquires [ask 22] points, or dies
+    of exhaustion. In this case the surviving player wins. Both doubles and
+    tag team play are allowed.[leave]
+  [leave]`
+});
+
+def_obj("lore: punt", "lore", {
+  name: "punt",
+  description: `1. [em v]. To kick a football. 2. [em v]. To blow off one's
+  required tooling. In general use Institvte-wide.`
+});
+
+def_obj("lore: Ridiculo-Ball", "lore", {
+  name: "Ridiculo-Ball",
+  description: `Ridiculo-Ball is one of the many silly center room games played
+  at TEP. Rules change constantly, but a rough synopsis is as follows:
+  [enter_block ul]
+  [enter_block li]Players encircle a low trash can and wield a large, inexpensive,
+    soft, and, well "ridiculo ball." They try to get the ball into the trash can by
+    bouncing it off the floor and into the can.[leave]
+  [enter_block li]"It" has the softball glove. "It" tries to prevent the ball from
+    going into the trash can by hurling the glove at high velocity.[leave]
+  [enter_block li]If a player gets the ball into the trash can, there is much joy, and
+    he or she becomes "It."[leave]
+  [enter_block li]The game ends when we get bored.[leave]
+  [leave]
+  See also, [ask PowerBall].`
+});
+
+def_obj("lore: schmedley", "lore", {
+  name: "Schmedley",
+  description: `Schmedleys are the small finger-puppet monsters made out of rubber.
+  Each [ask peldge] at tEp is given a Schmedley. Losing your Schmedley is bad.
+  Stealing someone else's Schmedley is good.`
+});
+
+def_obj("lore: spleen", "lore", {
+  name: "Spleen",
+  description: `The Spleen is a tEp's most important organ.  While the brain is
+  occasionally useful for passing final examinations, surviving job interviews,
+  etc., the Spleen provides round-the-clock protection from unexpected illness.
+  At MIT, this vital organ allows one to:
+  [enter_block ul]
+  [enter_block li]Come within 22 feet of Charles River water.[leave]
+  [enter_block li]Smell Lobdell food and suffer only temporary disorientation.[leave]
+  [enter_block li]Watch William Shatner try to act for more than 15 continuous minutes.[leave]
+  [leave]
+  We find we cannot praise the Spleen too highly. See, for example, the 1993 [ask 'Crock Opera']
+  Radical Splenectomy or Irving Q. Tep's scholarly study (in [action 'go to 43']) of Shakespeare's
+  use of the Spleen.`
+});
+
+def_obj("lore: Stovall", "lore", {
+  name: "Stovall",
+  description: `1. [em 'proper n']. TEP Alum Jeff Stovall, a.k.a. "Captain Angst."
+  2. [em n]. The SI unit of [ask Angst]. Like the farad, the stovall is an unwieldy unit;
+  the intensity of the Angst field around a regular "bad day" is in the range of
+  microstovalls. Most human beings can only stand Angst on the order of 10 to 20
+  millistovalls for a few minutes before expiring. For unknown reasons, MIT students
+  seem to be capable of surviving for up to 4 months in Angst fields as high
+  as 300 to 400 millistovalls.`
+});
+
+def_obj("lore: Tep-O-Phone", "lore", {
+  name: "Tep-O-Phone",
+  description: `tEp's former internal phone system.  Go visit [action 'go to The Tep-o-phone Closet' 'the Tep-O-Phone closet'].`
+});
+
+def_obj("lore: whumph bag", "lore", {
+  name: "whumph bag",
+  description: `1. [em n]. Large rubber bladder, with person A standing on it.
+  Person B jumps onto the bag. Person A is propelled into the air with the greatest of whees.`
 });
 
 /**********************/
