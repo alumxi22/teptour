@@ -2499,6 +2499,7 @@ actions.write_infinitive_form.add_method({
 });
 
 parser.action.understand("add [text x] to [something y]", parse => adding_to(parse.x, parse.y));
+parser.action.understand("write [text x] on [something y]", parse => adding_to(parse.x, parse.y));
 
 require_iobj_accessible("adding to");
 
