@@ -2880,10 +2880,18 @@ def_obj("bathtub", "container", {
 }, {put_in: "The Etruscan Bathhouse"});
 
 // for "draw a bath"
-parser.action.understand("draw [obj bathtub]", using("bathtub"));
+parser.action.understand("draw [obj bathtub]", action => using("bathtub"));
 
 instead_of(({verb, dobj}) => verb === "taking" && dobj === "bathtub",
            action => using("bathtub"), true);
+
+parser.action.understand("bathe", function (action) {
+  if (world.accessible_to("bathtub", world.actor)) {
+    return using("bathtub");
+  } else {
+    return undefined;
+  }
+});
 
 actions.before.add_method({
   when: ({verb,dobj}) => verb === "using" && dobj === "bathtub",
