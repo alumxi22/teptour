@@ -43,9 +43,6 @@ div.location_heading {
 
 #output {
     max-width: 700px;
-    display: inline-block; /* a hack to make it so that clear:both doesn't interact with sticky float */
-    position: absolute;
-    top: 0;
     padding-top: 5px;
 }
 
@@ -58,6 +55,7 @@ div.location_heading {
     padding-left: 1em;
     padding-top: 0.8em;
     padding-bottom: 0.8em;
+    overflow: hidden;
 }
 #teptour-input {
     font-family: monospace;
@@ -97,9 +95,11 @@ div.location_heading {
 }
 
 #navigation {
-    position: sticky;
-    top: 0;
-    float: right;
+    display: block;
+    position: fixed;
+    top: 1em;
+    right: 2em;
+    z-index: 1;
 }
 
 #map {
@@ -108,6 +108,8 @@ div.location_heading {
     font-family: monospace;
     font-size: 12pt;
     font-weight: bold;
+    padding: 5px;
+    border-radius: 3px;
 }
 #map tr td.room {
   border-style: solid;
@@ -151,7 +153,7 @@ div.location_heading {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 2;
 }
 #irving-content-holder {
     max-width: 500px;
