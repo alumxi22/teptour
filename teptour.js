@@ -1931,6 +1931,33 @@ def_obj("safe", "container", {
   house chocolate chips to prevent tEps from eating them.`
 }, {put_in: "2f_interstitial"});
 
+parser.action.understand("enter [text x]", parse => {
+  if (world.accessible_to("safe", world.actor) && parse.x.match(/^[0-9 ]*$/)) {
+    var parts = parse.x.split(' ').filter(s => s.length > 0);
+    if (!(parts.length === 3 && parts.every(s => s === "22"))) {
+      return making_mistake(`That seems like an implausible combination.  You
+      quickly try it anyway, and, as expected, it doesn't do the trick.`);
+    }
+  }
+  return undefined;
+});
+
+parser.action.understand("enter 22 22 22", parse => {
+  if (world.accessible_to("safe", world.actor)) {
+    return making_mistake(`Like a true safe cracker, you put your ear against
+    the safe to hear its internal mechanism at work.  After a couple full revolutions
+    counterclockwise, you stop at '22'.  So far so good.  You turn it the other way.
+    Sweat starts to build on your forehead, but you concentrate. '22'.  Ok, last number.
+    Your delicate fingers gracefully turn the dial counterclockwise one last time, parking
+    it at '22'.  Trembling, you reach forward to pull open the door, then meet resistance.
+    It doesn't budge.
+
+    [para]Oh well. The combination really must be forgotten.`);
+  } else {
+    return undefined;
+  }
+});
+
 // TODO open safe by dropping it down the center stairwell
 
 actions.before.add_method({
