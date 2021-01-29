@@ -60,6 +60,17 @@ HTML_abstract_builder.prototype.ask = function (topic, text) {
 /* See the section "Consulting Irving Q. Tep..." for how to add things
    that one can ask him about. */
 
+/// [em] command
+
+/* here's something that italicizes just a few words for convenience. */
+HTML_abstract_builder.prototype.em = function () {
+  out.with_inline("i", () => {
+    for (var i = 0; i < arguments.length; i++) {
+      out.write(arguments[i]);
+    }
+  });
+};
+
 //// Extra directions
 
 add_direction_pair("northnorthwest", "southsoutheast");
@@ -812,7 +823,7 @@ def_obj("bulletin board", "thing", {
   description : `[img 1/center/bulletin.JPG left]This is a
   bulletin board on which tEps affix funny things they found in
   the mail, cute things prefrosh wrote, pictures, postcards from
-  drooling alumni, and other miscellaneous artifacts.`
+  [ask 'druler' drooling] alumni, and other miscellaneous artifacts.`
   // TODO every time you look you see a description of an interesting thing on the board
 }, {put_in: "The Center Room"});
 def_obj("comfy couch", "supporter", {
@@ -1309,7 +1320,7 @@ def_obj("Tepilepsy", "thing", {
   is_scenery: true,
   description : `[img 1/dining/tepilepsy.jpg left]With almost
   twenty-two-hundred RGB LEDs, the Tepilepsy wall was installed
-  with the help of many tEps, both recent and drooling (thanks Gruesz!),
+  with the help of many tEps, both recent and [ask 'druler' drooling] (thanks Gruesz!),
   and it's a beacon that's very visible from the backlot.  It displays
   visualizations of various mathematical functions as well as of
   relativistic-like distortions of a nearby webcam.  You should
@@ -3419,9 +3430,11 @@ def_obj("lore: bouncers", "lore", {
   words: ["@bouncer", "@bouncers"],
   description: `A Bouncer\u2122 is a now-discontinued durable
   plastic cup by Rubbermaid.  It's like a tall mug (useful for
-  cocoa), and could be dropped from the Green Building without
-  sustaining any damage.  Living up to their name, bouncers
-  really can bounce.`
+  cocoa), and it is a sky diver's beverage container of choice since it
+  can be dropped from the Green Building without
+  sustaining any damage.  Bouncers bounce.
+
+  [para]The Bouncer is the standard unit of volumetric measurement.`
 });
 
 def_obj("lore: gruesz", "lore", {
@@ -3516,6 +3529,64 @@ def_obj("lore: foosball", "lore", {
   description: `Foosball condenses human obsession with
   balls, lines, and goals to a cosmic game for 2-4 entities
   capable of turning and translating arbitrary handles.`
+});
+
+def_obj("lore: angst", "lore", {
+  name: "angst",
+  description: `A feeling of anxiety, especially that your
+  life and that of everyone else sucks and that you can't do anything about
+  it. Commonly found at TEP under trash cans, behind doors, and often out in the open.
+
+  [para]The SI unit of Angst is the [em Stovall].`
+});
+
+def_obj("lore: angst wall", "lore", {
+  name: "Angst Wall",
+  description: `A section of wall at TEP on the second floor on which it is
+  socially acceptable to record feelings of angst. The Angst Wall was started by
+  [ask 'druler' drooling] alumnus Julio Freedman, who lived in Room 24 adjacent to the Angst Wall,
+  and created it by writing ANGST in four-foot high letters with colored chalk. While
+  this raised the angst of anal-retentive brothers who did not approve of defacing
+  the pristine walls of TEP, it brought much relief to others and has therefore been
+  continued to the present day. When the angst gets too extreme or dense, the wall is repainted.
+
+  [para]Recently, tepeological studies have begun to search for the Original Angst by peeling
+  away the many layers of paint. The material removed is Concentrated Angst and must be handled
+  with extreme care.`
+});
+
+def_obj("lore: banister of blasphemy", "lore", {
+  name: "Banister of Blasphemy",
+  description: `You'll have to come over and find this one for yourself.`
+});
+
+def_obj("lore: blooter", "lore", {
+  name: "blooter",
+  description: `1. [em 'adj.'] Incredibly huge. 2. [em 'n. (rare)'] A person
+  matching said physical characteristics. 3. [em 'n. (most common usage today)'] The
+  16 oz coffees sold by the SCC 24 Hour Coffeehouse. These were named by Bo, a
+  TEP who worked a lot of shifts at the time that the new cups were introduced.`
+});
+
+def_obj("lore: coffee hour", "lore", {
+  name: "Coffee Hour",
+  description: `A fine TEP social tradition. On Sunday, we come down in
+  bathrobes to the front room, partake in delicious donuts and bagels, drink coffee,
+  and fight over the comics.`
+});
+
+def_obj("lore: Crock Opera", "lore", {
+  name: "Crock Opera",
+  description: `The Comic Rock Opera, or Crock Opera, is a musical comedy put on
+  every year by the [ask 'druler' 'Drooling Alums'] of TEP. It is performed at TEP on the Sunday
+  night of Rush Week.  A fine TEP social tradition.`
+});
+
+def_obj("lore: druler", "lore", {
+  name: "druler",
+  added_words: ["@drool", "drooling"],
+  description: `An old, decrepit, drooling TEP. Usually graduated.
+  Likes to say things like "when I was a freshman" and "did you say...tuition?"`
 });
 
 /**********************/
