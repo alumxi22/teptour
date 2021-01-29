@@ -28,6 +28,13 @@ Just clone the repository and open `index.html` locally.
 
 The raw images are too big for GitHub and GitHub Pages, so they are not hosted in this repository.
 
+To do a version bump of `textadv-js`:
+```
+git subtree pull --prefix=textadv-js --squash textadv-js master
+```
+where `textadv-js` is the name of the remote for the `textadv-js` repository
+(`git remote add textadv-js https://github.com/kmill/textadv-js.git`).
+
 ## How to contribute
 
 Create an issue with an idea of something teptour should cover or a funny mechanic it could have
