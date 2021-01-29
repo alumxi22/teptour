@@ -2,10 +2,13 @@
 //
 // The tEp virtual house tour!
 // (c) 2021 tEp, Xi Chapter
+// tep.mit.edu
 //
 // Authors: Kyle Miller
 //
 // Adapted from a version in Python from 2011.
+//
+// (If you're reading this, we want to hear from you!)
 
 "use strict";
 
