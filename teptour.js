@@ -2574,6 +2574,7 @@ def_obj("spleen usage book", "thing", {
     out.write(`This is Irving Q. Tep's scholarly study on Shakespeare's use
     of the spleen.  You open it up to a random passage:[para]`);
     out.write_text(spleen_uses[Math.floor(Math.random() * spleen_uses.length)]);
+    out.write("[para][action 'examine book on the spleen and Shakespeare' 'Read another passage.']");
   }
 }, {put_in: "43"});
 
