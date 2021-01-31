@@ -1480,7 +1480,7 @@ world.direction_description.set("22", "north", `
 [img 2/22/look_n.JPG left]You see the exit [dir north] to the second
 landing, as well as a closet to the [dir northwest].`);
 world.direction_description.set("22", "west", `
-[img 2/22/look_w.JPG left]On the wall to the west is [a 'picture of Buro's feet'],
+[img 2/22/look_w.JPG left]On the wall to the west is [a 'buro feet'],
 as well as the musical ladder, which makes different
 out-of-tune pitches when you knock on each rung.`);
 world.direction_description.set("22", "south", `
@@ -1502,7 +1502,8 @@ def_obj("22_lights", "thing", {
   cycle through colors or follow music for a lightshow.`
 }, {put_in: "22"});
 
-def_obj("picture of Buro's feet", "thing", {
+def_obj("buro feet", "thing", {
+  name: "picture of Buro's feet",
   added_words: ["portrait"],
   is_scenery: true,
   no_take_msg: `You shouldn't take that picture.  It's
