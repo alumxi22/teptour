@@ -13,7 +13,7 @@
 "use strict";
 
 // version numbers should only ever be of form 2.222...
-world.global.set("release number", "2.2 (January 2021)");
+world.global.set("release number", "2.222 (02/2021)");
 
 world.global.set("game title", "The tEp Virtual House Tour");
 world.global.set("game headline", "A factual fantasy");
