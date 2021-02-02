@@ -745,7 +745,7 @@ def_obj("mailboxes", "container", {
   words: ["mail", "@box", "@boxes", "@mailboxes", "@mailbox"],
   is_scenery: true,
   description: `[img 1/foyer/mailboxes.JPG left]These boxes
-  hold mail of current xisters, past xisters, and summer renters.
+  hold mail of current xisters, past tEps, and summer renters.
   Some of the slots are quite stuffed.`,
   no_take_msg: "That mail is not yours."
 }, {put_in: "The Foyer"});
