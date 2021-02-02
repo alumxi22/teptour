@@ -1,8 +1,8 @@
 // teptour.js
 //
-// The tEp virtual house tour!
-// (c) 2021 tEp, Xi Chapter
-// tep.mit.edu
+// The tEp/Xi virtual house tour!
+// (c) 2021 tEp/Xi
+// tepxi.mit.edu
 //
 // Authors: Kyle Miller
 //
@@ -17,7 +17,7 @@ world.global.set("release number", "2.2 (January 2021)");
 
 world.global.set("game title", "The tEp Virtual House Tour");
 world.global.set("game headline", "A factual fantasy");
-world.global.set("game author", "tEp, Xi chapter");
+world.global.set("game author", "tEp/Xi");
 world.global.set("game description", `Although you're still where you
 were, you're now where you are since [ob 'Irving Q. Tep'] has brought
 you to the Purple Palace, 253 Comm. Ave.`);
@@ -87,7 +87,7 @@ parser.action.understand("about", parse => asking_about("Irving Q. Tep", "virtua
 parser.action.understand("quit", parse => making_mistake("{Bobs} should try closing the tab instead."));
 
 all_are_mistakes(["oh/ok"], "Exactly.");
-all_are_mistakes(["nice", "nice tour"], `Thanks. Now don't forget to come by real-tEp\u2122!`);
+all_are_mistakes(["nice", "nice tour"], `Thanks. Now don't forget to come by real-tEp/Xi\u2122!`);
 parser.action.understand("cd ..", parse => exiting());
 parser.action.understand("cd [somewhere x]", parse => going_to(parse.x));
 parser.action.understand("pwd/dir", parse => looking());
@@ -97,19 +97,19 @@ all_are_mistakes(["cd", "go home"], "But you already are home!");
 all_are_mistakes(["honig"], `"Honig!" you shout.  You can hear vigorous acclamation all around you.`);
 all_are_mistakes(["in the name of honig"], "Amen.");
 all_are_mistakes(["what ?"], `You just had to
-say that, didn't you.  "What?" "What?" "What?" you hear tEps
+say that, didn't you.  "What?" "What?" "What?" you hear xisters
 everywhere yelling back and forth throughout the house.  Finally, some
 tEp figures out what's going on and silences them with "No one is
 peldging, stop it!"`);
 all_are_mistakes(["i wanna peldge"], `This is
-virtual tEp.  If you have a bid and you're wanting to peldge, then say
-the magic words where real tEp can hear you!`);
+virtual tEp/Xi.  If you have a bid and you're wanting to peldge, then say
+the magic words where real tEp/Xi can hear you!`);
 all_are_mistakes(["pray/amen"], `A chorus of
 angelic voices augment that of the chaplain, whom you find suddenly
 next to you.  "In the name of Honig, Amen," he ends.  As you turn to
 thank him for such a beautiful prayer, you see he has already slipped
 away.`);
-all_are_mistakes(["tep"], "That's where you are.");
+all_are_mistakes(["tep/xi/tepxi"], "That's where you are.");
 all_are_mistakes(["why/how [text x]"], () => {
   out.write_text("[");
   out.write(`Sometimes while I wait for my hard drive to rev up I
@@ -501,15 +501,15 @@ world.move_backdrops.add_method({
 
 def_obj("253 Commonwealth Ave", "room", {
   description: `[img 1/253/look.JPG left]You are standing
-  outside the illustrious Tau Epsilon Phi (Xi chapter), the
+  outside the illustrious tEp/Xi, the
   veritable purple palace.  It is a hundred-year-old brownstone
   in the middle of Boston's Back Bay.  Outside the building is
   [a 'purple tree'] and [a 'park bench'].
 
-  [para]Just to the [dir north] is [ob 'front door' 'the door'] to enter tEp.
+  [para]Just to the [dir north] is [ob 'front door' 'the door'] to enter tEp/Xi.
 
   [para]You can look [look east] and [look west] along the
-  street, [look up] at tEp, and [look south] toward the mall.`
+  street, [look up] at tEp/Xi, and [look south] toward the mall.`
 });
 
 add_floor("253 Commonwealth Ave", "sidewalk");
@@ -523,13 +523,13 @@ world.direction_description.set("253 Commonwealth Ave", "east", `
 world.direction_description.set("253 Commonwealth Ave", "south", `
 [img 1/253/look_s.JPG left]Looking southward, you see the mall, which
 is the grassy area between the the two streets of Commonwealth Avenue.
-Directly in front of tEp is a monument to historic women of Boston,
+Directly in front of tEp/Xi is a monument to historic women of Boston,
 which was erected after some brothers wrote to the city multiple times
 about how unfair it was that our block was the only one without any
 kind of monument.`);
 world.direction_description.set("253 Commonwealth Ave", "up", `
 [img 1/253/look_up.JPG left]You look up and see a bit of the
-[ob 'purple tree'] along with a few of the five floors of tEp.`);
+[ob 'purple tree'] along with a few of the five floors of tEp/Xi.`);
 
 instead_of(({verb, dir}) => (verb === "looking toward" && dir === "north"
                              && world.containing_room(world.actor) === "253 Commonwealth Ave"),
@@ -638,7 +638,7 @@ actions.report.add_method({
   when: action => action.verb === "using" && action.dobj === "doorbell",
   handle: function (action) {
     out.write(`You hear a loud subwoofer buzzing at 32 Hz, and,
-    after a few moments, footsteps down the stairs.  A young tEp opens
+    after a few moments, footsteps down the stairs.  A young xister opens
     the door for you and leads you in.  "Ah, I see you're getting the
     virtual house tour from [ob 'Irving Q. Tep']," they say.  "Those
     are really good!"  Before running off, they bring you to...`);
@@ -665,7 +665,7 @@ def_obj("front steps", "supporter", {
   enterable: true,
   is_scenery: true,
   description: `The front steps are a nice place to sit on when the weather's nice.
-  They lead up to [the 'front door'] and into tEp.`
+  They lead up to [the 'front door'] and into tEp/Xi.`
 }, {put_in: "253 Commonwealth Ave"});
 
 /*******************/
@@ -745,7 +745,7 @@ def_obj("mailboxes", "container", {
   words: ["mail", "@box", "@boxes", "@mailboxes", "@mailbox"],
   is_scenery: true,
   description: `[img 1/foyer/mailboxes.JPG left]These boxes
-  hold mail of current tEps, past tEps, and summer renters.
+  hold mail of current xisters, past xisters, and summer renters.
   Some of the slots are quite stuffed.`,
   no_take_msg: "That mail is not yours."
 }, {put_in: "The Foyer"});
@@ -766,7 +766,7 @@ def_obj("Op box", "supporter", {
   description : `[img 1/foyer/outbox.jpg left]The Op box is
   named after Charles Oppenheimer, the first Captain tEp.  It is
   the platform upon which the captain stands to greet his
-  numerous fans.  Because it sits outside of tEp during rush, it
+  numerous fans.  Because it sits outside of tEp/Xi during rush, it
   is also known as the outbox.`,
   locale_description : `From atop the Op box, you feel a
   powerful urge to find purple spandex tights and put them on.` // TODO have tights somewhere
@@ -778,7 +778,7 @@ def_obj("Op box", "supporter", {
 
 def_obj("The Center Room", "room", {
   description: `[img 1/center/look.JPG left]This is the
-  center room, which is a common area at tEp.  Around you are
+  center room, which is a common area at tEp/Xi.  Around you are
   composite photos from the past decade, and [a chandelier]
   that seems like it has seen better days.  Looking up, you can
   see the [ob 'center stairwell'].
@@ -895,7 +895,7 @@ def_obj("mantle", "supporter", {
 def_obj("zombie protection box", "thing", {
   is_scenery: true,
   description: `[img 1/center/zombie.JPG left]This was
-  recently installed to bring tEp up to zombie code.`
+  recently installed to bring tEp/Xi up to zombie code.`
 }, {put_in: "The Center Room"});
 
 def_obj("chandelier", "thing", {
@@ -1324,7 +1324,7 @@ def_obj("Tepilepsy", "thing", {
   and it's a beacon that's very visible from the backlot.  It displays
   visualizations of various mathematical functions as well as of
   relativistic-like distortions of a nearby webcam.  You should
-  definitely ask a for a demonstration at real-tEp\u2122.`
+  definitely ask a for a demonstration at real-tEp/Xi\u2122.`
 }, {put_in: "The Dining Room"});
 
 ///
@@ -1376,7 +1376,7 @@ world.direction_description.set("The Upstairs Kitchen", "north", `
 can see the back lot.`);
 world.direction_description.set("The Upstairs Kitchen", "west", `
 [img 1/kitchen/look_w.JPG left]On the west wall of the kitchen are all
-of the dishes at tEp (minus the ones people steal to their rooms).
+of the dishes at tEp/Xi (minus the ones people steal to their rooms).
 The categorization scheme is between bouncers (such as a
 [ask Bouncer]) and breakers (such as a tea cup).`);
 
@@ -1605,7 +1605,7 @@ def_obj("22_closet_ladder", "door", {
 def_obj("The Batcave", "room", {
   description: function () {
     out.write(`[img 2/batcave/look.JPG left]This is one of
-    the secret rooms of tEp.  It's a room built into the
+    the secret rooms of tEp/Xi.  It's a room built into the
     interstitial space between the second and third floors by
     Batman, a tEp from the 80s.  People have actually lived in
     this room before.  The only things in here are a mattress, a
@@ -1742,7 +1742,7 @@ def_obj("hanging couch", "supporter", {
   [enter_inline i]et voil\u00e0[leave]: a comfortable place to park your
   caboose and a great conversation piece.
 
-  [para]Many visitors to tEp are often apprehensive about sitting
+  [para]Many visitors to tEp/Xi are often apprehensive about sitting
   on the hanging couch. But fear not.  One only needs to think
   forward thoughts to get up the ladder.`,
   locale_description: `[img 2/23/look_couch.JPG left]You get a
@@ -1783,7 +1783,7 @@ actions.before.add_method({
 def_obj("leitshow", "thing", {
   is_scenery: true,
   words: ["@leitshow", "leit", "@show", "@lightshow", "light", "layzor"],
-  description: `[img 2/23/lightshow.jpg left]The tEp Lazor
+  description: `[img 2/23/lightshow.jpg left]The tEp/Xi Lazor
   Leit Show began in the early 1990s when an entire [ask peldge] class
   attended the IAP glassblowing course, fashioned their own neon
   tubes and attached them to the ceiling of 23.  Since then, it
@@ -1929,7 +1929,7 @@ def_obj("safe", "container", {
   is_locked: true,
   description: `[img 2/2fint/safe.JPG left]It's a safe whose
   combination has long been forgotten.  It was used to store the
-  house chocolate chips to prevent tEps from eating them.`
+  house chocolate chips to prevent xisters from eating them.`
 }, {put_in: "2f_interstitial"});
 
 parser.action.understand("enter [text x]", parse => {
@@ -2330,7 +2330,7 @@ def_obj("imagination capturer", "container", {
 ///
 def_obj("The Reading Room", "room", {
   description: `[img 3/reading/look.JPG left]This is the
-  reading room, a secret room of tEp.  You can go back [dir down]
+  reading room, a secret room of tEp/Xi.  You can go back [dir down]
   [ob porn_closet_ladder 'the ladder'] to the porn closet.  You can also look
   [look up] and [look down].`
 });
@@ -2613,7 +2613,7 @@ def_obj("spleen usage book", "thing", {
 
 def_obj("Fourth Front", "room", {
   description: `[img 4/4f/look.JPG left]This is another fine
-  tEp bathroom. You can go [dir northeast] back to the fourth
+  tEp/Xi bathroom. You can go [dir northeast] back to the fourth
   landing or look [look up].`
 });
 
@@ -2816,7 +2816,7 @@ def_obj("xiohazard door", "door", {
   reported: false,
   description: `[img 5/study/door.JPG left]The door between
   the study room and the poopdeck is handsomly ornamented with a
-  large xiohazard, the logo for tEp Xi chapter.`
+  large xiohazard, the logo for tEp/Xi.`
 });
 
 ///
@@ -2852,7 +2852,7 @@ study room to the [dir north] and the stairs leading [dir up] to the roof.`);
 
 def_obj("The Roof", "room", {
   description: `[img 5/roof/look.JPG left]This is the roof of
-  tEp.  To the [look north] is a view of the MIT campus, and to
+  tEp/Xi.  To the [look north] is a view of the MIT campus, and to
   the [look south] is the Boston skyline.  You can go back
   [dir down] to the poopdeck. You can also [look down].`
 });
@@ -2881,7 +2881,7 @@ def_obj("hot tub", "container", {
   description: `An inflatable hot tub is kept on the roof for
   relaxing on quiet nights, especially during IAP and the
   summer.  The maximum size supportable by the roof has been
-  carefully calculated by Course 2 tEps.`
+  carefully calculated by Course 2 xisters.`
 }, {put_in: "The Roof"});
 
 def_obj("The Etruscan Bathhouse", "container", {
@@ -2956,7 +2956,7 @@ parser.action.understand("jump off the roof", handle_jump_off_roof);
 def_obj("Basement", "room", {
   name: "The Basement Hallway",
   description: `[img b/basement/look.jpg left]You have
-  reached the basement of tEp, which, from the base of the
+  reached the basement of tEp/Xi, which, from the base of the
   stairs, appears to be a long hallway running north to south.
 
   [para]There are a multitude of rooms along this hallway:
@@ -3051,7 +3051,7 @@ def_obj("The Kitchen", "room", {
   description: `[img b/kitchen/look.jpg left]This is a
   commercial-grade kitchen.  All residents of the house may use
   it, but it's mainly used by the haus f\u00fcd program:
-  tEps cook dinner for each other every school night.  You
+  xisters cook dinner for each other every school night.  You
   can go [dir northeast] back to the basement, and you can look
   [look north], [look west], [look south], and [look east].`
 });
@@ -3098,7 +3098,7 @@ world.connect_rooms("The Server Room", "east", "The Laundry Room");
 def_obj("The Laundry Room", "room", {
   description : `[img b/laundry/look.JPG left]This is the room
   that makes all tEps smell the same: free laundry, including
-  detergent, is part of the deal of living at tEp.  You see
+  detergent, is part of the deal of living at tEp/Xi.  You see
   [ob washer 'a washing machine'], [a 'dryer'], [ob 'laundry sink' 'a sink'],
   and [ob 'laundry shelves' 'some shelves'].  You can go [dir west].`
 });
@@ -3128,7 +3128,7 @@ def_obj("laundry shelves", "supporter", {
   definite_name: "the shelves",
   indefinite_name: "some shelves",
   is_scenery: true,
-  description: `[img b/laundry/shelves.JPG left]When a tEp
+  description: `[img b/laundry/shelves.JPG left]When a xister
   comes across a dryer they want to use that has someone else's
   clothes, they dutifully put them in a plastic bag and set them
   on these shelves.`
@@ -3152,7 +3152,7 @@ def_obj("detergent", "thing", {
 ///
 
 def_obj("The Tool Closet", "room", {
-  description: `[img b/toolroom/look.JPG left]Since tEp is a
+  description: `[img b/toolroom/look.JPG left]Since tEp/Xi is a
   do-it-yourself kind of place, there is a room devoted to
   keeping tools.  This is that room.  You can look [look northwest]
   or go [dir east] back to the basement hallway.`
@@ -3172,7 +3172,7 @@ def_obj("heavy metal door", "door", {
 });
 
 def_obj("Milk Crate Land", "room", {
-  description: `[img b/milkcrate/look.jpg left]When tEp gets
+  description: `[img b/milkcrate/look.jpg left]When tEp/Xi gets
   milk from distributors, it comes in milk crates.  However,
   it's never been clear what one does with the milk crates after
   they arrive.  After some time, milk crate land has become a
@@ -3227,7 +3227,7 @@ world.direction_description.set("The Backlot", "west", `
 [img b/backlot/look_w.JPG left]You look west down the back alley.`);
 world.direction_description.set("The Backlot", "south", `
 [img b/backlot/look_s.JPG left]To the [dir south], you can see the
-door to the basement of tEp.`);
+door to the basement of tEp/Xi.`);
 world.direction_description.set("The Backlot", "east", `
 [img b/backlot/look_e.JPG left]You look east down the back alley.`);
 world.direction_description.set("The Backlot", "up", `
@@ -3258,7 +3258,7 @@ def_obj("oobleck drain", "supporter", {
 def_obj("The Cave", "room", {
   added_words: ["boiler", "@room"],
   description: `[img b/cave/look.JPG left]This is the machine
-  room of tEp, containing [the boiler] and [ob 'hot water heater' 'the water heater'].
+  room of tEp/Xi, containing [the boiler] and [ob 'hot water heater' 'the water heater'].
   You can look [look south], [look east], and [look up], and you can go
   [dir upstairs] back to the basement hallway or [dir south] into the deep cave.`
 });
@@ -3286,14 +3286,14 @@ def_obj("boiler", "thing", {
   rising due to convection.  The boiler has been retrofitted to
   use oil rather than coal, where there are some nozzles set
   up to spray burning oil in the general direction of the water pipe.
-  tEp has a million dollar boiler insurance policy in the event it takes
+  tEp/Xi has a million dollar boiler insurance policy in the event it takes
   out part of the block.`
 }, {put_in: "The Cave"});
 
 def_obj("hot water heater", "thing", {
   is_scenery: true,
   description: `[img b/cave/heater.jpg left]Unlike [the boiler],
-  this water heater is fairly new.  When some tEps were
+  this water heater is fairly new.  When some xisters were
   working on the valve of a fifth-floor shower, the old heater
   shot hot, black sludge at them through almost a hundred feet
   of pipe as they wondered what they possibly could have done to
@@ -3409,7 +3409,7 @@ actions.report.add_method({
 
 /*
 These are basically short entries for a wiki-like system of things about the
-house and tEp that you couldn't learn just by looking at objects.
+house and tEp/Xi that you couldn't learn just by looking at objects.
 
 Links are created by [ask x] for a link to x, or [ask x text] for a link to
 x with specific link text.
@@ -3439,7 +3439,7 @@ def_obj("lore: eit", "lore", {
   [para]Proper eitiquette is subtle.  Eit means never having to say you're sorry:
   discretion is necessary when eiting, but do not needlessly detract from a
   beautiful eit with platitudes such as "Hubert, I am sorry I eited your toast,
-  jelly side down, onto tEp's unswept kitchen floor." Savor the moment.
+  jelly side down, onto tEp/Xi's unswept kitchen floor." Savor the moment.
 
   [para]It is proper to recognize eitful misfortune.  If you told me you didn't
   do well on an exam, I might say "eit, man!" But if your family just
@@ -3488,7 +3488,7 @@ def_obj("lore: house mangler", "lore", {
   words: ["house", "@mangler", "@manager"],
   description: `The house mangler has one of the most important
   jobs in the house: to make sure the house doesn't fall down.
-  The house mangler accomplishes this by getting tEps
+  The house mangler accomplishes this by getting xisters
   to do their work assignments and to schedule [ask 'work week'].`
 });
 
@@ -3534,8 +3534,8 @@ def_obj("lore: gruesz", "lore", {
 def_obj("lore: U.S.S. Birthday Ship", "lore", {
   name: "U.S.S. Birthday Ship",
   added_words: ["uss"],
-  description: `This is one of the one-hundred names of tEp,
-  referring to how, at tEp, it's always your birthday.`
+  description: `This is one of the one-hundred names of tEp/Xi,
+  referring to how, at tEp/Xi, it's always your birthday.`
 });
 parser.lore.understand("U.S.S. Birthday Ship", parse => "lore: U.S.S. Birthday Ship");
 
@@ -3552,13 +3552,13 @@ def_obj("lore: grape soda", "lore", {
   name: "grape soda",
   added_words: ["@soder", "@s\u00f6der"],
   description: `1. [enter_inline i]n[leave]. The official beverage product of
-  Tau Epsilon Phi. Servered in a frosty [ask Bouncer] or
+  tEp/Xi. Servered in a frosty [ask Bouncer] or
   straight from the can. Grape S\u00f6der has been used in the
   ancient [enter_inline i]velkomin' d\u00fcr froshinperzons[leave] ritual since
   time immemorial:
 
   [para]Welcome to TEP, where we like to schlep Grape S\u00f6der! //
-  Welcome to TEP, it's frosty and wet, and it's caffeine free!
+  Welcome to XI, it's frosty and wet, and it's caffeine free!
 
   [para]Other uses of Grape S\u00f6der include:
   [enter_block ul]
@@ -3620,19 +3620,19 @@ def_obj("lore: angst", "lore", {
   name: "angst",
   description: `A feeling of anxiety, especially that your
   life and that of everyone else sucks and that you can't do anything about
-  it. Commonly found at TEP under trash cans, behind doors, and often out in the open.
+  it. Commonly found at tEp/Xi under trash cans, behind doors, and often out in the open.
 
   [para]The SI unit of Angst is the [ask Stovall].`
 });
 
 def_obj("lore: angst wall", "lore", {
   name: "Angst Wall",
-  description: `A section of wall at TEP on the second floor on which it is
+  description: `A section of wall at tEp/Xi on the second floor on which it is
   socially acceptable to record feelings of angst. The Angst Wall was started by
   [ask 'druler' drooling] alumnus Julio Freedman, who lived in Room 24 adjacent to the Angst Wall,
   and created it by writing ANGST in four-foot high letters with colored chalk. While
   this raised the angst of anal-retentive brothers who did not approve of defacing
-  the pristine walls of TEP, it brought much relief to others and has therefore been
+  the pristine walls of tEp/Xi, it brought much relief to others and has therefore been
   continued to the present day. When the angst gets too extreme or dense, the wall is repainted.
 
   [para]Recently, tepeological studies have begun to search for the Original Angst by peeling
@@ -3655,7 +3655,7 @@ def_obj("lore: blooter", "lore", {
 
 def_obj("lore: coffee hour", "lore", {
   name: "Coffee Hour",
-  description: `A fine TEP social tradition. On Sunday, we come down in
+  description: `A fine tEp/Xi social tradition. On Sunday, we come down in
   bathrobes to the front room, partake in delicious donuts and bagels, drink coffee,
   and fight over the comics.`
 });
@@ -3663,14 +3663,14 @@ def_obj("lore: coffee hour", "lore", {
 def_obj("lore: Crock Opera", "lore", {
   name: "Crock Opera",
   description: `The Comic Rock Opera, or Crock Opera, is a musical comedy put on
-  every year by the [ask 'druler' 'Drooling Alums'] of TEP. It is performed at TEP on the Sunday
-  night of Rush Week.  A fine TEP social tradition.`
+  every year by the [ask 'druler' 'Drooling Alums'] of tEp/Xi. It is performed at tEp/Xi on the Sunday
+  night of Rush Week.  A fine tEp/Xi social tradition.`
 });
 
 def_obj("lore: druler", "lore", {
   name: "druler",
   added_words: ["@drool", "drooling"],
-  description: `An old, decrepit, drooling TEP. Usually graduated.
+  description: `An old, decrepit, drooling tEp/Xi. Usually graduated.
   Likes to say things like "when I was a freshman" and "did you say...tuition?"`
 });
 
@@ -3709,16 +3709,16 @@ def_obj("lore: hanging couch", "lore", {
 def_obj("lore: hot cocoa", "lore", {
   name: "hot cocoa",
   description: `1. [em n]. A soothing beverage made from hot, fresh milk, real chocolate
-  cocoa powder, and a buttload of sugar. 2. [em n]. One of tEp's oldest social
+  cocoa powder, and a buttload of sugar. 2. [em n]. One of tEp/Xi's oldest social
   institutions; at midnight on the first Tooling day of the week (nominally a Monday),
-  tEp hosts Hot Cocoa. Many of our friends from Cambridge perambulate across the Charles
+  tEp/Xi hosts Hot Cocoa. Many of our friends from Cambridge perambulate across the Charles
   (or take SafeRide) to eat sugary stuff, imbibe the chocolate nectar, and hang out.
   A good time to play [ask Ridiculo-Ball] and other silly games.`
 });
 
 def_obj("lore: musical stairwell", "lore", {
   name: "musical stairwell",
-  description: `1. [em n]. Found between the second and third floors of tEp on the
+  description: `1. [em n]. Found between the second and third floors of tEp/Xi on the
   back stairwell, the musical stairwell uses infrared triggers to sense footfall
   and plays a cheesy synthesizer. Songs can be played on the stairwell by those with
   skill and long legs.
@@ -3779,7 +3779,7 @@ def_obj("lore: punt", "lore", {
 def_obj("lore: Ridiculo-Ball", "lore", {
   name: "Ridiculo-Ball",
   description: `Ridiculo-Ball is one of the many silly center room games played
-  at TEP. Rules change constantly, but a rough synopsis is as follows:
+  at tEp/Xi. Rules change constantly, but a rough synopsis is as follows:
   [enter_block ul]
   [enter_block li]Players encircle a low trash can and wield a large, inexpensive,
     soft, and, well "ridiculo ball." They try to get the ball into the trash can by
@@ -3796,7 +3796,7 @@ def_obj("lore: Ridiculo-Ball", "lore", {
 def_obj("lore: schmedley", "lore", {
   name: "Schmedley",
   description: `Schmedleys are the small finger-puppet monsters made out of rubber.
-  Each [ask peldge] at tEp is given a Schmedley. Losing your Schmedley is bad.
+  Each [ask peldge] at tEp/Xi is given a Schmedley. Losing your Schmedley is bad.
   Stealing someone else's Schmedley is good.`
 });
 
