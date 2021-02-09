@@ -2279,9 +2279,10 @@ world.direction_description.set("back_stairwell_3", "east", `Looking
 ///
 
 def_obj("34", "room", {
-  description: `In your minds eye, imagine this: you're in a
-  single, and the bed is lofted. You can go [dir south] to the
-  back stairwell.`
+  description: `[img 3/34/look.JPG left]The room was cleared out for [ask 'work week']
+  to refinish the floor, but usually there's a desk in here underneath the lofted bed.
+
+  [para]You can go [dir south] to the back stairwell.`
 });
 make_known("34");
 add_floor("34", "wood");
