@@ -540,9 +540,9 @@ instead_of(({verb, dir}) => (verb === "looking toward" && dir === "down"
 
 world.no_go_msg.add_method({
   when: (x, dir) => x === "253 Commonwealth Ave",
-  handle: (x, dir) => `Nah, you don't need
-to leave that way!  This is a virtual tour: just close your web
-browser if you want to quit.`
+  handle: (x, dir) => `Looking more carefully, you realize the rest of the neighborhood is just
+a dense bank of fog. You've heard this virtual tEp is hosted in the cloud,
+and if you go that way you might fall off!`
 });
 
 def_obj("tEp", "backdrop", {
