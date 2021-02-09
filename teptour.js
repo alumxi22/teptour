@@ -1162,12 +1162,12 @@ def_obj("vlca", "thing", {
   printed_name: "The VLCA",
   proper_named: true,
   added_words: ["very", "large", "capacitor", "@array"],
-  description : `The Very Large Capacitor Array, commonly
+  description : `[img 1/front/vlca.JPG left]The Very Large Capacitor Array, commonly
   known as the VLCA, consists of a good number of capacitors in
   parallel with two copper pipes at the ends, such that when
   another pipe with an empty soda can is placed
-  across them, it emits bright sparks and a popping sound as the
-  capacitors discharge.`
+  across them, it emits bright sparks and a popping sound as the discharging
+  capacitors blow a hole through the thin aluminum.`
 }, {put_in: "The Front Room"});
 
 def_obj("rideable dinosaur", "supporter", {
