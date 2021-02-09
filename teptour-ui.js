@@ -53,7 +53,7 @@ function run_action(command) {
 
 function scroll_output_to_end() {
   var end = document.getElementById("output-end");
-  end.scrollIntoView(true);
+  document.getElementById("main-window").scrollTop = end.offsetTop;
 }
 
 function update_map_location() {
