@@ -99,7 +99,7 @@ window.addEventListener("load", () => {
 //    }
   });
 
-  document.getElementById("command").focus();
+  document.getElementById("command").focus({preventScroll: true});
   document.getElementById("command").addEventListener("keydown", (e) => {
     if(e.keyCode == 38) {
       e.preventDefault();
@@ -140,7 +140,7 @@ window.addEventListener("load", () => {
     update_map_location();
     scroll_output_to_end();
     var cmd = document.getElementById("command");
-    cmd.focus();
+    cmd.focus({preventScroll: true});
     run_action_callback = callback;
   });
 });
