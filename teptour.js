@@ -883,7 +883,12 @@ def_obj("king", "thing", {
   no_take_msg: `That's always been there.  You shouldn't move it.`, // TODO puzzle to move it?
   description: `[img 1/center/king.JPG left]It's a portrait
   of The King (that is, Elvis Presley to you younger folk on the
-  tour).  It's always been here.`
+  tour), modeled after a ceramic bust that met an explosive end.
+
+  [para]It's always been there.  According to rumors, it appeared sometime
+  during the Back Bay reclamation project in this exact position, and, in a move
+  prefiguring Frank Lloyd Wright, the architect built the house around it.
+  How an image of Presley was produced in the 19th century is uncertain.`
 }, {put_in: "The Center Room"});
 def_obj("mantle", "supporter", {
   is_scenery: true,
