@@ -1159,16 +1159,18 @@ actions.report.add_method({
 /// Front room
 ///
 
+//TODO: missing front room pictures
 def_obj("The Front Room", "room", {
   added_words: ["@fridge"],
-  description: `[img 1/front/look.JPG left]This is where
-  tEp/Xis play Super Smash Bros. after dinner every night.  The
-  room is painted a majestic purple, and it's required to remain
-  so because the Back Bay Architectual Commission, which cares
-  very much about what the Back Bay looks like from the street,
-  declared the purple paint to be "historic." There is a
-  [ob piano], some [ob boats], and a [ob 'rideable dinosaur']. You
-  can go [dir north] to the center room, and look [look south].`
+  description: `[img 1/front/look_2024.jpg left]This is where
+  tEp/Xis pset together every night and hang out after dinners.
+  The room used to be painted a majestic purple, and was supposedly
+  required to remain so because the Back Bay Architechtural Commission, 
+  which cares very much about what the Back Bay looks like from the street,
+  declared the purple paint to be "historic." There are some [ob 'boats']
+  and a little [ob 'stuffed guy'] from National on the mantle. You
+  can go [dir north] to the center room, and look [look south],
+  [look east], or [look west].`
 });
 make_known("The Front Room");
 add_floor("The Front Room", "carpet");
@@ -1176,6 +1178,21 @@ add_floor("The Front Room", "carpet");
 world.direction_description.set("The Front Room", "south", `
 [img 1/front/look_s.JPG left]To the south, you see colorful curtains
 draping over the windows as well as a [ob 'rideable dinosaur'].`);
+world.direction_description.set("The Front Room", "east", `
+[img 1/front/look_e.JPG left]To the east, you see a large mirror.
+It is sometimes used for psetting with dry erase markers, but it becomes
+very difficult to read one's handwriting.`);
+world.direction_description.set("The Front Room", "west", `
+[img 1/front/look_w.JPG left]To the west, you see a projector screen
+which xiblings use for watching movies together.`);
+
+def_obj("stuffed guy", "thing", {
+  is_scenery : true,
+  description : `[img 1/front/mantle_2024.jpg left]This stuffed guy from
+  National lords over us all during house meetings. Hopefully there's no
+  listening device.`
+}, {put_in: "The Front Room"});
+
 
 def_obj("Super Smash Bros.", "thing", {
   added_words: ["@bros", "bros", "@cartridge", "@smash"],
@@ -1330,6 +1347,7 @@ def_obj("squid mural", "thing", {
 }, {put_in: "The Dining Room"});
 def_obj("Snackland", "thing", {
   is_scenery: true,
+  no_take_msg: `Xis would be very sad if you took their snacks.`,
   description: `[img 1/dining/snackland_2024.jpg left]Snackland is typically
   overflowing with snacks and fruit.`
 }, {put_in: "The Dining Room"});
