@@ -794,6 +794,7 @@ def_obj("Op box", "supporter", {
 /// Center Room
 ///
 
+//TODO: add j'office
 def_obj("The Center Room", "room", {
   description: `[img 1/center/look_2024.jpg left]This is the
   center room, which is a common area at tEp/Xi.  Around you are
@@ -2063,10 +2064,18 @@ all_are_mistakes(["pick [obj safe]"],
 ///
 def_obj("Second Back", "room", {
   words: ["2nd", "Second", "@Back"],
-  description: `[img 2/2b/look.JPG left]This is second back.
-  It's a bathroom with a disco ball, an icosahedron, and a
-  strobe light.`
+  description: `[img 2/2b/look_2024.jpg left]This is second back;
+  sometimes [the 'toilet'] has uninvited visitors.
+  At one point it had a disco ball, an icosahedron, and a
+  strobe light, but those have now been merged into the leitshow
+  in 23.`
 });
+def_obj("toilet", "thing", {
+  is_scenery: true,
+  description: `[img 2/2b/toilet_2024.jpg left]The culprit is caught
+  in the act! Xiblings have been known to find pawprints on the 
+  toilet seats.`
+}, {put_in: "Second Back"});
 
 
 /*******************/
@@ -2351,9 +2360,15 @@ def_obj("diplomas", "thing", {
 
 def_obj("Third Back", "room", {
   added_words: ["3rd"],
-  description: `[img 3/3b/look.JPG left]This is a bathroom
-  with color-changing lights.  You can leave to the [dir east].`
+  description: `[img 3/3b/look_2024.jpg left]This is a bathroom
+  that used to have color-changing lights and now has something even better,
+  [ob 'rainbow lights'].  You can leave to the [dir east].`
 });
+def_obj("rainbow lights", "thing", {
+  added_words: ["rainbow", "lights", "light"],
+  is_scenery: true,
+  description: `[img 3/3b/toilet_2024.jpg left]Isn't light pretty?`
+}, {put_in: "Third Back"});
 
 
 ///
@@ -2741,14 +2756,15 @@ checkerboard pattern.`);
 ///
 
 def_obj("Fourth Back", "room", {
-  description: `[img 4/4b/look.jpg left]This bathroom doesn't
-  have any special properties.  You can go [dir east] back to
-  the fourth landing.`
+  description: `[img 4/4b/look_2024.jpg left]This bathroom doesn't
+  have any special properties, but strange things tend to happen here nevertheless.
+  You can go [dir east] back to the fourth landing.`
 });
 
 world.direction_description.set("Fourth Back", "up", `
-[img 4/4b/look_u.JPG left]The're a hole in the ceiling, exposing the
-plumbing for the floor above.`);
+[img 4/4b/look_u.JPG left]At many different points of time there has been a hole in
+the ceiling, exposing the plumbing for the floor above. At least one of these times is
+due to improper drainage of the roof top bathtub`);
 
 ///
 /// The Mac Closet
