@@ -506,7 +506,7 @@ def_obj("253 Commonwealth Ave", "room", {
   in the middle of Boston's Back Bay.  Outside the building is
   [a 'purple tree'] and [a 'park bench'].
 
-  [para]Just to the [dir north] is [ob 'front door' 'the door'] to enter tEp/Xi.
+  [para]Just to the north is [ob 'front door' 'the door'] to enter tEp/Xi.
 
   [para]You can look [look east] and [look west] along the
   street, [look up] at tEp/Xi, and [look south] toward the mall.`
@@ -2125,8 +2125,8 @@ through a small opening in the floor to get into...`); // goes to batcave
 ///
 
 def_obj("33", "room", {
-  description: `[img 3/33/look.JPG left]This room is home of
-  [the 'Free Willy net'] as well as a collection of
+  description: `[img 3/33/look_2024.JPG left]This room is home of
+  [the 'cargo net'] as well as a collection of
   [ob 'bad tie collection' 'bad ties'].
   To the [dir southwest] is the cockpit, and to the
   [dir south] is the third landing.`
@@ -2137,28 +2137,57 @@ world.connect_rooms("33", "southwest", "The Cockpit");
 
 // TODO make "enter cockpit" work (possibly by adding this command to textadv)
 
-def_obj("Free Willy net", "container", {
-  added_words: ["large", "red", "purple", "authentic", "fishing"],
+def_obj("cargo net", "container", {
+  added_words: ["large", "blue", "purple"],
   enterable: true,
   is_scenery: true,
-  description: `[img 3/33/net.JPG left]This large fishing net
-  is from the movie Free Willy.  It was purchased on eBay with a
-  bid of exactly two-hundred twenty-two dollars and forty-seven
-  cents some time ago from a stagehand who took the net home as
-  a collectable (likely overestimating its eventual value).
-  There was a failed attempt to dye the net purple, and it ended
-  up being a reddish color instead.
-
-  [para]The net has been proven through robust scientifical
-  testing to be limited by volume and not weight; it has held
-  over thirty people simultaneously!  It's been said that once you enter the net,
-  you never want to leave, so be careful.`,
-  locale_description: `[img 3/33/look_net.JPG left]Hanging
-  near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'].
+  description: `[img 3/33/net_2024.JPG left] This military cargo net has been
+  proven through robust scientific testing to be limited by volume and not 
+  weight; it has held over thirty people simultaneously!  There may be secrets
+  on the net, but it's been said that once you [action 'enter net' 'enter the net'],
+  you'll never want to leave, so be careful.`,
+  locale_description: `[img 3/33/look_net_2024.JPG left]Hanging
+  near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'],
+  and [action 'look ceiling' 'on the ceiling'] is a geometric mural that may harbor dark secrets.
   Although you really don't want to, since you're quite
-  comfortable where you are, you can [action 'get out'] of the
+  comfortable where you are, you can also [action 'get out'] of the
   net.`
 }, {put_in: "33"});
+
+def_obj("mural", "thing", {
+  added_words: ["ceiling"],
+  is_scenery: true,
+  description: `[img 3/33/mural_2024.JPG left]You see the beautiful ceiling mural in all its glory.`
+}, {put_in: "33"});
+
+// world.direction_description.set("33", "up", `
+//   [img 3/33/mural_2024.JPG left]You see the beautiful mural in all its glory.`); // TODO redirect to examine net instead
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "up"
+    && world.containing_room(world.actor) === "33"),
+    action => examining("cargo net"));
+
+// def_obj("Free Willy net", "container", {
+//   added_words: ["large", "red", "purple", "authentic", "fishing"],
+//   enterable: true,
+//   is_scenery: true,
+//   description: `[img 3/33/net.JPG left]This large fishing net
+//   is from the movie Free Willy.  It was purchased on eBay with a
+//   bid of exactly two-hundred twenty-two dollars and forty-seven
+//   cents some time ago from a stagehand who took the net home as
+//   a collectable (likely overestimating its eventual value).
+//   There was a failed attempt to dye the net purple, and it ended
+//   up being a reddish color instead.
+
+//   [para]The net has been proven through robust scientifical
+//   testing to be limited by volume and not weight; it has held
+//   over thirty people simultaneously!  It's been said that once you enter the net,
+//   you never want to leave, so be careful.`,
+//   locale_description: `[img 3/33/look_net.JPG left]Hanging
+//   near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'].
+//   Although you really don't want to, since you're quite
+//   comfortable where you are, you can [action 'get out'] of the
+//   net.`
+// }, {put_in: "33"});
 
 // middle paragraph
 //         [newline]While this net was from the production of Free Willy,
