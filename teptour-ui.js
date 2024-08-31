@@ -92,14 +92,20 @@ function hide_irving_list() {
   document.getElementById("irving").style.display = "none";
 }
 
+function focus_command() {
+  document.getElementById("command").focus({preventScroll: true});
+}
+
 window.addEventListener("load", () => {
-  document.getElementById("user_response").addEventListener("click", (e) => {
-//    if (e.target === document.body) {
-      document.getElementById("command").focus();
+  document.getElementById("teptour-input").addEventListener("click", (e) => {
+//    if (e.target === e.currentTarget) {
+      focus_command();
+      e.stopPropagation();
+      e.preventDefault();
 //    }
   });
 
-  document.getElementById("command").focus({preventScroll: true});
+  focus_command();
   document.getElementById("command").addEventListener("keydown", (e) => {
     if(e.keyCode == 38) {
       e.preventDefault();
@@ -139,8 +145,7 @@ window.addEventListener("load", () => {
   add_game_listener("input", (callback) => {
     update_map_location();
     scroll_output_to_end();
-    var cmd = document.getElementById("command");
-    cmd.focus({preventScroll: true});
+    focus_command();
     run_action_callback = callback;
   });
 });
