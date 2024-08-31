@@ -32,7 +32,9 @@ var tobii = null;
 
 HTML_abstract_builder.prototype.img = function (path, align) {
   if (tobii == null) {
-    tobii = new Tobii();
+    tobii = new Tobii({
+      counter: false
+    });
   }
   out.with_block("div", () => {
     if (align === "left") {
@@ -532,7 +534,7 @@ world.direction_description.set("253 Commonwealth Ave", "west", `
 [img 1/253/look_w.JPG left]Toward the west, you see that the
 [ob 'purple tree'] is the only purple tree along the block.`);
 world.direction_description.set("253 Commonwealth Ave", "east", `
-[img 1/253/look_e.JPG left]Toward the west, you see that the
+[img 1/253/look_e.JPG left]Toward the east, you see that the
 [ob 'purple tree'] is the only purple tree along the block.`);
 world.direction_description.set("253 Commonwealth Ave", "south", `
 [img 1/253/look_s.JPG left]Looking southward, you see the mall, that
