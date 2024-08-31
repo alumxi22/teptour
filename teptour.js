@@ -797,7 +797,6 @@ def_obj("Op box", "supporter", {
 /// Center Room
 ///
 
-//TODO: add j'office
 def_obj("The Center Room", "room", {
   description: `[img 1/center/look_2024.jpg left]This is the
   center room, which is a common area at tEp/Xi.  Around you are
@@ -1568,7 +1567,7 @@ make_known("21");
 ///
 
 def_obj("22", "room", {
-  description: `[img 2/22/look.JPG left]This is 22, which
+  description: `[img 2/22/look_2024.jpg left]This is 22, which
   houses [a 'purple geodesic ball'], [the 'eit mural'],
   and [the 'liberty sign'].  Above the bay windows are
   [the 22_lights].  You can go [dir north] back to
@@ -1586,9 +1585,9 @@ world.direction_description.set("22", "west", `
 as well as the musical ladder, which makes different
 out-of-tune pitches when you knock on each rung.`);
 world.direction_description.set("22", "south", `
-[img 2/22/look_s.JPG left]To the south you see the bay windows and a
-window from the Liberty Caf\u00e9, the first Internet caf\u00e9 in
-the northeast.`);
+[img 2/22/look_s_2024.JPG left]To the south you see the bay windows and a
+window from the [action 'examine liberty sign' Liberty Caf\u00e9], the first Internet caf\u00e9 in
+the northeast, and underneath, [the 'eit mural'].`);
 
 instead_of(({verb, dir}) => (verb === "looking toward" && dir === "east"
                              && world.containing_room(world.actor) === "22"),
@@ -2424,8 +2423,7 @@ world.direction_description.set("back_stairwell_3", "east", `Looking
 ///
 
 def_obj("34", "room", {
-  description: `[img 3/34/look.JPG left]The room was cleared out for [ask 'work week']
-  to refinish the floor, but usually there's a desk in here underneath the lofted bed.
+  description: `[img 3/34/look_2024.jpg left]This room has a fun rainbow door curtain.
 
   [para]You can go [dir south] to the back stairwell.`
 });
