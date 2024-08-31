@@ -502,7 +502,7 @@ world.move_backdrops.add_method({
 def_obj("253 Commonwealth Ave", "room", {
   description: `[img 1/253/look.JPG left]You are standing
   outside the illustrious tEp/Xi, the
-  veritable purple palace.  It is a hundred-year-old brownstone
+  veritable purple palace.  It is a hundred-twenty-two-year-old brownstone
   in the middle of Boston's Back Bay.  Outside the building is
   [a 'purple tree'] and [a 'park bench'].
 
@@ -511,6 +511,9 @@ def_obj("253 Commonwealth Ave", "room", {
   [para]You can look [look east] and [look west] along the
   street, [look up] at tEp/Xi, and [look south] toward the mall.`
 });
+// https://backbayhouses.org/253-commonwealth/ shows was built in 1880-1881 and purchased in 1958
+// so the house is actually about 144 years old as of 2024.
+// (fun fact: Curry College operated out of 253 in the 1940s, named after Haskell Curry's dad)
 
 add_floor("253 Commonwealth Ave", "sidewalk");
 
