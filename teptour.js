@@ -850,7 +850,7 @@ def_obj("bulletin board", "thing", {
   // TODO every time you look you see a description of an interesting thing on the board
 }, {put_in: "The Center Room"});
 def_obj("floof", "supporter", {
-  added_words: ["beanbag"],
+  added_words: ["@beanbag"],
   is_scenery: true,
   enterable: true,
   description: `[img 1/center/floof_2024.jpg left]This is a nice place to rest
@@ -861,7 +861,6 @@ def_obj("floof", "supporter", {
 //TODO: closer image of piano
 //TODO: capability to play the piano
 def_obj("player piano", "thing", {
-  added_words: ["piano", "player piano", "player"],
   is_scenery: true,
   description: `[img 1/center/playerpiano_2024.jpg left]An xibling long ago got the house
   a player piano. As things in this house tend to do, it broke. Later xiblings found
@@ -1077,12 +1076,15 @@ actions.report.add_method({
 //// J'Office
 ///
 def_obj("J'Office", "room", {
-  words: ["joffice", "office"],
+  words: ["@joffice", "@office", "@j'office"],
   description: `[img 1/joffice/look_2024.jpg left]This is the J'Office, the only first
-  floor bathroom. The center room is [dir southwest].`
+  floor bathroom. The center room is [dir southwest].
+
+  [para]There is a toilet to the [look south].`
 });
+make_known("J'Office");
 world.direction_description.set("J'Office", "south", `
-[img 1/joffice/look_s_2024.jpg left]Please don't be alarmed the first time you look up.
+[img 1/joffice/look_s_2024.jpg left]Please don't be alarmed the first time you lock eyes with the squid.
 The center room is [dir southwest].`);
 
 ///
@@ -1357,7 +1359,6 @@ def_obj("fork chandelier", "thing", {
   corn starch from [ask oobleck].`
 }, {put_in: "The Dining Room"});
 def_obj("squid mural", "thing", {
-  added_words: ["mural"],
   is_scenery: true,
   description: `[img 1/dining/mural_2024.jpg left]This squid looks over us every
   evening at dinner to commemorate the squid [ask peldge] class.`
@@ -2267,7 +2268,8 @@ def_obj("mural", "thing", {
 //   [img 3/33/mural_2024.jpg left]You see the beautiful mural in all its glory.`); // TODO redirect to examine net instead
 instead_of(({verb, dir}) => (verb === "looking toward" && dir === "up"
     && world.containing_room(world.actor) === "33"),
-    action => examining("cargo net"));
+    action => examining("cargo net"),
+    true);
 
 // def_obj("Free Willy net", "container", {
 //   added_words: ["large", "red", "purple", "authentic", "fishing"],
@@ -2381,7 +2383,7 @@ def_obj("Third Back", "room", {
   [ob 'rainbow lights'].  You can leave to the [dir east].`
 });
 def_obj("rainbow lights", "thing", {
-  added_words: ["rainbow", "lights", "light"],
+  added_words: ["@light"],
   is_scenery: true,
   description: `[img 3/3b/toilet_2024.jpg left]Isn't light pretty?`
 }, {put_in: "Third Back"});
@@ -3155,7 +3157,7 @@ kitchen to the [dir southwest].  You can also see the entrance to the
 tool closet to the [dir west] and the way [dir down] to the cave.
 
 [para] On the floor you can see [the 'Gate to Hell'], a shoddily painted
-light purple panel on the floor.`);
+light-purple panel on the floor.`);
 world.direction_description.set("Basement", "up", `
 [img b/basement/look_u.jpg left]You see the way back [dir upstairs]
 to the first floor.`);
@@ -3269,10 +3271,11 @@ world.direction_description.set("The Kitchen", "east", `
 ///
 
 def_obj("The Bike Room", "room", {
+  added_words: ["@bikeroom"],
   description: `[img b/bikeroom/look_2024.jpg left]The bikeroom is
   where tEp/Xis keep their bikes. You can go [dir southeast] back
   to the basement hallway or [dir south] to the server room and you 
-  can look [dir north] or [dir northeast].`
+  can look [look north] or [look northeast].`
 });
 make_known("The Bike Room");
 
@@ -3284,8 +3287,8 @@ world.direction_description.set("The Bike Room", "northeast", `
 which contains a variety of exercise equipment.
 
 [para]Behind that you can see some paneling where the old dumbwaiter used to be. Originally
-this room was the kitchen and only many years after being rennovated was the
-dumwaiter finally closed.`);
+this room was the kitchen, and only many years after being renovated was the
+dumbwaiter finally sealed.`);
 
 world.connect_rooms("The Bike Room", "south", "The Server Room");
 
