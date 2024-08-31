@@ -89,6 +89,9 @@ HTML_abstract_builder.prototype.em = function () {
 add_direction_pair("northnorthwest", "southsoutheast");
 parser.direction.understand("northnorthwest/nnw", parse => "northnorthwest");
 parser.direction.understand("southsoutheast/sse", parse => "southsoutheast");
+add_direction_pair("northnortheast", "southsouthwest");
+parser.direction.understand("northnortheast/nne", parse => "northnortheast");
+parser.direction.understand("southsouthwest/ssw", parse => "southsouthwest");
 
 parser.direction.understand(["upstairs", "up stairs", "up the stairs"], parse => "up");
 parser.direction.understand(["downstairs", "down stairs", "down the stairs"], parse => "down");
@@ -781,7 +784,7 @@ def_obj("Op box", "supporter", {
   added_words: ["out", "@outbox"],
   enterable: true,
   proper_named: true,
-  description : `[img 1/foyer/outbox.jpg left]The Op box is
+  description : `[img 1/foyer/opbox_2024.jpg left]The Op box is
   named after Charles Oppenheimer, the first Captain tEp/Xi.  It is
   the platform upon which the captain stands to greet his
   numerous fans.  Because it sits outside of tEp/Xi during rush, it
@@ -794,16 +797,17 @@ def_obj("Op box", "supporter", {
 /// Center Room
 ///
 
+//TODO: add j'office
 def_obj("The Center Room", "room", {
-  description: `[img 1/center/look.JPG left]This is the
+  description: `[img 1/center/look_2024.jpg left]This is the
   center room, which is a common area at tEp/Xi.  Around you are
-  composite photos from the past decade, and [a chandelier]
+  composite photos from the past decade, and [a 'chandelier']
   that seems like it has seen better days.  Looking up, you can
   see the [ob 'center stairwell'].
 
   [para]You can go [dir south] to the front room, [dir north]
   to the dining room, [dir upstairs] to the second floor, [dir
-  northeast] to the back stairwell, or [dir southeast] back to
+  northnortheast] to the back stairwell, or [dir southeast] back to
   the foyer, and you can look [look north], [look south],
   [look east], [look west], and [look up].`
 });
@@ -813,24 +817,25 @@ make_known("The Center Room");
 world.connect_rooms("The Center Room", "up", "The Second Landing");
 world.connect_rooms("The Center Room", "south", "The Front Room");
 world.connect_rooms("The Center Room", "north", "The Dining Room");
-world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
+world.connect_rooms("The Center Room", "northeast", "J'Office");
+world.connect_rooms("The Center Room", "northnortheast", "back_stairwell_1");
 
 world.direction_description.set("The Center Room", "north", `
-[img 1/center/look_n.JPG left]You see [the 'comfy couch'],
-[the king], [the 'foosball table'], and [the 'bulletin board'].  You
-can go [dir north] into the dining room and [dir northeast] into the
-back stairwell.`);
+[img 1/center/look_n_2024.jpg left]You see the comfy couch,
+[the king], [the 'floof'], [the 'bulletin board'].  You
+can go [dir north] into the dining room, [dir northeast] to the J'Office, 
+and [dir northnortheast] into the back stairwell.`);
 world.direction_description.set("The Center Room", "east", `
-[img 1/center/look_e.JPG left]You can barely make out
-[a 'foosball table'].  You can go [dir upstairs] to the second landing and
-[dir southeast] into the foyer.`);
+[img 1/center/look_e_2024.jpg left]You can see
+[the 'floof'].  You can go [dir upstairs] to the second landing, [dir northeast]
+to the J'Office, and [dir southeast] into the foyer.`);
 world.direction_description.set("The Center Room", "south", `
-[img 1/center/look_s.JPG left]On the wall is [a 'zombie protection box'].
-You can go [dir southeast] into the foyer and [dir south] into
-the front room.`);
+[img 1/center/look_s_2024.jpg left]In the corner is [a 'player piano'].
+On the wall is [a 'zombie protection box']. You can go [dir southeast]
+into the foyer and [dir south] into the front room.`);
 world.direction_description.set("The Center Room", "west", `
-[img 1/center/look_w.JPG left]You can see [the 'comfy couch'] and
-[the mantle].`);
+[img 1/center/look_w_2024.jpg left]You can see the comfy couch and the
+Xi board where xiblings post announcements, jokes, and silly images`);
 world.direction_description.set("The Center Room", "up", `
 [img 1/center/stairwell.JPG left]Looking up, you see the center
 stairwell, which is three flights of stairs capped by a skylight.  The
@@ -838,60 +843,80 @@ color-changing lights illuminate it dramatically.`);
 
 def_obj("bulletin board", "thing", {
   is_scenery: true,
-  description : `[img 1/center/bulletin.JPG left]This is a
+  description : `[img 1/center/bulletin_2024.jpg left]This is a
   bulletin board on which tEp/Xis affix funny things they found in
   the mail, cute things prefrosh wrote, pictures, postcards from
   [ask 'druler' drooling] alumni, and other miscellaneous artifacts.`
   // TODO every time you look you see a description of an interesting thing on the board
 }, {put_in: "The Center Room"});
-def_obj("comfy couch", "supporter", {
-  added_words: ["@sofa"],
+def_obj("floof", "supporter", {
+  added_words: ["beanbag"],
   is_scenery: true,
   enterable: true,
-  description: `[img 1/center/couch.JPG left]This is perhaps
-  the comfiest couch in all of existence.  A neighbor came by
-  one day and said, "hey, you're a fraternity, so you probably
-  like couches.  I have a couch."  With his help, we then
-  brought it to its present location.  True couch aficionados
-  make a pilgrimage to our center room at least twice a year.`
+  description: `[img 1/center/floof_2024.jpg left]This is a nice place to rest
+  after a long day of work. It's also a great place to drop things onto from the
+  center stairwell. Just make sure to yell "DROP" first!`
 }, {put_in: "The Center Room"});
 
-def_obj("foosball table", "container", {
-  added_words: ["foos", "fooz"],
+//TODO: closer image of piano
+//TODO: capability to play the piano
+def_obj("player piano", "thing", {
+  added_words: ["piano", "player piano", "player"],
   is_scenery: true,
-  openable: true,
-  suppress_content_description: (x) => !world.is_open(x),
-  description : `[img 1/center/foosball.JPG left]This is a
-  commercial-quality foosball table which is covered with flecks
-  of colorful paint that, while making it look cool under color
-  changing lights, make it hard to play foosball.  Alumni have
-  looked at it and remininsced to one another, "remember how
-  much the foosball table cost us when we got it?"`
+  description: `[img 1/center/playerpiano_2024.jpg left]An xibling long ago got the house
+  a player piano. As things in this house tend to do, it broke. Later xiblings found
+  another player piano being donated so we have a piano again. It can be played regularly
+  or you can place one of our many scrolls in and have it play by itself.`
 }, {put_in: "The Center Room"});
-def_obj("human skull", "thing", {
-  description : `This is a human skull, but it's missing its
-  jaw from when some Nokia engineers were playing with it at
-  [ask 'hot cocoa' cocoa] one Monday night.  It's unknown why there is such a
-  thing in the house.`
-}, {put_in: "foosball table"});
 
-parser.action.understand("play [obj 'foosball table']", action => using("foosball table"));
-actions.before.add_method({
-  when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
-  handle: () => {}
-});
-actions.report.add_method({
-  when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
-  handle: function () {
-    out.write(`"Click! Click!" go the volleys as the ball skids
-    across the surface of the foosball table, with some non-negligible
-    interference from all the colorful paint.  It's a close match, but
-    your dexterity at the table is impressive!  The game reaches
-    sudden death, and your feet playing yellow narrowly beat your
-    hands playing black.  The handshake is confusing, and your hands
-    and feet decide to make it brief.  Good show.`);
-  }
-});
+// def_obj("comfy couch", "supporter", {
+//   added_words: ["@sofa"],
+//   is_scenery: true,
+//   enterable: true,
+//   description: `[img 1/center/couch.JPG left]This is perhaps
+//   the comfiest couch in all of existence.  A neighbor came by
+//   one day and said, "hey, you're a fraternity, so you probably
+//   like couches.  I have a couch."  With his help, we then
+//   brought it to its present location.  True couch aficionados
+//   make a pilgrimage to our center room at least twice a year.`
+// }, {put_in: "The Center Room"});
+
+// def_obj("foosball table", "container", {
+//   added_words: ["foos", "fooz"],
+//   is_scenery: true,
+//   openable: true,
+//   suppress_content_description: (x) => !world.is_open(x),
+//   description : `[img 1/center/foosball.JPG left]This is a
+//   commercial-quality foosball table which is covered with flecks
+//   of colorful paint that, while making it look cool under color
+//   changing lights, make it hard to play foosball.  Alumni have
+//   looked at it and remininsced to one another, "remember how
+//   much the foosball table cost us when we got it?"`
+// }, {put_in: "The Center Room"});
+// def_obj("human skull", "thing", {
+//   description : `This is a human skull, but it's missing its
+//   jaw from when some Nokia engineers were playing with it at
+//   [ask 'hot cocoa' cocoa] one Monday night.  It's unknown why there is such a
+//   thing in the house.`
+// }, {put_in: "foosball table"});
+
+// parser.action.understand("play [obj 'foosball table']", action => using("foosball table"));
+// actions.before.add_method({
+//   when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
+//   handle: () => {}
+// });
+// actions.report.add_method({
+//   when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
+//   handle: function () {
+//     out.write(`"Click! Click!" go the volleys as the ball skids
+//     across the surface of the foosball table, with some non-negligible
+//     interference from all the colorful paint.  It's a close match, but
+//     your dexterity at the table is impressive!  The game reaches
+//     sudden death, and your feet playing yellow narrowly beat your
+//     hands playing black.  The handshake is confusing, and your hands
+//     and feet decide to make it brief.  Good show.`);
+//   }
+// });
 
 
 def_obj("king", "thing", {
@@ -1049,6 +1074,18 @@ actions.report.add_method({
 });
 
 ///
+//// J'Office
+///
+def_obj("J'Office", "room", {
+  words: ["joffice", "office"],
+  description: `[img 1/joffice/look_2024.jpg left]This is the J'Office, the only first
+  floor bathroom. The center room is [dir southwest].`
+});
+world.direction_description.set("J'Office", "south", `
+[img 1/joffice/look_s_2024.jpg left]Please don't be alarmed the first time you look up.
+The center room is [dir southwest].`);
+
+///
 /// Center stairwell region
 ///
 
@@ -1139,16 +1176,18 @@ actions.report.add_method({
 /// Front room
 ///
 
+//TODO: missing front room pictures
 def_obj("The Front Room", "room", {
   added_words: ["@fridge"],
-  description: `[img 1/front/look.JPG left]This is where
-  tEp/Xis play Super Smash Bros. after dinner every night.  The
-  room is painted a majestic purple, and it's required to remain
-  so because the Back Bay Architectual Commission, which cares
-  very much about what the Back Bay looks like from the street,
-  declared the purple paint to be "historic." There is a
-  [ob piano], some [ob boats], and a [ob 'rideable dinosaur']. You
-  can go [dir north] to the center room, and look [look south].`
+  description: `[img 1/front/look_2024.jpg left]This is where
+  tEp/Xis pset together every night and hang out after dinners.
+  The room used to be painted a majestic purple, and was supposedly
+  required to remain so because the Back Bay Architechtural Commission, 
+  which cares very much about what the Back Bay looks like from the street,
+  declared the purple paint to be "historic." There are some [ob 'boats']
+  and a little [ob 'stuffed guy'] from National on the mantle. You
+  can go [dir north] to the center room, and look [look south],
+  [look east], or [look west].`
 });
 make_known("The Front Room");
 add_floor("The Front Room", "carpet");
@@ -1156,6 +1195,21 @@ add_floor("The Front Room", "carpet");
 world.direction_description.set("The Front Room", "south", `
 [img 1/front/look_s.JPG left]To the south, you see colorful curtains
 draping over the windows as well as a [ob 'rideable dinosaur'].`);
+world.direction_description.set("The Front Room", "east", `
+[img 1/front/look_e.JPG left]To the east, you see a large mirror.
+It is sometimes used for psetting with dry erase markers, but it becomes
+very difficult to read one's handwriting.`);
+world.direction_description.set("The Front Room", "west", `
+[img 1/front/look_w.JPG left]To the west, you see a projector screen
+which xiblings use for watching movies together.`);
+
+def_obj("stuffed guy", "thing", {
+  is_scenery : true,
+  description : `[img 1/front/mantle_2024.jpg left]This stuffed guy from
+  National lords over us all during house meetings. Hopefully there's no
+  listening device.`
+}, {put_in: "The Front Room"});
+
 
 def_obj("Super Smash Bros.", "thing", {
   added_words: ["@bros", "bros", "@cartridge", "@smash"],
@@ -1269,15 +1323,16 @@ actions.report.add_method({
 ///
 
 def_obj("The Dining Room", "room", {
-  description : `[img 1/dining/look.JPG left]This is the
-  dining room, where tEp/Xis eat.  On the ceiling is
+  description : `[img 1/dining/look_2024.jpg left]This is the
+  dining room, where tEp/Xis eat a communal dinner every week night.  On the ceiling is
   [the 'fork chandelier'], sitting above the fireplace is
-  [the 'Tepsi machine'], and covering the west wall is [ob Tepilepsy].
+  [the 'squid mural'], and covering the west wall is [ob Tepilepsy] which is controlled
+  by [the 'computer'] nearby.
   During rush, this room is used to hold a kiddie pool full of [ask oobleck].
 
   [para]To the [dir south] is the center room, and to the
-  [dir east] is the upstairs kitchen.  You can look [look north]
-  and [look east].`
+  [dir east] is the upstairs kitchen.  You can look [look north], [look east],
+  and [look w].`
 });
 make_known("The Dining Room");
 add_floor("The Dining Room", "wood");
@@ -1287,9 +1342,9 @@ world.direction_description.set("The Dining Room", "north", `
 [img 1/dining/look_n.JPG left]Through the windows to the north, you
 get a view of the back lot.`);
 world.direction_description.set("The Dining Room", "east", `
-[img 1/dining/look_e.JPG left]To the east, you see a big whiteboard
-covered in tEp/Xily doodles.  You can go [dir east] into the upstairs
-kitchen.`);
+[img 1/dining/look_e_2024.jpg left]To the east, you see [a 'whiteboard'],
+and underneath, [the 'Snackland'], home of our sustenance. 
+You can go [dir east] into the upstairs kitchen.`);
 
 instead_of(({verb, dir}) => (verb === "looking toward" && dir === "west"
                              && world.containing_room(world.actor) === "The Dining Room"),
@@ -1300,6 +1355,23 @@ def_obj("fork chandelier", "thing", {
   description: `[img 1/dining/chandelier.JPG left]This is a
   chandelier made of forks.  Stuck to it are flecks of dried
   corn starch from [ask oobleck].`
+}, {put_in: "The Dining Room"});
+def_obj("squid mural", "thing", {
+  added_words: ["mural"],
+  is_scenery: true,
+  description: `[img 1/dining/mural_2024.jpg left]This squid looks over us every
+  evening at dinner to commemorate the squid [ask peldge] class.`
+}, {put_in: "The Dining Room"});
+def_obj("Snackland", "thing", {
+  is_scenery: true,
+  no_take_msg: `Xis would be very sad if you took their snacks.`,
+  description: `[img 1/dining/snackland_2024.jpg left]Snackland is typically
+  overflowing with snacks and fruit.`
+}, {put_in: "The Dining Room"});
+def_obj("whiteboard", "thing", {
+  is_scenery: true,
+  description: `[img 1/dining/whiteboard_2024.jpg left]The big whiteboard is covered in tEplXily
+  doodles.`
 }, {put_in: "The Dining Room"});
 def_obj("Tepsi machine", "thing", {
   is_scenery: true,
@@ -1346,8 +1418,15 @@ def_obj("Tepilepsy", "thing", {
   with the help of many tEp/Xis, both recent and [ask 'druler' drooling] (thanks Gruesz!),
   and it's a beacon that's very visible from the backlot.  It displays
   visualizations of various mathematical functions as well as of
-  relativistic-like distortions of a nearby webcam.  You should
-  definitely ask a for a demonstration at real-tEp/Xi\u2122.`
+  relativistic-like distortions of a nearby webcam and is programmable from [the
+  'computer'].  You should definitely ask a for a demonstration at real-tEp/Xi\u2122.`
+}, {put_in: "The Dining Room"});
+//TODO: add sign in to computer feature
+def_obj("computer", "thing", {
+  is_scenery: true,
+  description: `[img 1/dining/computer_2024.jpg left]The dining room computer is used for
+  controlling tepilepsy and playing amusing videos during dinner. It appears to be
+  locked right now though ...`
 }, {put_in: "The Dining Room"});
 
 ///
@@ -1356,9 +1435,9 @@ def_obj("Tepilepsy", "thing", {
 
 def_obj("back_stairwell_1", "room", {
   name: "First Floor of the Back Stairwell",
-  description : `[img 1/bstairs/look.jpg left]You are in the
+  description : `[img 1/bstairs/look_2024.jpg left]You are in the
   back stairwell.  You can go [dir upstairs] to the second
-  floor, [dir southwest] to the center room, [dir north] to the
+  floor, [dir southsouthwest] to the center room, [dir north] to the
   upstairs kitchen, or [dir downstairs] into the basement. You
   can also look [look up], [look down], [look north], and [look west].`
 });
@@ -2001,10 +2080,18 @@ all_are_mistakes(["pick [obj safe]"],
 ///
 def_obj("Second Back", "room", {
   words: ["2nd", "Second", "@Back"],
-  description: `[img 2/2b/look.JPG left]This is second back.
-  It's a bathroom with a disco ball, an icosahedron, and a
-  strobe light.`
+  description: `[img 2/2b/look_2024.jpg left]This is second back;
+  sometimes [the 'toilet'] has uninvited visitors.
+  At one point it had a disco ball, an icosahedron, and a
+  strobe light, but those have now been merged into the leitshow
+  in 23.`
 });
+def_obj("toilet", "thing", {
+  is_scenery: true,
+  description: `[img 2/2b/toilet_2024.jpg left]The culprit is caught
+  in the act! Xiblings have been known to find pawprints on the 
+  toilet seats.`
+}, {put_in: "Second Back"});
 
 
 /*******************/
@@ -2289,9 +2376,15 @@ def_obj("diplomas", "thing", {
 
 def_obj("Third Back", "room", {
   added_words: ["3rd"],
-  description: `[img 3/3b/look.JPG left]This is a bathroom
-  with color-changing lights.  You can leave to the [dir east].`
+  description: `[img 3/3b/look_2024.jpg left]This is a bathroom
+  that used to have color-changing lights and now has something even better,
+  [ob 'rainbow lights'].  You can leave to the [dir east].`
 });
+def_obj("rainbow lights", "thing", {
+  added_words: ["rainbow", "lights", "light"],
+  is_scenery: true,
+  description: `[img 3/3b/toilet_2024.jpg left]Isn't light pretty?`
+}, {put_in: "Third Back"});
 
 
 ///
@@ -2679,14 +2772,15 @@ checkerboard pattern.`);
 ///
 
 def_obj("Fourth Back", "room", {
-  description: `[img 4/4b/look.jpg left]This bathroom doesn't
-  have any special properties.  You can go [dir east] back to
-  the fourth landing.`
+  description: `[img 4/4b/look_2024.jpg left]This bathroom doesn't
+  have any special properties, but strange things tend to happen here nevertheless.
+  You can go [dir east] back to the fourth landing.`
 });
 
 world.direction_description.set("Fourth Back", "up", `
-[img 4/4b/look_u.JPG left]The're a hole in the ceiling, exposing the
-plumbing for the floor above.`);
+[img 4/4b/look_u.JPG left]At many different points of time there has been a hole in
+the ceiling, exposing the plumbing for the floor above. At least one of these times is
+due to improper drainage of the roof top bathtub`);
 
 ///
 /// The Mac Closet
@@ -2830,11 +2924,16 @@ make_known("54");
 ///
 
 def_obj("55", "room", {
-  description: `This is the smallest single in the house, and
-  it's painted a very happy orange.  You can go [dir southwest]
+  description: `[img 5/55/look_2024.jpg left]This is the smallest single in the house, and
+  at one point was painted a very happy orange.  Now it is decorated
+  like a fairy home in the forest. You can can [look north] or go [dir southwest]
   to the fifth landing.`
 });
 make_known("55");
+
+world.direction_description.set("55", "north", `
+[img 5/55/look_n_2024.jpg left]You see a bed and a glimse out the window into
+the back alley.`);
 
 ///
 /// The Study Room
@@ -3029,8 +3128,8 @@ world.connect_rooms("Basement", "northwest", "The Bike Room");
 world.connect_rooms("Basement", "north", "The Backlot");
 world.connect_rooms("Basement", "northnorthwest", "tepophone closet");
 world.connect_rooms("Basement", "west", "The Tool Closet");
-world.connect_rooms("Basement", "east", "The Paint Closet");
-world.connect_rooms("Basement", "southeast", "The Poop Closet");
+world.connect_rooms("Basement", "east", "The Paint Closet", {via: "Paint Closet door"});
+world.connect_rooms("Basement", "southeast", "The Poop Closet", {via: "Poop Closet door"});
 world.connect_rooms("Basement", "south", "Milk Crate Land", {via: "heavy metal door"});
 world.connect_rooms("Basement", "down", "The Cave");
 
@@ -3043,13 +3142,36 @@ world.direction_description.set("Basement", "west", `
 [img b/basement/look_w.JPG left]Spraypainted in large letters is a
 credo attesting the existence of magnetic monopoles.`);
 world.direction_description.set("Basement", "south", `
-[img b/basement/look_s.jpg left]At the end of the hallway to the
+[img b/basement/look_s_2024.jpg left]At the end of the hallway to the
 [dir south] is milk crate land, and near that, but out of sight, is the
 kitchen to the [dir southwest].  You can also see the entrance to the
-tool closet to the [dir west] and the way [dir down] to the cave.`);
+tool closet to the [dir west] and the way [dir down] to the cave.
+
+[para] On the floor you can see [the 'Gate to Hell'], a shoddily painted
+light purple panel on the floor.`);
 world.direction_description.set("Basement", "up", `
 [img b/basement/look_u.jpg left]You see the way back [dir upstairs]
 to the first floor.`);
+
+def_obj("Gate to Hell", "thing", {
+  is_scenery: true,
+  no_take_msg: `The panel is screwed into the floor, and also important
+  for making there not be a hole in the floor.`,
+  description: `This is the Gate to Hell. It has been opened, closed, reopened,
+  expaned, and reclosed, several times to access leaking pipes in the 
+  subbasement and to accomodate plumbers too large to fit in the original 
+  hole.`
+}, {put_in: "Basement"});
+
+// TODO: allow navigation into Hell -- requires another direction
+def_obj("hell", "thing", {
+  is_scenery: true,
+  no_take_msg: `It would be pretty hard to take Hell with you, don't you think?.`,
+  description: `The Gate to Hell leads to the subbasement which leads to Hell and
+  all of the monsters and creatures within. Fortunately the Gate to Hell is currently
+  sealed, but it was a bit dicey for a bit. We kept having to send xiblings down to
+  fend off the invading hoards.`
+}, {put_in: "Basement"});
 
 def_obj("liquid nitrogen cylinder", "thing", {
   added_words: ["of", "@nitrogen", "ln2", "@ln2"],
@@ -3078,8 +3200,15 @@ fill the dewar with; the LN2 cylinder is empty.`);
 /// The Paint Closet
 ///
 
+def_obj("Paint Closet door", "door", {
+  is_scenery: true,
+  description: `[img b/paintcloset/door_2024.jpg left]This is the
+  door to the paint closet. It has very clear instructions on how to
+  properly use the paint supplies.`
+});
+
 def_obj("The Paint Closet", "room", {
-  description: `[img b/paintcloset/look.JPG left]There are a
+  description: `[img b/paintcloset/look_2024.jpg left]There are a
   lot of colors, and therefore a lot of paint.  Thus, this
   closet.  You can go [dir west] back to the basement
   hallway.`
@@ -3089,8 +3218,14 @@ def_obj("The Paint Closet", "room", {
 /// The Poop Closet
 ///
 
+def_obj("Poop Closet door", "door", {
+  is_scenery: true,
+  description: `[img b/poopcloset/door_2024.jpg left]This is the
+  door to the poop closet. It has a list of the items you can expect to find.`
+});
+
 def_obj("The Poop Closet", "room", {
-  description: `[img b/poopcloset/look.JPG left]It's a place
+  description: `[img b/poopcloset/look_2024.jpg left]It's a place
   to keep the toilet paper, paper towels, and garbage bags.  You
   can go [dir northwest] to the basement hallway.`
 });
@@ -3126,11 +3261,24 @@ world.direction_description.set("The Kitchen", "east", `
 ///
 
 def_obj("The Bike Room", "room", {
-  description: `[img b/bikeroom/look.JPG left]The bikeroom is
-  where tEp/Xis keep their bikes.  You can go [dir southeast] back
-  to the basement hallway or [dir south] to the server room.`
+  description: `[img b/bikeroom/look_2024.jpg left]The bikeroom is
+  where tEp/Xis keep their bikes. You can go [dir southeast] back
+  to the basement hallway or [dir south] to the server room and you 
+  can look [dir north] or [dir northeast].`
 });
 make_known("The Bike Room");
+
+world.direction_description.set("The Bike Room", "north", `
+[img b/bikeroom/look_n_2024.jpg left]To the north is Stockland where we
+store wood scraps for personal and house projects.`);
+world.direction_description.set("The Bike Room", "northeast", `
+[img b/bikeroom/look_ne_2024.jpg left]In the northeast corner is the weight "room"
+which contains a variety of exercise equipment.
+
+[para]Behind that you can see some paneling where the old dumbwaiter used to be. Originally
+this room was the kitchen and only many years after being rennovated was the
+dumwaiter finally closed.`);
+
 world.connect_rooms("The Bike Room", "south", "The Server Room");
 
 def_obj("The Server Room", "room", {
@@ -3204,15 +3352,19 @@ def_obj("detergent", "thing", {
 /// The Tool Closet
 ///
 
+//TODO: internal tool room directions are correct but basement room navigation is outdated
 def_obj("The Tool Closet", "room", {
-  description: `[img b/toolroom/look.JPG left]Since tEp/Xi is a
+  description: `[img b/toolroom/look_2024.jpg left]Since tEp/Xi is a
   do-it-yourself kind of place, there is a room devoted to
-  keeping tools.  This is that room.  You can look [look northwest]
+  keeping tools.  This is that room.  You can look [look southwest] or [look southeast]
   or go [dir east] back to the basement hallway.`
 });
 
-world.direction_description.set("The Tool Closet", "northwest", `
-[img b/toolroom/look_nw.JPG left]Look at all those fine tools.`);
+world.direction_description.set("The Tool Closet", "southwest", `
+[img b/toolroom/look_sw_2024.jpg left]Observe the utility sink which does not drain.`);
+
+world.direction_description.set("The Tool Closet", "southeast", `
+[img b/toolroom/look_se_2024.jpg left]Look at all those fine tools.`);
 
 ///
 /// Milk Crate Land
