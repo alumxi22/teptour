@@ -1425,8 +1425,8 @@ def_obj("Tepilepsy", "thing", {
 def_obj("computer", "thing", {
   is_scenery: true,
   description: `[img 1/dining/computer_2024.jpg left]The dining room computer is used for
-  controlling tepilepsy and playing amusing videos during dinner. It appears to be
-  locked right now though ...`
+  controlling [action 'look tepilepsy' 'Tepilepsy'] and playing amusing videos during dinner. It appears to be
+  locked right now, though, with an [action 'ask about honig' 'unusual username']...`
 }, {put_in: "The Dining Room"});
 
 ///
@@ -1808,7 +1808,7 @@ actions.before.add_method({
 ///
 
 def_obj("23", "room", {
-  description: `[img 2/23/look.JPG left]This room is home of
+  description: `[img 2/23/look_2024.jpg left]This room is home of
   [the 'hanging couch'] and the computer-controlled [ob leitshow
   'light show'].  You can leave to the [dir south].`
 });
@@ -2554,8 +2554,9 @@ make_known("41");
 ///
 /// 42
 ///
+// TODO update directions and objects to 2024
 def_obj("42", "room", {
-  description: `[img 4/42/look.JPG left]This is a triple
+  description: `[img 4/42/look_2024.jpg left]This is a triple
   containing [the 'Eye of Gorlack'] and [the 'Eyebrow of Gorlack'].
   You can go [dir north] back to the fourth landing.
   You can also look [look south].`
@@ -2588,9 +2589,10 @@ def_obj("Eyebrow of Gorlack", "thing", {
 ///
 
 def_obj("43", "room", {
-  description: `[img 4/43/look.JPG left]This is a room with a
+  description: `[img 4/43/look_2024.jpg left]This is a room with a
   [ob 'mural chalkboard' mural] on a chalkboard.  On the wall
-  you see [the Roscoe].  To the [dir south] is the
+  you see [the Roscoe], and on the ceiling are the [money bars].  
+  To the [dir south] is the
   fourth landing, and you can look [look east].`
 });
 make_known("43");
@@ -2605,6 +2607,11 @@ def_obj("mural chalkboard", "thing", {
   description: `[img 4/43/chalkboard.JPG left]This is a
   chalkboard with a large portrait of someone who one lived here
   a few years ago.`
+}, {put_in: "43"});
+
+def_obj("monkey bars", "thing", {
+  is_scenery: true,
+  description: `[img 4/43/monkey_bars.jpg left]Monkey bars!!!`
 }, {put_in: "43"});
 
 all_are_mistakes(["erase/wash [obj 'mural chalkboard']"],
@@ -2938,17 +2945,18 @@ the back alley.`);
 /// The Study Room
 ///
 
+// TODO update look directions to 2024
 def_obj("The Study Room", "room", {
   added_words: ["chapter", "@52"],
-  description: `[img 5/study/look.JPG left]This is the study
+  description: `[img 5/study/look_2024.jpg left]This is the study
   room (also known as 52, keeping up with the
   clockwise-enumeration convention), which was painted by a tEp/Xi
   who once stared at the sun and could only see green for a
   month.  You can go [dir north] to the rest of the fifth floor,
   or [dir south] through [the 'xiohazard door'] to the poop
-  deck.
+  deck.`
 
-  [para]You can also look [look east], [look north], and [look west].`
+  // [para]You can also look [look east], [look north], and [look west].`
 });
 make_known("The Study Room");
 add_floor("The Study Room", "wood");
@@ -3156,17 +3164,18 @@ def_obj("Gate to Hell", "thing", {
   is_scenery: true,
   no_take_msg: `The panel is screwed into the floor, and also important
   for making there not be a hole in the floor.`,
-  description: `This is the Gate to Hell. It has been opened, closed, reopened,
+  description: `[img b/basement/look_s_2024.jpg left]This is the Gate to Hell. 
+  It has been opened, closed, reopened,
   expaned, and reclosed, several times to access leaking pipes in the 
   subbasement and to accomodate plumbers too large to fit in the original 
-  hole.`
+  hole. Within lies [action 'examine hell' Hell].`
 }, {put_in: "Basement"});
 
-// TODO: allow navigation into Hell -- requires another direction
-def_obj("hell", "thing", {
+def_obj("Hell", "thing", {
   is_scenery: true,
+  proper_named: true,
   no_take_msg: `It would be pretty hard to take Hell with you, don't you think?.`,
-  description: `The Gate to Hell leads to the subbasement which leads to Hell and
+  description: `[img b/hell/hell_2024.jpg left] The Gate to Hell leads to the subbasement which leads to Hell and
   all of the monsters and creatures within. Fortunately the Gate to Hell is currently
   sealed, but it was a bit dicey for a bit. We kept having to send xiblings down to
   fend off the invading hoards.`
