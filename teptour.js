@@ -3034,8 +3034,8 @@ world.connect_rooms("Basement", "northwest", "The Bike Room");
 world.connect_rooms("Basement", "north", "The Backlot");
 world.connect_rooms("Basement", "northnorthwest", "tepophone closet");
 world.connect_rooms("Basement", "west", "The Tool Closet");
-world.connect_rooms("Basement", "east", "The Paint Closet");
-world.connect_rooms("Basement", "southeast", "The Poop Closet");
+world.connect_rooms("Basement", "east", "The Paint Closet", {via: "Paint Closet door"});
+world.connect_rooms("Basement", "southeast", "The Poop Closet", {via: "Poop Closet door"});
 world.connect_rooms("Basement", "south", "Milk Crate Land", {via: "heavy metal door"});
 world.connect_rooms("Basement", "down", "The Cave");
 
@@ -3053,13 +3053,13 @@ world.direction_description.set("Basement", "south", `
 kitchen to the [dir southwest].  You can also see the entrance to the
 tool closet to the [dir west] and the way [dir down] to the cave.
 
-[para] On the floor you can see [the 'gate to hell'], a shoddily painted
+[para] On the floor you can see [the 'Gate to Hell'], a shoddily painted
 light purple panel on the floor.`);
 world.direction_description.set("Basement", "up", `
 [img b/basement/look_u.jpg left]You see the way back [dir upstairs]
 to the first floor.`);
 
-def_obj("gate to hell", "thing", {
+def_obj("Gate to Hell", "thing", {
   is_scenery: true,
   no_take_msg: `The panel is screwed into the floor, and also important
   for making there not be a hole in the floor.`,
@@ -3106,8 +3106,15 @@ fill the dewar with; the LN2 cylinder is empty.`);
 /// The Paint Closet
 ///
 
+def_obj("Paint Closet door", "door", {
+  is_scenery: true,
+  description: `[img b/paintcloset/door_2024.jpg left]This is the
+  door to the paint closet. It has very clear instructions on how to
+  properly use the paint supplies.`
+});
+
 def_obj("The Paint Closet", "room", {
-  description: `[img b/paintcloset/look.JPG left]There are a
+  description: `[img b/paintcloset/look_2024.jpg left]There are a
   lot of colors, and therefore a lot of paint.  Thus, this
   closet.  You can go [dir west] back to the basement
   hallway.`
@@ -3117,8 +3124,14 @@ def_obj("The Paint Closet", "room", {
 /// The Poop Closet
 ///
 
+def_obj("Poop Closet door", "door", {
+  is_scenery: true,
+  description: `[img b/poopcloset/door_2024.jpg left]This is the
+  door to the poop closet. It has a list of the items you can expect to find.`
+});
+
 def_obj("The Poop Closet", "room", {
-  description: `[img b/poopcloset/look.JPG left]It's a place
+  description: `[img b/poopcloset/look_2024.jpg left]It's a place
   to keep the toilet paper, paper towels, and garbage bags.  You
   can go [dir northwest] to the basement hallway.`
 });
@@ -3168,7 +3181,7 @@ world.direction_description.set("The Bike Room", "northeast", `
 [img b/bikeroom/look_ne_2024.jpg left]In the northeast corner is the weight "room"
 which contains a variety of exercise equipment.
 
-Behind that you can see some paneling where the old dumbwaiter used to be. Originally
+[para]Behind that you can see some paneling where the old dumbwaiter used to be. Originally
 this room was the kitchen and only many years after being rennovated was the
 dumwaiter finally closed.`);
 
