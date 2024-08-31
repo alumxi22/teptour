@@ -3793,7 +3793,7 @@ def_obj("lore: Ridiculo-Ball", "lore", {
   [enter_block li]"It" has the softball glove. "It" tries to prevent the ball from
     going into the trash can by hurling the glove at high velocity.[leave]
   [enter_block li]If a player gets the ball into the trash can, there is much joy, and
-    they becomes "It."[leave]
+    they become "It."[leave]
   [enter_block li]The game ends when we get bored.[leave]
   [leave]
   See also, [ask PowerBall].`
