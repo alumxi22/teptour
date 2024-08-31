@@ -681,7 +681,7 @@ def_obj("The Foyer", "room", {
   You can keep going [dir northwest] to the center room.  You
   can see [a subwoofer], [ob 'front desk' 'a desk'],
   [ob 'colorful lights'], 
-  and [ob 'foyer mirror' 'large mirror']. Something about
+  and [ob 'foyer mirror' 'a large mirror']. Something about
   [the mailboxes] catches your eye.`
 });
 make_known("The Foyer");
