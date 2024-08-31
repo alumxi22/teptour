@@ -85,6 +85,13 @@ div.location_heading {
 .desc_img_left img {
     max-width: 100%;
 }
+a .tobii-zoom__icon {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+a:hover .tobii-zoom__icon {
+    opacity: 1;
+}
 #command {
     font-family: monospace;
     font-size: 12pt;

@@ -28,19 +28,30 @@ you to the Purple Palace, 253 Comm. Ave.`);
 
 //// [img] command
 
+var tobii = null;
+
 HTML_abstract_builder.prototype.img = function (path, align) {
+  if (tobii == null) {
+    tobii = new Tobii();
+  }
   out.with_block("div", () => {
     if (align === "left") {
       out.add_class("desc_img_left");
     } else {
       out.add_class("desc_img");
     }
-    out.with_block("img", () => {
-      let img = out.root;
-      img.addEventListener("load", function (e) {
-        scroll_output_to_end();
+    const img_url = "images/" + path;
+    out.with_block("a", () => {
+      out.attr("href", img_url);
+      out.add_class("lightbox");
+      out.with_block("img", () => {
+        let img = out.root;
+        img.addEventListener("load", function (e) {
+          scroll_output_to_end();
+        });
+        out.attr("src", img_url);
       });
-      out.attr("src", "images/" + path);
+      tobii.add(out.root);
     });
   });
 };
