@@ -521,10 +521,10 @@ world.direction_description.set("253 Commonwealth Ave", "east", `
 [img 1/253/look_e.JPG left]Toward the west, you see that the
 [ob 'purple tree'] is the only purple tree along the block.`);
 world.direction_description.set("253 Commonwealth Ave", "south", `
-[img 1/253/look_s.JPG left]Looking southward, you see the mall, which
-is the grassy area between the the two streets of Commonwealth Avenue.
+[img 1/253/look_s.JPG left]Looking southward, you see the mall, that
+grassy area between the two streets of Commonwealth Avenue.
 Directly in front of tEp/Xi is a monument to historic women of Boston,
-which was erected after some brothers wrote to the city multiple times
+erected after some xisters wrote to the city multiple times
 about how unfair it was that our block was the only one without any
 kind of monument.`);
 world.direction_description.set("253 Commonwealth Ave", "up", `
@@ -3476,7 +3476,7 @@ def_obj("lore: sawzall", "lore", {
   description: `A Sawzall is a hand-held reciprocating saw
   that can basically cut through anything.  Their prohibition
   was made into one of the [ask 'rules of tep'] after one
-  brother repeatedly cut down the wall between 51 and 52 during
+  xister repeatedly cut down the wall between 51 and 52 during
   the summer months to make a mega room, where it was the duty
   of the [ask 'house mangler'] to mend the wall at the end of
   each summer for [ask 'work week'].`
@@ -3581,7 +3581,7 @@ def_obj("lore: honig", "lore", {
   name: "David Andrew Honig",
   description: `Honig. 1. [enter_inline i]excl[leave]. A greeting, often as an
   identifier in a large crowd. 2. [enter_inline i]prop. n.[leave] A former
-  brother and famous Objectivist, David Andrew Honig, although
+  xister and famous Objectivist, David Andrew Honig, although
   looked upon as antisocial, has become the mascot of TEP.`
 });
 
@@ -3637,7 +3637,7 @@ def_obj("lore: angst wall", "lore", {
   socially acceptable to record feelings of angst. The Angst Wall was started by
   [ask 'druler' drooling] alumnus Julio Freedman, who lived in Room 24 adjacent to the Angst Wall,
   and created it by writing ANGST in four-foot high letters with colored chalk. While
-  this raised the angst of anal-retentive brothers who did not approve of defacing
+  this raised the angst of anal-retentive xisters who did not approve of defacing
   the pristine walls of tEp/Xi, it brought much relief to others and has therefore been
   continued to the present day. When the angst gets too extreme or dense, the wall is repainted.
 
@@ -3742,7 +3742,7 @@ def_obj("lore: pickles", "lore", {
   name: "pickles",
   description: `Pickles is an indication of veracity added after any sentence.
   Its use began when TEP Alum Chris "Swifty" Hohmann so frequently imparted
-  the world with his creative reinterpretations of reality that his brothers
+  the world with his creative reinterpretations of reality that his xisters
   began to doubt that at any time he was telling the truth. Andrea Born Benco
   evetually found out from Swifty that a Swifty-statement could be tested with
   the one-word question--"Pickles?" the reply to which would also be pickles
