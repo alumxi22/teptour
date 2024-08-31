@@ -89,6 +89,9 @@ HTML_abstract_builder.prototype.em = function () {
 add_direction_pair("northnorthwest", "southsoutheast");
 parser.direction.understand("northnorthwest/nnw", parse => "northnorthwest");
 parser.direction.understand("southsoutheast/sse", parse => "southsoutheast");
+add_direction_pair("northnortheast", "southsouthwest");
+parser.direction.understand("northnortheast/nne", parse => "northnortheast");
+parser.direction.understand("southsouthwest/ssw", parse => "southsouthwest");
 
 parser.direction.understand(["upstairs", "up stairs", "up the stairs"], parse => "up");
 parser.direction.understand(["downstairs", "down stairs", "down the stairs"], parse => "down");
@@ -804,7 +807,7 @@ def_obj("The Center Room", "room", {
 
   [para]You can go [dir south] to the front room, [dir north]
   to the dining room, [dir upstairs] to the second floor, [dir
-  northeast] to the back stairwell, or [dir southeast] back to
+  northnortheast] to the back stairwell, or [dir southeast] back to
   the foyer, and you can look [look north], [look south],
   [look east], [look west], and [look up].`
 });
@@ -814,17 +817,18 @@ make_known("The Center Room");
 world.connect_rooms("The Center Room", "up", "The Second Landing");
 world.connect_rooms("The Center Room", "south", "The Front Room");
 world.connect_rooms("The Center Room", "north", "The Dining Room");
-world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
+world.connect_rooms("The Center Room", "northeast", "J'Office");
+world.connect_rooms("The Center Room", "northnortheast", "back_stairwell_1");
 
 world.direction_description.set("The Center Room", "north", `
 [img 1/center/look_n_2024.jpg left]You see the comfy couch,
-[the king], [the 'floof'], and [the 'bulletin board'].  You
-can go [dir north] into the dining room and [dir northeast] into the
-back stairwell.`);
+[the king], [the 'floof'], [the 'bulletin board'].  You
+can go [dir north] into the dining room, [dir northeast] to the J'Office, 
+and [dir northnortheast] into the back stairwell.`);
 world.direction_description.set("The Center Room", "east", `
 [img 1/center/look_e_2024.jpg left]You can see
-[the 'floof'].  You can go [dir upstairs] to the second landing and
-[dir southeast] into the foyer.`);
+[the 'floof'].  You can go [dir upstairs] to the second landing, [dir northeast]
+to the J'Office, and [dir southeast] into the foyer.`);
 world.direction_description.set("The Center Room", "south", `
 [img 1/center/look_s_2024.jpg left]In the corner is [a 'player piano'].
 On the wall is [a 'zombie protection box']. You can go [dir southeast]
@@ -1068,6 +1072,18 @@ actions.report.add_method({
     this room anyway.`);
   }
 });
+
+///
+//// J'Office
+///
+def_obj("J'Office", "room", {
+  words: ["joffice", "office"],
+  description: `[img 1/joffice/look_2024.jpg left]This is the J'Office, the only first
+  floor bathroom. The center room is [dir southwest].`
+});
+world.direction_description.set("J'Office", "south", `
+[img 1/joffice/look_s_2024.jpg left]Please don't be alarmed the first time you look up.
+The center room is [dir southwest].`);
 
 ///
 /// Center stairwell region
@@ -1421,7 +1437,7 @@ def_obj("back_stairwell_1", "room", {
   name: "First Floor of the Back Stairwell",
   description : `[img 1/bstairs/look_2024.jpg left]You are in the
   back stairwell.  You can go [dir upstairs] to the second
-  floor, [dir southwest] to the center room, [dir north] to the
+  floor, [dir southsouthwest] to the center room, [dir north] to the
   upstairs kitchen, or [dir downstairs] into the basement. You
   can also look [look up], [look down], [look north], and [look west].`
 });
