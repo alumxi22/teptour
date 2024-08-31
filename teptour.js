@@ -3609,6 +3609,7 @@ def_obj("lore: grape soda", "lore", {
 });
 
 def_obj("lore: honig", "lore", {
+  added_words: ["david", "dah", "andrew"],
   name: "David Andrew Honig",
   description: `Honig. 1. [enter_inline i]excl[leave]. A greeting, often as an
   identifier in a large crowd. 2. [enter_inline i]prop. n.[leave] A former
