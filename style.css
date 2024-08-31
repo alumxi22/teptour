@@ -46,6 +46,13 @@ div.location_heading {
     padding-top: 5px;
 }
 
+/* Media query for phone-sized screens. Give enough space to clear the map button and still see the intro. */
+@media only screen and (max-width: 890px) {
+  #output {
+    padding-top: 32px;
+  }
+}
+
 #output-end {
     height: 0.5em;
 }
