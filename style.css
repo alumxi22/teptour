@@ -71,7 +71,7 @@ div.location_heading {
     padding-left: 1em;
     padding-top: 0.8em;
     padding-bottom: 0.8em;
-/*    overflow: hidden;*/
+    overflow: hidden;
 
     flex: 1 1 300px;
     min-width: 300px;
