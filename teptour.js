@@ -781,7 +781,7 @@ def_obj("Op box", "supporter", {
   added_words: ["out", "@outbox"],
   enterable: true,
   proper_named: true,
-  description : `[img 1/foyer/outbox.jpg left]The Op box is
+  description : `[img 1/foyer/opbox_2024.jpg left]The Op box is
   named after Charles Oppenheimer, the first Captain tEp/Xi.  It is
   the platform upon which the captain stands to greet his
   numerous fans.  Because it sits outside of tEp/Xi during rush, it
@@ -795,9 +795,9 @@ def_obj("Op box", "supporter", {
 ///
 
 def_obj("The Center Room", "room", {
-  description: `[img 1/center/look.JPG left]This is the
+  description: `[img 1/center/look_2024.jpg left]This is the
   center room, which is a common area at tEp/Xi.  Around you are
-  composite photos from the past decade, and [a chandelier]
+  composite photos from the past decade, and [a 'chandelier']
   that seems like it has seen better days.  Looking up, you can
   see the [ob 'center stairwell'].
 
@@ -816,21 +816,21 @@ world.connect_rooms("The Center Room", "north", "The Dining Room");
 world.connect_rooms("The Center Room", "northeast", "back_stairwell_1");
 
 world.direction_description.set("The Center Room", "north", `
-[img 1/center/look_n.JPG left]You see [the 'comfy couch'],
-[the king], [the 'foosball table'], and [the 'bulletin board'].  You
+[img 1/center/look_n_2024.jpg left]You see the comfy couch,
+[the king], [the 'floof'], and [the 'bulletin board'].  You
 can go [dir north] into the dining room and [dir northeast] into the
 back stairwell.`);
 world.direction_description.set("The Center Room", "east", `
-[img 1/center/look_e.JPG left]You can barely make out
-[a 'foosball table'].  You can go [dir upstairs] to the second landing and
+[img 1/center/look_e_2024.jpg left]You can see
+[the 'floof'].  You can go [dir upstairs] to the second landing and
 [dir southeast] into the foyer.`);
 world.direction_description.set("The Center Room", "south", `
-[img 1/center/look_s.JPG left]On the wall is [a 'zombie protection box'].
-You can go [dir southeast] into the foyer and [dir south] into
-the front room.`);
+[img 1/center/look_s_2024.jpg left]In the corner is [a 'player piano'].
+On the wall is [a 'zombie protection box']. You can go [dir southeast]
+into the foyer and [dir south] into the front room.`);
 world.direction_description.set("The Center Room", "west", `
-[img 1/center/look_w.JPG left]You can see [the 'comfy couch'] and
-[the mantle].`);
+[img 1/center/look_w_2024.jpg left]You can see the comfy couch and the
+Xi board where xiblings post announcements, jokes, and silly images`);
 world.direction_description.set("The Center Room", "up", `
 [img 1/center/stairwell.JPG left]Looking up, you see the center
 stairwell, which is three flights of stairs capped by a skylight.  The
@@ -838,60 +838,80 @@ color-changing lights illuminate it dramatically.`);
 
 def_obj("bulletin board", "thing", {
   is_scenery: true,
-  description : `[img 1/center/bulletin.JPG left]This is a
+  description : `[img 1/center/bulletin_2024.jpg left]This is a
   bulletin board on which tEp/Xis affix funny things they found in
   the mail, cute things prefrosh wrote, pictures, postcards from
   [ask 'druler' drooling] alumni, and other miscellaneous artifacts.`
   // TODO every time you look you see a description of an interesting thing on the board
 }, {put_in: "The Center Room"});
-def_obj("comfy couch", "supporter", {
-  added_words: ["@sofa"],
+def_obj("floof", "supporter", {
+  added_words: ["beanbag"],
   is_scenery: true,
   enterable: true,
-  description: `[img 1/center/couch.JPG left]This is perhaps
-  the comfiest couch in all of existence.  A neighbor came by
-  one day and said, "hey, you're a fraternity, so you probably
-  like couches.  I have a couch."  With his help, we then
-  brought it to its present location.  True couch aficionados
-  make a pilgrimage to our center room at least twice a year.`
+  description: `[img 1/center/floof_2024.jpg left]This is a nice place to rest
+  after a long day of work. It's also a great place to drop things onto from the
+  center stairwell. Just make sure to yell "DROP" first!`
 }, {put_in: "The Center Room"});
 
-def_obj("foosball table", "container", {
-  added_words: ["foos", "fooz"],
+//TODO: closer image of piano
+//TODO: capability to play the piano
+def_obj("player piano", "thing", {
+  added_words: ["piano", "player piano", "player"],
   is_scenery: true,
-  openable: true,
-  suppress_content_description: (x) => !world.is_open(x),
-  description : `[img 1/center/foosball.JPG left]This is a
-  commercial-quality foosball table which is covered with flecks
-  of colorful paint that, while making it look cool under color
-  changing lights, make it hard to play foosball.  Alumni have
-  looked at it and remininsced to one another, "remember how
-  much the foosball table cost us when we got it?"`
+  description: `[img 1/center/playerpiano_2024.jpg left]An xibling long ago got the house
+  a player piano. As things in this house tend to do, it broke. Later xiblings found
+  another player piano being donated so we have a piano again. It can be played regularly
+  or you can place one of our many scrolls in and have it play by itself.`
 }, {put_in: "The Center Room"});
-def_obj("human skull", "thing", {
-  description : `This is a human skull, but it's missing its
-  jaw from when some Nokia engineers were playing with it at
-  [ask 'hot cocoa' cocoa] one Monday night.  It's unknown why there is such a
-  thing in the house.`
-}, {put_in: "foosball table"});
 
-parser.action.understand("play [obj 'foosball table']", action => using("foosball table"));
-actions.before.add_method({
-  when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
-  handle: () => {}
-});
-actions.report.add_method({
-  when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
-  handle: function () {
-    out.write(`"Click! Click!" go the volleys as the ball skids
-    across the surface of the foosball table, with some non-negligible
-    interference from all the colorful paint.  It's a close match, but
-    your dexterity at the table is impressive!  The game reaches
-    sudden death, and your feet playing yellow narrowly beat your
-    hands playing black.  The handshake is confusing, and your hands
-    and feet decide to make it brief.  Good show.`);
-  }
-});
+// def_obj("comfy couch", "supporter", {
+//   added_words: ["@sofa"],
+//   is_scenery: true,
+//   enterable: true,
+//   description: `[img 1/center/couch.JPG left]This is perhaps
+//   the comfiest couch in all of existence.  A neighbor came by
+//   one day and said, "hey, you're a fraternity, so you probably
+//   like couches.  I have a couch."  With his help, we then
+//   brought it to its present location.  True couch aficionados
+//   make a pilgrimage to our center room at least twice a year.`
+// }, {put_in: "The Center Room"});
+
+// def_obj("foosball table", "container", {
+//   added_words: ["foos", "fooz"],
+//   is_scenery: true,
+//   openable: true,
+//   suppress_content_description: (x) => !world.is_open(x),
+//   description : `[img 1/center/foosball.JPG left]This is a
+//   commercial-quality foosball table which is covered with flecks
+//   of colorful paint that, while making it look cool under color
+//   changing lights, make it hard to play foosball.  Alumni have
+//   looked at it and remininsced to one another, "remember how
+//   much the foosball table cost us when we got it?"`
+// }, {put_in: "The Center Room"});
+// def_obj("human skull", "thing", {
+//   description : `This is a human skull, but it's missing its
+//   jaw from when some Nokia engineers were playing with it at
+//   [ask 'hot cocoa' cocoa] one Monday night.  It's unknown why there is such a
+//   thing in the house.`
+// }, {put_in: "foosball table"});
+
+// parser.action.understand("play [obj 'foosball table']", action => using("foosball table"));
+// actions.before.add_method({
+//   when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
+//   handle: () => {}
+// });
+// actions.report.add_method({
+//   when: ({verb,dobj}) => verb === "using" && dobj === "foosball table",
+//   handle: function () {
+//     out.write(`"Click! Click!" go the volleys as the ball skids
+//     across the surface of the foosball table, with some non-negligible
+//     interference from all the colorful paint.  It's a close match, but
+//     your dexterity at the table is impressive!  The game reaches
+//     sudden death, and your feet playing yellow narrowly beat your
+//     hands playing black.  The handshake is confusing, and your hands
+//     and feet decide to make it brief.  Good show.`);
+//   }
+// });
 
 
 def_obj("king", "thing", {
@@ -1356,7 +1376,7 @@ def_obj("Tepilepsy", "thing", {
 
 def_obj("back_stairwell_1", "room", {
   name: "First Floor of the Back Stairwell",
-  description : `[img 1/bstairs/look.jpg left]You are in the
+  description : `[img 1/bstairs/look_2024.jpg left]You are in the
   back stairwell.  You can go [dir upstairs] to the second
   floor, [dir southwest] to the center room, [dir north] to the
   upstairs kitchen, or [dir downstairs] into the basement. You
