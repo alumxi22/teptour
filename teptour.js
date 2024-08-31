@@ -2830,11 +2830,16 @@ make_known("54");
 ///
 
 def_obj("55", "room", {
-  description: `This is the smallest single in the house, and
-  it's painted a very happy orange.  You can go [dir southwest]
+  description: `[img 5/55/look.jpg left]This is the smallest single in the house, and
+  at one point was painted a very happy orange.  Now it is decorated
+  like a fairy home in the forest. You can can [look north] or go [dir southwest]
   to the fifth landing.`
 });
 make_known("55");
+
+world.direction_description.set("55", "north", `
+[img 5/55/look_n.jpg left]You see a bed and a glimse out the window into
+the back alley.`);
 
 ///
 /// The Study Room
