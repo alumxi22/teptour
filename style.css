@@ -137,6 +137,17 @@ a.contact-us:hover {
 }
 #map summary {
     margin-bottom: 1em;
+    padding: 5px 8px;
+    background: #222;
+    color: #B366FF;
+    border: 3px solid #B366FF;
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+}
+#map summary:hover {
+    background: #B366FF;
+    color: #222;
 }
 #map tr td.room {
   border-style: solid;
