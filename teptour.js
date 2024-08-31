@@ -2591,7 +2591,7 @@ def_obj("Eyebrow of Gorlack", "thing", {
 def_obj("43", "room", {
   description: `[img 4/43/look_2024.jpg left]This is a room with a
   [ob 'mural chalkboard' mural] on a chalkboard.  On the wall
-  you see [the Roscoe], and on the ceiling are the [money bars].  
+  you see [the Roscoe], and on the ceiling are [the 'monkey bars'].
   To the [dir south] is the
   fourth landing, and you can look [look east].`
 });
