@@ -2830,7 +2830,7 @@ make_known("54");
 ///
 
 def_obj("55", "room", {
-  description: `[img 5/55/look.jpg left]This is the smallest single in the house, and
+  description: `[img 5/55/look_2024.jpg left]This is the smallest single in the house, and
   at one point was painted a very happy orange.  Now it is decorated
   like a fairy home in the forest. You can can [look north] or go [dir southwest]
   to the fifth landing.`
@@ -2838,7 +2838,7 @@ def_obj("55", "room", {
 make_known("55");
 
 world.direction_description.set("55", "north", `
-[img 5/55/look_n.jpg left]You see a bed and a glimse out the window into
+[img 5/55/look_n_2024.jpg left]You see a bed and a glimse out the window into
 the back alley.`);
 
 ///
@@ -3048,13 +3048,36 @@ world.direction_description.set("Basement", "west", `
 [img b/basement/look_w.JPG left]Spraypainted in large letters is a
 credo attesting the existence of magnetic monopoles.`);
 world.direction_description.set("Basement", "south", `
-[img b/basement/look_s.jpg left]At the end of the hallway to the
+[img b/basement/look_s_2024.jpg left]At the end of the hallway to the
 [dir south] is milk crate land, and near that, but out of sight, is the
 kitchen to the [dir southwest].  You can also see the entrance to the
-tool closet to the [dir west] and the way [dir down] to the cave.`);
+tool closet to the [dir west] and the way [dir down] to the cave.
+
+[para] On the floor you can see [the 'gate to hell'], a shoddily painted
+light purple panel on the floor.`);
 world.direction_description.set("Basement", "up", `
 [img b/basement/look_u.jpg left]You see the way back [dir upstairs]
 to the first floor.`);
+
+def_obj("gate to hell", "thing", {
+  is_scenery: true,
+  no_take_msg: `The panel is screwed into the floor, and also important
+  for making there not be a hole in the floor.`,
+  description: `This is the Gate to Hell. It has been opened, closed, reopened,
+  expaned, and reclosed, several times to access leaking pipes in the 
+  subbasement and to accomodate plumbers too large to fit in the original 
+  hole.`
+}, {put_in: "Basement"});
+
+// TODO: allow navigation into Hell -- requires another direction
+def_obj("hell", "thing", {
+  is_scenery: true,
+  no_take_msg: `It would be pretty hard to take Hell with you, don't you think?.`,
+  description: `The Gate to Hell leads to the subbasement which leads to Hell and
+  all of the monsters and creatures within. Fortunately the Gate to Hell is currently
+  sealed, but it was a bit dicey for a bit. We kept having to send xiblings down to
+  fend off the invading hoards.`
+}, {put_in: "Basement"});
 
 def_obj("liquid nitrogen cylinder", "thing", {
   added_words: ["of", "@nitrogen", "ln2", "@ln2"],
@@ -3131,11 +3154,24 @@ world.direction_description.set("The Kitchen", "east", `
 ///
 
 def_obj("The Bike Room", "room", {
-  description: `[img b/bikeroom/look.JPG left]The bikeroom is
-  where tEp/Xis keep their bikes.  You can go [dir southeast] back
-  to the basement hallway or [dir south] to the server room.`
+  description: `[img b/bikeroom/look_2024.jpg left]The bikeroom is
+  where tEp/Xis keep their bikes. You can go [dir southeast] back
+  to the basement hallway or [dir south] to the server room and you 
+  can look [dir north] or [dir northeast].`
 });
 make_known("The Bike Room");
+
+world.direction_description.set("The Bike Room", "north", `
+[img b/bikeroom/look_n_2024.jpg left]To the north is Stockland where we
+store wood scraps for personal and house projects.`);
+world.direction_description.set("The Bike Room", "northeast", `
+[img b/bikeroom/look_ne_2024.jpg left]In the northeast corner is the weight "room"
+which contains a variety of exercise equipment.
+
+Behind that you can see some paneling where the old dumbwaiter used to be. Originally
+this room was the kitchen and only many years after being rennovated was the
+dumwaiter finally closed.`);
+
 world.connect_rooms("The Bike Room", "south", "The Server Room");
 
 def_obj("The Server Room", "room", {
