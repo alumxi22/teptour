@@ -13,7 +13,7 @@
 "use strict";
 
 // version numbers should only ever be of form 2.222...
-world.global.set("release number", "2.222 (02/2021)");
+world.global.set("release number", "2.2222 (08/2024)");
 
 world.global.set("game title", "The tEp/Xi Virtual House Tour");
 world.global.set("game headline", "A factual fantasy");
@@ -506,7 +506,7 @@ def_obj("253 Commonwealth Ave", "room", {
   in the middle of Boston's Back Bay.  Outside the building is
   [a 'purple tree'] and [a 'park bench'].
 
-  [para]Just to the [dir north] is [ob 'front door' 'the door'] to enter tEp/Xi.
+  [para]Just to the north is [ob 'front door' 'the door'] to enter tEp/Xi.
 
   [para]You can look [look east] and [look west] along the
   street, [look up] at tEp/Xi, and [look south] toward the mall.`
@@ -601,7 +601,7 @@ def_obj("front door", "door", {
   lockable: true,
   description: `[img 1/253/doors.JPG left]It's a big, old
   door.  Through the glass, you can make out some blinking LED lights
-  hanging from the stairwell.`,
+  hanging from the stairwell. Why not [action 'knock']?`,
   is_locked: () => world.containing_room(world.actor) === "253 Commonwealth Ave"
 });
 world.no_lock_msg.set("front door", "no_open", `It's locked. Perhaps you
@@ -680,8 +680,9 @@ def_obj("The Foyer", "room", {
   description : `[img 1/foyer/look.jpg left]This is the foyer.
   You can keep going [dir northwest] to the center room.  You
   can see [a subwoofer], [ob 'front desk' 'a desk'],
-  [ob 'colorful lights'], [the mailboxes],
-  and [ob 'foyer mirror' 'large mirror'].`
+  [ob 'colorful lights'], 
+  and [ob 'foyer mirror' 'a large mirror']. Something about
+  [the mailboxes] catches your eye.`
 });
 make_known("The Foyer");
 add_floor("The Foyer", "tile");
@@ -744,9 +745,10 @@ def_obj("colorful lights", "thing", {
 def_obj("mailboxes", "container", {
   words: ["mail", "@box", "@boxes", "@mailboxes", "@mailbox"],
   is_scenery: true,
-  description: `[img 1/foyer/mailboxes.JPG left]These boxes
+  description: `[img 1/foyer/mailboxes_2024.JPG left]These boxes
   hold mail of current xisters, past tEp/Xis, and summer renters.
-  Some of the slots are quite stuffed.`,
+  Most of the names seem to blur into nothingness, but [ask 'honig' 'one name
+  in particular stands out to you'].`,
   no_take_msg: "That mail is not yours."
 }, {put_in: "The Foyer"});
 all_are_mistakes(["steal [obj mailboxes]"], `Virtual house tour or not, that is a felony.`);
@@ -2123,8 +2125,8 @@ through a small opening in the floor to get into...`); // goes to batcave
 ///
 
 def_obj("33", "room", {
-  description: `[img 3/33/look.JPG left]This room is home of
-  [the 'Free Willy net'] as well as a collection of
+  description: `[img 3/33/look_2024.JPG left]This room is home of
+  [the 'cargo net'] as well as a collection of
   [ob 'bad tie collection' 'bad ties'].
   To the [dir southwest] is the cockpit, and to the
   [dir south] is the third landing.`
@@ -2135,28 +2137,57 @@ world.connect_rooms("33", "southwest", "The Cockpit");
 
 // TODO make "enter cockpit" work (possibly by adding this command to textadv)
 
-def_obj("Free Willy net", "container", {
-  added_words: ["large", "red", "purple", "authentic", "fishing"],
+def_obj("cargo net", "container", {
+  added_words: ["large", "blue", "purple"],
   enterable: true,
   is_scenery: true,
-  description: `[img 3/33/net.JPG left]This large fishing net
-  is from the movie Free Willy.  It was purchased on eBay with a
-  bid of exactly two-hundred twenty-two dollars and forty-seven
-  cents some time ago from a stagehand who took the net home as
-  a collectable (likely overestimating its eventual value).
-  There was a failed attempt to dye the net purple, and it ended
-  up being a reddish color instead.
-
-  [para]The net has been proven through robust scientifical
-  testing to be limited by volume and not weight; it has held
-  over thirty people simultaneously!  It's been said that once you enter the net,
-  you never want to leave, so be careful.`,
-  locale_description: `[img 3/33/look_net.JPG left]Hanging
-  near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'].
+  description: `[img 3/33/net_2024.JPG left] This military cargo net has been
+  proven through robust scientific testing to be limited by volume and not 
+  weight; it has held over thirty people simultaneously!  There may be secrets
+  on the net, but it's been said that once you [action 'enter net' 'enter the net'],
+  you'll never want to leave, so be careful.`,
+  locale_description: `[img 3/33/look_net_2024.JPG left]Hanging
+  near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'],
+  and [action 'look ceiling' 'on the ceiling'] is a geometric mural that may harbor dark secrets.
   Although you really don't want to, since you're quite
-  comfortable where you are, you can [action 'get out'] of the
+  comfortable where you are, you can also [action 'get out'] of the
   net.`
 }, {put_in: "33"});
+
+def_obj("mural", "thing", {
+  added_words: ["ceiling"],
+  is_scenery: true,
+  description: `[img 3/33/mural_2024.JPG left]You see the beautiful ceiling mural in all its glory.`
+}, {put_in: "33"});
+
+// world.direction_description.set("33", "up", `
+//   [img 3/33/mural_2024.JPG left]You see the beautiful mural in all its glory.`); // TODO redirect to examine net instead
+instead_of(({verb, dir}) => (verb === "looking toward" && dir === "up"
+    && world.containing_room(world.actor) === "33"),
+    action => examining("cargo net"));
+
+// def_obj("Free Willy net", "container", {
+//   added_words: ["large", "red", "purple", "authentic", "fishing"],
+//   enterable: true,
+//   is_scenery: true,
+//   description: `[img 3/33/net.JPG left]This large fishing net
+//   is from the movie Free Willy.  It was purchased on eBay with a
+//   bid of exactly two-hundred twenty-two dollars and forty-seven
+//   cents some time ago from a stagehand who took the net home as
+//   a collectable (likely overestimating its eventual value).
+//   There was a failed attempt to dye the net purple, and it ended
+//   up being a reddish color instead.
+
+//   [para]The net has been proven through robust scientifical
+//   testing to be limited by volume and not weight; it has held
+//   over thirty people simultaneously!  It's been said that once you enter the net,
+//   you never want to leave, so be careful.`,
+//   locale_description: `[img 3/33/look_net.JPG left]Hanging
+//   near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'].
+//   Although you really don't want to, since you're quite
+//   comfortable where you are, you can [action 'get out'] of the
+//   net.`
+// }, {put_in: "33"});
 
 // middle paragraph
 //         [newline]While this net was from the production of Free Willy,
@@ -3578,11 +3609,12 @@ def_obj("lore: grape soda", "lore", {
 });
 
 def_obj("lore: honig", "lore", {
+  added_words: ["david", "dah", "andrew"],
   name: "David Andrew Honig",
   description: `Honig. 1. [enter_inline i]excl[leave]. A greeting, often as an
   identifier in a large crowd. 2. [enter_inline i]prop. n.[leave] A former
   xister and famous Objectivist, David Andrew Honig, although
-  looked upon as antisocial, has become the mascot of TEP.`
+  looked upon as antisocial, has become the mascot of tEp/Xi.`
 });
 
 def_obj("lore: fenning", "lore", {
@@ -3656,7 +3688,7 @@ def_obj("lore: blooter", "lore", {
   description: `1. [em 'adj.'] Incredibly huge. 2. [em 'n. (rare)'] A person
   matching said physical characteristics. 3. [em 'n. (most common usage today)'] The
   16 oz coffees sold by the SCC 24 Hour Coffeehouse. These were named by Bo, a
-  TEP who worked a lot of shifts at the time that the new cups were introduced.`
+  tEp who worked a lot of shifts at the time that the new cups were introduced.`
 });
 
 def_obj("lore: coffee hour", "lore", {

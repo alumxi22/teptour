@@ -71,11 +71,19 @@ div.location_heading {
 .desc_img {
     display: block;
     padding: 0 1em 0.25em 0px;
+    max-width: 100%;
+}
+.desc_img img {
+    max-width: 100%;
 }
 .desc_img_left {
     display: inline-block;
     float: left;
     padding: 4px 1em 4px 0;
+    max-width: 60%;
+}
+.desc_img_left img {
+    max-width: 100%;
 }
 #command {
     font-family: monospace;
