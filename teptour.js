@@ -797,6 +797,7 @@ def_obj("Op box", "supporter", {
 /// Center Room
 ///
 
+//TODO: add j'office
 def_obj("The Center Room", "room", {
   description: `[img 1/center/look_2024.jpg left]This is the
   center room, which is a common area at tEp/Xi.  Around you are
