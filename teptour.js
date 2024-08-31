@@ -1289,15 +1289,16 @@ actions.report.add_method({
 ///
 
 def_obj("The Dining Room", "room", {
-  description : `[img 1/dining/look.JPG left]This is the
-  dining room, where tEp/Xis eat.  On the ceiling is
+  description : `[img 1/dining/look_2024.jpg left]This is the
+  dining room, where tEp/Xis eat a communal dinner every week night.  On the ceiling is
   [the 'fork chandelier'], sitting above the fireplace is
-  [the 'Tepsi machine'], and covering the west wall is [ob Tepilepsy].
+  [the 'squid mural'], and covering the west wall is [ob Tepilepsy] which is controlled
+  by [the 'computer'] nearby.
   During rush, this room is used to hold a kiddie pool full of [ask oobleck].
 
   [para]To the [dir south] is the center room, and to the
-  [dir east] is the upstairs kitchen.  You can look [look north]
-  and [look east].`
+  [dir east] is the upstairs kitchen.  You can look [look north], [look east],
+  and [look w].`
 });
 make_known("The Dining Room");
 add_floor("The Dining Room", "wood");
@@ -1307,9 +1308,9 @@ world.direction_description.set("The Dining Room", "north", `
 [img 1/dining/look_n.JPG left]Through the windows to the north, you
 get a view of the back lot.`);
 world.direction_description.set("The Dining Room", "east", `
-[img 1/dining/look_e.JPG left]To the east, you see a big whiteboard
-covered in tEp/Xily doodles.  You can go [dir east] into the upstairs
-kitchen.`);
+[img 1/dining/look_e_2024.jpg left]To the east, you see [a 'whiteboard'],
+and underneath, [the 'Snackland'], home of our sustenance. 
+You can go [dir east] into the upstairs kitchen.`);
 
 instead_of(({verb, dir}) => (verb === "looking toward" && dir === "west"
                              && world.containing_room(world.actor) === "The Dining Room"),
@@ -1320,6 +1321,22 @@ def_obj("fork chandelier", "thing", {
   description: `[img 1/dining/chandelier.JPG left]This is a
   chandelier made of forks.  Stuck to it are flecks of dried
   corn starch from [ask oobleck].`
+}, {put_in: "The Dining Room"});
+def_obj("squid mural", "thing", {
+  added_words: ["mural"],
+  is_scenery: true,
+  description: `[img 1/dining/mural_2024.jpg left]This squid looks over us every
+  evening at dinner to commemorate the squid [ask peldge] class.`
+}, {put_in: "The Dining Room"});
+def_obj("Snackland", "thing", {
+  is_scenery: true,
+  description: `[img 1/dining/snackland_2024.jpg left]Snackland is typically
+  overflowing with snacks and fruit.`
+}, {put_in: "The Dining Room"});
+def_obj("whiteboard", "thing", {
+  is_scenery: true,
+  description: `[img 1/dining/whiteboard_2024.jpg left]The big whiteboard is covered in tEplXily
+  doodles.`
 }, {put_in: "The Dining Room"});
 def_obj("Tepsi machine", "thing", {
   is_scenery: true,
@@ -1366,8 +1383,15 @@ def_obj("Tepilepsy", "thing", {
   with the help of many tEp/Xis, both recent and [ask 'druler' drooling] (thanks Gruesz!),
   and it's a beacon that's very visible from the backlot.  It displays
   visualizations of various mathematical functions as well as of
-  relativistic-like distortions of a nearby webcam.  You should
-  definitely ask a for a demonstration at real-tEp/Xi\u2122.`
+  relativistic-like distortions of a nearby webcam and is programmable from [the
+  'computer'].  You should definitely ask a for a demonstration at real-tEp/Xi\u2122.`
+}, {put_in: "The Dining Room"});
+//TODO: add sign in to computer feature
+def_obj("computer", "thing", {
+  is_scenery: true,
+  description: `[img 1/dining/computer_2024.jpg left]The dining room computer is used for
+  controlling tepilepsy and playing amusing videos during dinner. It appears to be
+  locked right now though ...`
 }, {put_in: "The Dining Room"});
 
 ///
