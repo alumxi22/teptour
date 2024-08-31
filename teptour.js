@@ -601,7 +601,7 @@ def_obj("front door", "door", {
   lockable: true,
   description: `[img 1/253/doors.JPG left]It's a big, old
   door.  Through the glass, you can make out some blinking LED lights
-  hanging from the stairwell.`,
+  hanging from the stairwell. Why not [action 'knock']?`,
   is_locked: () => world.containing_room(world.actor) === "253 Commonwealth Ave"
 });
 world.no_lock_msg.set("front door", "no_open", `It's locked. Perhaps you
@@ -3584,7 +3584,7 @@ def_obj("lore: honig", "lore", {
   description: `Honig. 1. [enter_inline i]excl[leave]. A greeting, often as an
   identifier in a large crowd. 2. [enter_inline i]prop. n.[leave] A former
   xister and famous Objectivist, David Andrew Honig, although
-  looked upon as antisocial, has become the mascot of TEP.`
+  looked upon as antisocial, has become the mascot of tEp/Xi.`
 });
 
 def_obj("lore: fenning", "lore", {
@@ -3658,7 +3658,7 @@ def_obj("lore: blooter", "lore", {
   description: `1. [em 'adj.'] Incredibly huge. 2. [em 'n. (rare)'] A person
   matching said physical characteristics. 3. [em 'n. (most common usage today)'] The
   16 oz coffees sold by the SCC 24 Hour Coffeehouse. These were named by Bo, a
-  TEP who worked a lot of shifts at the time that the new cups were introduced.`
+  tEp who worked a lot of shifts at the time that the new cups were introduced.`
 });
 
 def_obj("lore: coffee hour", "lore", {
