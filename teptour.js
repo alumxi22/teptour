@@ -13,7 +13,7 @@
 "use strict";
 
 // version numbers should only ever be of form 2.222...
-world.global.set("release number", "2.222 (02/2021)");
+world.global.set("release number", "2.2222 (08/2024)");
 
 world.global.set("game title", "The tEp/Xi Virtual House Tour");
 world.global.set("game headline", "A factual fantasy");
@@ -680,8 +680,9 @@ def_obj("The Foyer", "room", {
   description : `[img 1/foyer/look.jpg left]This is the foyer.
   You can keep going [dir northwest] to the center room.  You
   can see [a subwoofer], [ob 'front desk' 'a desk'],
-  [ob 'colorful lights'], [the mailboxes],
-  and [ob 'foyer mirror' 'large mirror'].`
+  [ob 'colorful lights'], 
+  and [ob 'foyer mirror' 'large mirror']. Something about
+  [the mailboxes] catches your eye.`
 });
 make_known("The Foyer");
 add_floor("The Foyer", "tile");
@@ -744,9 +745,10 @@ def_obj("colorful lights", "thing", {
 def_obj("mailboxes", "container", {
   words: ["mail", "@box", "@boxes", "@mailboxes", "@mailbox"],
   is_scenery: true,
-  description: `[img 1/foyer/mailboxes.JPG left]These boxes
+  description: `[img 1/foyer/mailboxes_2024.JPG left]These boxes
   hold mail of current xisters, past tEp/Xis, and summer renters.
-  Some of the slots are quite stuffed.`,
+  Most of the names seem to blur into nothingness, but [ask 'honig' 'one name
+  in particular stands out to you'].`,
   no_take_msg: "That mail is not yours."
 }, {put_in: "The Foyer"});
 all_are_mistakes(["steal [obj mailboxes]"], `Virtual house tour or not, that is a felony.`);
