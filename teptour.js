@@ -15,7 +15,7 @@
 // version numbers should only ever be of form 2.222...
 world.global.set("release number", "2.222 (02/2021)");
 
-world.global.set("game title", "The tEp Virtual House Tour");
+world.global.set("game title", "The tEp/Xi Virtual House Tour");
 world.global.set("game headline", "A factual fantasy");
 world.global.set("game author", "tEp/Xi");
 world.global.set("game description", `Although you're still where you
@@ -99,7 +99,7 @@ all_are_mistakes(["in the name of honig"], "Amen.");
 all_are_mistakes(["what ?"], `You just had to
 say that, didn't you.  "What?" "What?" "What?" you hear xisters
 everywhere yelling back and forth throughout the house.  Finally, some
-tEp figures out what's going on and silences them with "No one is
+tEp/Xi figures out what's going on and silences them with "No one is
 peldging, stop it!"`);
 all_are_mistakes(["i wanna peldge"], `This is
 virtual tEp/Xi.  If you have a bid and you're wanting to peldge, then say
@@ -122,7 +122,7 @@ all_are_mistakes(["pickles ?"], `"I didn't make this tour!"
 
 all_are_mistakes(["eit", "eit!"], "Eit indeed!");
 
-var faces = [":)", ":-)", ":(", ":-(", ";-)", ":P", ":-P", ":-D"];
+var faces = [":)", ":-)", ":(", ":-(", ";-)", ":P", ":-P", ":-D", ";)", ";P"];
 faces.forEach(face => { // warning: :-/ will cause an error with 'understand'
   parser.action.understand(face, parse => making_mistake(() => {
     out.write("Oooh! Let me try![para]");
@@ -138,21 +138,21 @@ parser.action.understand("die", parse => attacking(world.actor));
 actions.before.add_method({
   when: action => action.verb === "attacking",
   handle: function (action) {
-    if (action.dobj === "RA") {
-      throw new abort_action(`The RA wisely stays away from {us}.
-      "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
+    if (action.dobj === "GRA") {
+      throw new abort_action(`The GRA wisely stays away from {us}.
+      "Remember the zeroth [ask 'rules of tEp/Xi' 'rule of tEp/Xi']!"
       {we} hear them say from a safe distance, "Don't die!"`);
     } else {
-      throw new abort_action(`The RA comes out of nowhere, preventing
-      {us}. "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
+      throw new abort_action(`The GRA comes out of nowhere, preventing
+      {us}. "Remember the zeroth [ask 'rules of tEp/Xi' 'rule of tEp/Xi']!"
       they say, "Don't die!"`);
     }
   }
 });
 
-all_are_mistakes(["burn down tep"], `The RA
+all_are_mistakes(["burn down tep"], `The GRA
 comes out of nowhere, preventing {us}. "Remember the zeroth
-[ask 'rules of tep' 'rule of tep']!" they say, "Don't die!"`);
+[ask 'rules of tEp/Xi' 'rule of tEp/Xi']!" they say, "Don't die!"`);
 
 all_are_mistakes(["sleep"], `You're too excited about the house tour to sleep right now!`);
 
@@ -453,50 +453,50 @@ def_obj("cat", "backdrop", {
   backdrop_locations: "everywhere",
   added_words: ["@cats"],
   description: `It's a cat! It's also probably why there are so few rats
-  around tEp these days.`,
+  around tEp/Xi these days.`,
   no_take_msg: `You manage to grab ahold of the cat for a while, petting it furiously
   and making a wide assortment of "it's a cat!" faces.  But it ultimately worms its
   way out of your arms and scampers away on important cat business.`
 });
 
-def_obj("tEps", "person", {
-  added_words: ["@tep"],
+def_obj("Xis", "person", {
+  added_words: ["@xi"],
   is_scenery: true,
-  description: `(Please just imagine there are tEps around doing zany things.
+  description: `(Please just imagine there are Xis around doing zany things.
 The rush budget went into 600 pounds of oobleck rather than implementing NPCs with
 more depth than a puddle of spilled milk.)`
 });
 actions.before.add_method({
-  when: action => action.verb === "taking" && action.dobj === "tEps",
+  when: action => action.verb === "taking" && action.dobj === "Xis",
   handle: function (action) {
     throw new abort_action("They wouldn't appreciate that.");
   }
 });
 
-def_obj("RA", "person", {
+def_obj("GRA", "person", {
   added_words: ["resident", "@advisor"],
   is_scenery: true,
-  description: `Like Spiderman, the RA can feel when there's trouble,
+  description: `Like Spiderman, the GRA can feel when there's trouble,
 and they appears when they're needed.  And that time is not now.`
 });
 actions.before.add_method({
-  when: action => action.verb === "taking" && action.dobj === "RA",
+  when: action => action.verb === "taking" && action.dobj === "GRA",
   handle: function (action) {
-    throw new abort_action(`Assuming you saw them, the RA wouldn't appreciate that, but you don't so you can't.`);
+    throw new abort_action(`Assuming you saw them, the GRA wouldn't appreciate that, but you don't so you can't.`);
   }
 });
 
 world.move_backdrops.add_method({
   handle: function () {
     this.next();
-    world.put_in("tEps", world.location(world.actor));
-    world.put_in("RA", world.location(world.actor));
+    world.put_in("Xis", world.location(world.actor));
+    world.put_in("GRA", world.location(world.actor));
   }
 });
 
 
 ///
-/// In front of tEp: 253 Commonwealth Ave
+/// In front of tEp/Xi: 253 Commonwealth Ave
 ///
 
 def_obj("253 Commonwealth Ave", "room", {
@@ -540,27 +540,27 @@ instead_of(({verb, dir}) => (verb === "looking toward" && dir === "down"
 
 world.no_go_msg.add_method({
   when: (x, dir) => x === "253 Commonwealth Ave",
-  handle: (x, dir) => `You head away from tEp, but you begin to realize the
+  handle: (x, dir) => `You head away from tEp/Xi, but you begin to realize the
 rest of the neighborhood is just a dense bank of fog. You've heard this
-virtual tEp is hosted in the cloud, and if you go that way you might fall off!`
+virtual tEp/Xi is hosted in the cloud, and if you go that way you might fall off!`
 });
 
-def_obj("tEp", "backdrop", {
-  proper_named: "tEp",
+def_obj("tEp/Xi", "backdrop", {
+  proper_named: "tEp/Xi",
   added_words: ["@house"],
   backdrop_locations: ["253 Commonwealth Ave", "The Backlot"]
 });
-instead_of(({verb, dobj}) => verb === "examining" && dobj === "tEp",
+instead_of(({verb, dobj}) => verb === "examining" && dobj === "tEp/Xi",
            action => looking(), true);
-instead_of(({verb, dobj}) => (verb === "entering" && dobj === "tEp"
+instead_of(({verb, dobj}) => (verb === "entering" && dobj === "tEp/Xi"
                               && world.containing_room(world.actor) === "253 Commonwealth Ave"),
            action => going("north"), true);
-instead_of(({verb, dobj}) => (verb === "entering" && dobj === "tEp"
+instead_of(({verb, dobj}) => (verb === "entering" && dobj === "tEp/Xi"
                               && world.containing_room(world.actor) === "The Backlot"),
            action => going("south"), true);
 instead_of(({verb, dir}) => (verb === "going" && dir === "in"
-                               && world.accessible_to("tEp", world.actor)),
-           action => entering("tEp"), true);
+                               && world.accessible_to("tEp/Xi", world.actor)),
+           action => entering("tEp/Xi"), true);
 
 
 def_obj("front garden", "container", {
@@ -583,7 +583,7 @@ def_obj("park bench", "supporter", {
   is_scenery: true,
   enterable: true,
   description: `[img 1/253/bench.jpg left]Sitting in [the 'front garden']
-  is this handmade park bench wrought from steel, built by a previous tEp.
+  is this handmade park bench wrought from steel, built by a previous tEp/Xi.
   After a few years of use, it's been bent quite out of whack.`
 }, {put_in: "front garden"});
 
@@ -745,7 +745,7 @@ def_obj("mailboxes", "container", {
   words: ["mail", "@box", "@boxes", "@mailboxes", "@mailbox"],
   is_scenery: true,
   description: `[img 1/foyer/mailboxes.JPG left]These boxes
-  hold mail of current xisters, past tEps, and summer renters.
+  hold mail of current xisters, past tEp/Xis, and summer renters.
   Some of the slots are quite stuffed.`,
   no_take_msg: "That mail is not yours."
 }, {put_in: "The Foyer"});
@@ -764,7 +764,7 @@ def_obj("Op box", "supporter", {
   enterable: true,
   proper_named: true,
   description : `[img 1/foyer/outbox.jpg left]The Op box is
-  named after Charles Oppenheimer, the first Captain tEp.  It is
+  named after Charles Oppenheimer, the first Captain tEp/Xi.  It is
   the platform upon which the captain stands to greet his
   numerous fans.  Because it sits outside of tEp/Xi during rush, it
   is also known as the outbox.`,
@@ -821,7 +821,7 @@ color-changing lights illuminate it dramatically.`);
 def_obj("bulletin board", "thing", {
   is_scenery: true,
   description : `[img 1/center/bulletin.JPG left]This is a
-  bulletin board on which tEps affix funny things they found in
+  bulletin board on which tEp/Xis affix funny things they found in
   the mail, cute things prefrosh wrote, pictures, postcards from
   [ask 'druler' drooling] alumni, and other miscellaneous artifacts.`
   // TODO every time you look you see a description of an interesting thing on the board
@@ -1077,13 +1077,13 @@ actions.try_before.add_method({
       throw new abort_action(`{Bobs} {need} to go to a higher floor to
       drop anything down the center stairwell.`);
     } else if (action.dobj === world.actor) {
-      throw new abort_action(`The RA comes out of nowhere, preventing
-      {us}. "Remember the zeroth [ask 'rules of tep' 'rule of tep']!"
+      throw new abort_action(`The GRA comes out of nowhere, preventing
+      {us}. "Remember the zeroth [ask 'rules of tEp/Xi' 'rule of tEp/Xi']!"
       they say, "Don't die!"`);
-    } else if (action.dobj === "RA") {
-      throw new abort_action(`Sensing trouble, the RA appears, but sensing
+    } else if (action.dobj === "GRA") {
+      throw new abort_action(`Sensing trouble, the GRA appears, but sensing
       {our} intention, they run off and yell back, "remember the zeroth
-      [ask 'rules of tep' 'rule of tep']! Don't die!"`);
+      [ask 'rules of tEp/Xi' 'rule of tEp/Xi']! Don't die!"`);
     } else {
       this.next();
     }
@@ -1124,7 +1124,7 @@ actions.report.add_method({
 def_obj("The Front Room", "room", {
   added_words: ["@fridge"],
   description: `[img 1/front/look.JPG left]This is where
-  tEps play Super Smash Bros. after dinner every night.  The
+  tEp/Xis play Super Smash Bros. after dinner every night.  The
   room is painted a majestic purple, and it's required to remain
   so because the Back Bay Architectual Commission, which cares
   very much about what the Back Bay looks like from the street,
@@ -1156,7 +1156,7 @@ actions.before.add_method({
 actions.report.add_method({
   when: ({verb,dobj}) => verb === "using" && dobj === "Super Smash Bros.",
   handle: function () {
-    out.write(`You turn on the N64 console, and a couple of tEps
+    out.write(`You turn on the N64 console, and a couple of tEp/Xis
     immediately appear to join you to play Super Smash Bros.  They beat you with
     their incredibly high-speed reflexes.  Maybe you'll do better next
     time.`);
@@ -1252,7 +1252,7 @@ actions.report.add_method({
 
 def_obj("The Dining Room", "room", {
   description : `[img 1/dining/look.JPG left]This is the
-  dining room, where tEps eat.  On the ceiling is
+  dining room, where tEp/Xis eat.  On the ceiling is
   [the 'fork chandelier'], sitting above the fireplace is
   [the 'Tepsi machine'], and covering the west wall is [ob Tepilepsy].
   During rush, this room is used to hold a kiddie pool full of [ask oobleck].
@@ -1270,7 +1270,7 @@ world.direction_description.set("The Dining Room", "north", `
 get a view of the back lot.`);
 world.direction_description.set("The Dining Room", "east", `
 [img 1/dining/look_e.JPG left]To the east, you see a big whiteboard
-covered in tEply doodles.  You can go [dir east] into the upstairs
+covered in tEp/Xily doodles.  You can go [dir east] into the upstairs
 kitchen.`);
 
 instead_of(({verb, dir}) => (verb === "looking toward" && dir === "west"
@@ -1325,7 +1325,7 @@ def_obj("Tepilepsy", "thing", {
   is_scenery: true,
   description : `[img 1/dining/tepilepsy.jpg left]With almost
   twenty-two-hundred RGB LEDs, the Tepilepsy wall was installed
-  with the help of many tEps, both recent and [ask 'druler' drooling] (thanks Gruesz!),
+  with the help of many tEp/Xis, both recent and [ask 'druler' drooling] (thanks Gruesz!),
   and it's a beacon that's very visible from the backlot.  It displays
   visualizations of various mathematical functions as well as of
   relativistic-like distortions of a nearby webcam.  You should
@@ -1392,7 +1392,7 @@ def_obj("Hobart", "container", {
   openable: true,
   switchable: true,
   description: `[img 1/kitchen/hobart.jpg left]Hobart is not
-  a dishwasher, as is explained in the [ask 'rules of tep'].  It
+  a dishwasher, as is explained in the [ask 'rules of tEp/Xi'].  It
   is a dish sanitizer.  He does a really good job at whatever he
   does as long as food isn't still stuck to the dishes you ask
   him to sanitize.`
@@ -1514,7 +1514,7 @@ def_obj("buro feet", "thing", {
   no_take_msg: `You shouldn't take that picture.  It's
   always been there.`,
   description: `[img 2/22/feet.JPG left]This is a portrait of
-  the feet of Buro, a tEp of years past, who used to live in
+  the feet of Buro, a tEp/Xi of years past, who used to live in
   this room.  Along with the feet, he left a rather large 10W
   laser under a desk which made a good foot rest.`
 }, {put_in: "22"});
@@ -1525,7 +1525,7 @@ def_obj("purple geodesic ball", "thing", {
   used to be twice its size, hanging in the center stairwell.
   It was our dreaded nemesis, the fire inspector, who made us
   take it down: he imagined the ball rolling down the center
-  stairwell on fire Indiana Jones style, overrunning tEps as
+  stairwell on fire Indiana Jones style, overrunning tEp/Xis as
   they were futilely trying to run to safety.  Since it was so
   large that you could get inside and use it like a hamster ball,
   the ball was cut down to fit where it hangs now.`
@@ -1612,7 +1612,7 @@ def_obj("The Batcave", "room", {
     out.write(`[img 2/batcave/look.JPG left]This is one of
     the secret rooms of tEp/Xi.  It's a room built into the
     interstitial space between the second and third floors by
-    Batman, a tEp from the 80s.  People have actually lived in
+    Batman, a tEp/Xi from the 80s.  People have actually lived in
     this room before.  The only things in here are a mattress, a
     [ob 'batcave sign' sign], and some [ob batcave_shelves shelves]`);
     if (world.is_open("batcave_shelves")) {
@@ -1793,7 +1793,7 @@ def_obj("leitshow", "thing", {
   attended the IAP glassblowing course, fashioned their own neon
   tubes and attached them to the ceiling of 23.  Since then, it
   has accumulated dozens more neon lights, LEDs and lasers.
-  Custom tEp software and hardware, continuously refined, takes
+  Custom tEp/Xi software and hardware, continuously refined, takes
   input from recorded music, microphones and live MIDI
   instruments and creates, on the fly, a mind-blowing visual
   experience to accompany them.
@@ -2019,7 +2019,7 @@ world.direction_description.set("The Third Landing", "north", `
 33, and to the [dir northeast] is the back stairwell.`);
 world.direction_description.set("The Third Landing", "south", `
 [img 3/landing/look_s.JPG left]To the [dir south] is 32, and to the
-[dir southwest] is 31 (which is the RA's room and locked).`);
+[dir southwest] is 31 (which is the GRA's room and locked).`);
 world.direction_description.set("The Third Landing", "east", `
 [img 3/landing/look_e.JPG left]To the east you see the stairwell that
 goes [dir upstairs].`);
@@ -2045,11 +2045,11 @@ def_obj("door to 31", "door", {
   is_locked: true,
   reported: false,
   description: `The door to 31 is locked.  Who knows what
-  mysteries might lie within the RA's room?`
+  mysteries might lie within the GRA's room?`
 });
 
 world.no_lock_msg.set("door to 31", "no_open", `You shouldn't go
-in since it's the [ob RA]'s room.  You try anyway, but the door to 31 is
+in since it's the [ob GRA]'s room.  You try anyway, but the door to 31 is
 locked, so you can't get in.`);
 
 def_obj("31", "room", {
@@ -2182,7 +2182,7 @@ def_obj("bad tie collection", "thing", {
   is_scenery: true,
   description: `[img 3/33/ties.JPG left]This is a collection
   of many remarkably bad ties.  They've been successfully used by a
-  few tEps to land jobs at Google.`
+  few tEp/Xis to land jobs at Google.`
 }, {put_in: "33"});
 
 ///
@@ -2381,7 +2381,7 @@ the back stairwell.`);
 
 world.direction_description.set("The Fourth Landing", "up", `
 [img 4/landing/look_u.JPG left]Looking up, you see the skylight and
-the traveling salesman door, through which tEps lead traveling
+the traveling salesman door, through which tEp/Xis lead traveling
 salesmen.`);
 world.direction_description.set("The Fourth Landing", "down", `
 [img 4/landing/look_d.JPG left]This looks like the perfect spot from
@@ -2797,7 +2797,7 @@ def_obj("The Study Room", "room", {
   added_words: ["chapter", "@52"],
   description: `[img 5/study/look.JPG left]This is the study
   room (also known as 52, keeping up with the
-  clockwise-enumeration convention), which was painted by a tEp
+  clockwise-enumeration convention), which was painted by a tEp/Xi
   who once stared at the sun and could only see green for a
   month.  You can go [dir north] to the rest of the fifth floor,
   or [dir south] through [the 'xiohazard door'] to the poop
@@ -2860,7 +2860,7 @@ def_obj("The Roof", "room", {
   description: `[img 5/roof/look.JPG left]This is the roof of
   tEp/Xi.  To the [look north] is a view of the MIT campus, and to
   the [look south] is the Boston skyline.  You can go back
-  [dir down] to the poopdeck. You can also [look down].`
+  [dir down] to the poopdeck. You can also look [look down].`
 });
 make_known("The Roof");
 
@@ -2900,7 +2900,7 @@ def_obj("The Etruscan Bathhouse", "container", {
   locale_description: `[img 5/roof/look_bath.JPG left]You are
   in the Etruscan bathhouse, complete with an authentic
   reproduction of Etruscan art, courtesy of a postcard from a
-  tEp alumnus.  You can [action leave] when you're ready.`
+  tEp/Xi alumnus.  You can [action leave] when you're ready.`
 }, {put_in: "The Roof"});
 
 def_obj("bathtub", "container", {
@@ -2944,8 +2944,8 @@ actions.report.add_method({
 
 function handle_jump_off_roof(parse) {
   if (["The Roof", "The Poop Deck"].includes(world.containing_room(world.actor))) {
-    return making_mistake(`The RA comes out and stops you, "remember the
-    zeroth [ask 'rules of tep' 'rule of tep']! Don't die!"`);
+    return making_mistake(`The GRA comes out and stops you, "remember the
+    zeroth [ask 'rules of tEp/Xi' 'rule of tEp/Xi']! Don't die!"`);
   } else {
     return undefined;
   }
@@ -3080,7 +3080,7 @@ world.direction_description.set("The Kitchen", "east", `
 
 def_obj("The Bike Room", "room", {
   description: `[img b/bikeroom/look.JPG left]The bikeroom is
-  where tEps keep their bikes.  You can go [dir southeast] back
+  where tEp/Xis keep their bikes.  You can go [dir southeast] back
   to the basement hallway or [dir south] to the server room.`
 });
 make_known("The Bike Room");
@@ -3103,7 +3103,7 @@ world.connect_rooms("The Server Room", "east", "The Laundry Room");
 
 def_obj("The Laundry Room", "room", {
   description : `[img b/laundry/look.JPG left]This is the room
-  that makes all tEps smell the same: free laundry, including
+  that makes all tEp/Xis smell the same: free laundry, including
   detergent, is part of the deal of living at tEp/Xi.  You see
   [ob washer 'a washing machine'], [a 'dryer'], [ob 'laundry sink' 'a sink'],
   and [ob 'laundry shelves' 'some shelves'].  You can go [dir west].`
@@ -3202,7 +3202,7 @@ def_obj("tepophone closet", "room", {
   description: `[img b/tepophone/look.jpg left]Built from
   relays that fell out of a Bell telephone truck by [ask 'Fred Fenning']
   while he was failing his telephony class, Tep-o-phone was a state-of-the-art
-  telephone switching system that let the outside world dial individual rooms, switching tEp's six external lines.
+  telephone switching system that let the outside world dial individual rooms, switching tEp/Xi's six external lines.
   It also let people call the laundry room (Mr. Washer and Ms. Dryers) to see if there were free
   machines.  Sadly, Tep-o-phone has since fallen into disrepair
   with the now-widespread use of cell phones, but every once in a while it tries
@@ -3253,7 +3253,7 @@ def_obj("oobleck drain", "supporter", {
   is_scenery: true,
   description: `[img b/backlot/drain.JPG left]The oobleck
   drain is a big square of cement with a hole, through which
-  tEps dump a kiddie pool of [ask oobleck] every year.  With the
+  tEp/Xis dump a kiddie pool of [ask oobleck] every year.  With the
   oobleck drain, cleanup is a breeze!`
 }, {put_in: "The Backlot"});
 
@@ -3304,7 +3304,7 @@ def_obj("hot water heater", "thing", {
   shot hot, black sludge at them through almost a hundred feet
   of pipe as they wondered what they possibly could have done to
   deserve that.  Because the water heater was grandfathered into
-  some tEp insurance policy, it was replaced at no charge,
+  some tEp/Xi insurance policy, it was replaced at no charge,
   though we had a full month of cold showers.`
 }, {put_in: "The Cave"});
 
@@ -3455,14 +3455,14 @@ def_obj("lore: eit", "lore", {
   commemorating the sacrament of eit.`
 });
 
-def_obj("lore: rules of tep", "lore", {
-  name: "rules of tEp",
-  words: ["rule", "rules", "of", "tep", "@rules"],
-  description: `The rules of tEp are threefold:
+def_obj("lore: rules of tEp/Xi", "lore", {
+  name: "rules of tEp/Xi",
+  words: ["rule", "rules", "of", "tep", "xi", "@rules"],
+  description: `The rules of tEp/Xi are threefold:
   [enter_block ol][attr start 0]
   [enter_block li]Don't die;[leave]
   [enter_block li]Hobart is not a dishwasher;[leave]
-  [enter_block li]Don't date Pikans;[leave]
+  [enter_block li]Do not Hobart the cat;[leave]
   [enter_block li]All explosions must be videotaped;[leave]
   [leave]
   Amendment 1. No [ask Sawzalls] without the express permission of
@@ -3475,7 +3475,7 @@ def_obj("lore: sawzall", "lore", {
   words: ["@sawzall", "@sawzalls"],
   description: `A Sawzall is a hand-held reciprocating saw
   that can basically cut through anything.  Their prohibition
-  was made into one of the [ask 'rules of tep'] after one
+  was made into one of the [ask 'rules of tEp/Xi'] after one
   xister repeatedly cut down the wall between 51 and 52 during
   the summer months to make a mega room, where it was the duty
   of the [ask 'house mangler'] to mend the wall at the end of
@@ -3486,7 +3486,7 @@ def_obj("lore: work week", "lore", {
   name: "work week",
   description: `Work week occurs once at the end of the
   summer and once during winter break, and it's a time where
-  tEps try to repair the house.`
+  tEp/Xis try to repair the house.`
 });
 
 def_obj("lore: house mangler", "lore", {
@@ -3748,7 +3748,7 @@ def_obj("lore: pickles", "lore", {
   the one-word question--"Pickles?" the reply to which would also be pickles
   if he was indeed telling the truth.
 
-  [para]The use of this word has caught on with other Teps. However, its usability
+  [para]The use of this word has caught on with other Xis. However, its usability
   depends on a continued respect for the eternal sanctity of the word pickles.`
 });
 
@@ -3793,7 +3793,7 @@ def_obj("lore: Ridiculo-Ball", "lore", {
   [enter_block li]"It" has the softball glove. "It" tries to prevent the ball from
     going into the trash can by hurling the glove at high velocity.[leave]
   [enter_block li]If a player gets the ball into the trash can, there is much joy, and
-    he or she becomes "It."[leave]
+    they become "It."[leave]
   [enter_block li]The game ends when we get bored.[leave]
   [leave]
   See also, [ask PowerBall].`
@@ -3808,7 +3808,7 @@ def_obj("lore: schmedley", "lore", {
 
 def_obj("lore: spleen", "lore", {
   name: "Spleen",
-  description: `The Spleen is a tEp's most important organ.  While the brain is
+  description: `The Spleen is a tEp/Xi's most important organ.  While the brain is
   occasionally useful for passing final examinations, surviving job interviews,
   etc., the Spleen provides round-the-clock protection from unexpected illness.
   At MIT, this vital organ allows one to:
@@ -3835,7 +3835,7 @@ def_obj("lore: Stovall", "lore", {
 
 def_obj("lore: Tep-O-Phone", "lore", {
   name: "Tep-O-Phone",
-  description: `tEp's former internal phone system.  Go visit [action 'go to The Tep-o-phone Closet' 'the Tep-O-Phone closet'].`
+  description: `tEp/Xi's former internal phone system.  Go visit [action 'go to The Tep-o-phone Closet' 'the Tep-O-Phone closet'].`
 });
 
 def_obj("lore: whumph bag", "lore", {
