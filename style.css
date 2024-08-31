@@ -50,13 +50,6 @@ div.location_heading {
     height: 0.5em;
 }
 
-#user_response {
-    white-space: nowrap;
-    padding-left: 1em;
-    padding-top: 0.8em;
-    padding-bottom: 0.8em;
-    overflow: hidden;
-}
 #teptour-input {
     font-family: monospace;
     font-size: 12pt;
@@ -66,6 +59,32 @@ div.location_heading {
     left: 0; right: 0; bottom: 0;*/
     border-top: 1px solid #8e8;
     position: relative;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#user_response {
+    white-space: nowrap;
+    padding-left: 1em;
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    overflow: hidden;
+
+    flex: 1 1 300px;
+    min-width: 300px;
+}
+#menu {
+    padding-bottom: 0.8em;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    flex: 0 1 auto;
+}
+#menu-items {
+
 }
 
 .desc_img {
@@ -92,49 +111,38 @@ a .tobii-zoom__icon {
 a:hover .tobii-zoom__icon {
     opacity: 1;
 }
+
+/* Media query for phone-sized screens */
+@media only screen and (max-width: 400px) {
+  .desc_img_left {
+    float: none;
+    display: block;
+    padding: 4px 1em 4px 0;
+    max-width: 100%;
+  }
+}
+
 #command {
     font-family: monospace;
     font-size: 12pt;
     background-color: #222;
     color: #8e8;
-    max-width: 700px;
-}
-#menu {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding-bottom: 0.8em;
-    padding-right: 1em;
-}
-#menu-items {
-
-}
-
-a.contact-us {
-    position: absolute;
-    right: 2em;
-    bottom: 4em;
-    background: #222;
-    color: #B366FF;
-    border: 1px solid #B366FF;
-    padding: 3px 5px;
-    border-radius: 3px;
-}
-a.contact-us:hover {
-    background: #B366FF;
-    color: #222;
+/*    max-width: 700px;*/
 }
 
 #navigation {
     display: block;
     position: fixed;
-    top: 1em;
-    right: 2em;
+    top: 0;
+    right: 0;
     z-index: 1;
+    /* Ideally the scroll would only be for map-contents rather than the whole navigation */
+    max-height: 100%;
+    overflow: scroll;
 }
 
 #map {
-    background-color: #222;
+    background-color: #222222ee;
     color: #B366FF;
     font-family: monospace;
     font-size: 12pt;
@@ -143,9 +151,8 @@ a.contact-us:hover {
     border-radius: 3px;
 }
 #map summary {
-    margin-bottom: 1em;
     padding: 5px 8px;
-    background: #222;
+/*    background: #222;*/
     color: #B366FF;
     border: 3px solid #B366FF;
     border-radius: 3px;
@@ -156,10 +163,17 @@ a.contact-us:hover {
     background: #B366FF;
     color: #222;
 }
+#map-contents {
+    border: 3px solid #B366FF;
+    border-top: 0;
+    border-radius: 3px;
+    padding: 20px 5px 5px 5px;
+    margin-top: -5px;
+}
 #map tr td.room {
   border-style: solid;
   border-width: 1px;
-  background-color: #222;
+/*  background-color: #222;*/
   text-align: center;
   font-size: 80%;
 /*  font-family: sans-serif;*/
@@ -188,7 +202,28 @@ a.contact-us:hover {
 #map a:hover, #map td.visiting a {
   color: #C4F;
   background-color: #B366FF;
-  color: #000;
+  color: #222;
+}
+
+.contact-us {
+    margin-top: 16px;
+}
+.contact-us a {
+    display: block;
+    text-align: center;
+    font-size: 10pt;
+/*    background: #222;*/
+    color: #B366FF;
+    padding: 3px 5px;
+/*    border: 1px solid #B366FF;*/
+    border-radius: 3px;
+}
+#map .contact-us a, #map .contact-us a:visited {
+    text-decoration: underline;
+}
+#map .contact-us a:hover {
+    background: #B366FF;
+    color: #222;
 }
 
 #irving {
