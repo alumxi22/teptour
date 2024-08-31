@@ -745,7 +745,7 @@ def_obj("colorful lights", "thing", {
 def_obj("mailboxes", "container", {
   words: ["mail", "@box", "@boxes", "@mailboxes", "@mailbox"],
   is_scenery: true,
-  description: `[img 1/foyer/mailboxes_2024.JPG left]These boxes
+  description: `[img 1/foyer/mailboxes_2024.jpg left]These boxes
   hold mail of current xisters, past tEp/Xis, and summer renters.
   Most of the names seem to blur into nothingness, but [ask 'honig' 'one name
   in particular stands out to you'].`,
@@ -2125,7 +2125,7 @@ through a small opening in the floor to get into...`); // goes to batcave
 ///
 
 def_obj("33", "room", {
-  description: `[img 3/33/look_2024.JPG left]This room is home of
+  description: `[img 3/33/look_2024.jpg left]This room is home of
   [the 'cargo net'] as well as a collection of
   [ob 'bad tie collection' 'bad ties'].
   To the [dir southwest] is the cockpit, and to the
@@ -2141,12 +2141,12 @@ def_obj("cargo net", "container", {
   added_words: ["large", "blue", "purple"],
   enterable: true,
   is_scenery: true,
-  description: `[img 3/33/net_2024.JPG left] This military cargo net has been
+  description: `[img 3/33/net_2024.jpg left] This military cargo net has been
   proven through robust scientific testing to be limited by volume and not 
   weight; it has held over thirty people simultaneously!  There may be secrets
   on the net, but it's been said that once you [action 'enter net' 'enter the net'],
   you'll never want to leave, so be careful.`,
-  locale_description: `[img 3/33/look_net_2024.JPG left]Hanging
+  locale_description: `[img 3/33/look_net_2024.jpg left]Hanging
   near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'],
   and [action 'look ceiling' 'on the ceiling'] is a geometric mural that may harbor dark secrets.
   Although you really don't want to, since you're quite
@@ -2157,11 +2157,11 @@ def_obj("cargo net", "container", {
 def_obj("mural", "thing", {
   added_words: ["ceiling"],
   is_scenery: true,
-  description: `[img 3/33/mural_2024.JPG left]You see the beautiful ceiling mural in all its glory.`
+  description: `[img 3/33/mural_2024.jpg left]You see the beautiful ceiling mural in all its glory.`
 }, {put_in: "33"});
 
 // world.direction_description.set("33", "up", `
-//   [img 3/33/mural_2024.JPG left]You see the beautiful mural in all its glory.`); // TODO redirect to examine net instead
+//   [img 3/33/mural_2024.jpg left]You see the beautiful mural in all its glory.`); // TODO redirect to examine net instead
 instead_of(({verb, dir}) => (verb === "looking toward" && dir === "up"
     && world.containing_room(world.actor) === "33"),
     action => examining("cargo net"));
