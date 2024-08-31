@@ -3258,15 +3258,19 @@ def_obj("detergent", "thing", {
 /// The Tool Closet
 ///
 
+//TODO: internal tool room directions are correct but basement room navigation is outdated
 def_obj("The Tool Closet", "room", {
-  description: `[img b/toolroom/look.JPG left]Since tEp/Xi is a
+  description: `[img b/toolroom/look_2024.jpg left]Since tEp/Xi is a
   do-it-yourself kind of place, there is a room devoted to
-  keeping tools.  This is that room.  You can look [look northwest]
+  keeping tools.  This is that room.  You can look [look southwest] or [look southeast]
   or go [dir east] back to the basement hallway.`
 });
 
-world.direction_description.set("The Tool Closet", "northwest", `
-[img b/toolroom/look_nw.JPG left]Look at all those fine tools.`);
+world.direction_description.set("The Tool Closet", "southwest", `
+[img b/toolroom/look_sw_2024.jpg left]Observe the utility sink which does not drain.`);
+
+world.direction_description.set("The Tool Closet", "southeast", `
+[img b/toolroom/look_se_2024.jpg left]Look at all those fine tools.`);
 
 ///
 /// Milk Crate Land
