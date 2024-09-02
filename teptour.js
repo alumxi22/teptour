@@ -2247,12 +2247,12 @@ def_obj("cargo net", "container", {
   is_scenery: true,
   description: `[img 3/33/net_2024.jpg left] This military cargo net has been
   proven through robust scientific testing to be limited by volume and not 
-  weight; it has held over thirty people simultaneously!  There may be secrets
-  on the net, but it's been said that once you [action 'enter net' 'enter the net'],
+  weight; it has held over thirty people simultaneously!  It's been said that 
+  once you [action 'enter net' 'enter the net'],
   you'll never want to leave, so be careful.`,
   locale_description: `[img 3/33/look_net_2024.jpg left]Hanging
   near you right outside the net is a collection of [ob 'bad tie collection' 'bad ties'],
-  and [action 'look ceiling' 'on the ceiling'] is a geometric mural that may harbor dark secrets.
+  and on the ceiling is a geometric [ob 'mural'].
   Although you really don't want to, since you're quite
   comfortable where you are, you can also [action 'get out'] of the
   net.`
